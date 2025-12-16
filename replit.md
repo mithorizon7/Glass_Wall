@@ -69,6 +69,14 @@ client/src/
 - Created side-by-side comparison view showing HTTP and HTTPS wire views simultaneously
 - Built scenario selector with four scenarios (Airport Wi-Fi, Coffee Shop, Corporate Office, Home Network) with risk-specific messaging
 - Developed interactive quiz mode with 8 questions, scoring, explanations, and progress tracking
+- **December 2024 Security Education Update:**
+  - Added TLS handshake visualization for HTTPS (timeline shows 4 stages, wire view shows handshake details)
+  - Added permanent public Wi-Fi warning banner about deception risks (rogue hotspots, fake portals)
+  - Added VPN trust warning explaining that VPN shifts trust, doesn't eliminate it
+  - Added tooltips to wire view explaining request/response content and encryption status
+  - Added ciphertext disclaimer noting visualization is illustrative, not actual TLS dump
+  - Fixed TypeScript iteration errors by adding ES2020 target
+  - Fixed protocol switching regression when changing from HTTPS to HTTP mid-timeline
 
 ## User Preferences
 - Educational/approachable design (not dry/corporate)
