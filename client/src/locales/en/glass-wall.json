@@ -346,8 +346,13 @@
   "cheatSheet": {
     "modalTitle": "Network Security Cheat Sheet",
     "modalDescription": "A quick reference guide for HTTP, HTTPS, and VPN security concepts",
+    "printButton": "Print / Save as PDF",
     "printTitle": "HTTP vs HTTPS vs VPN — Quick Reference",
+    "printFooter": "The Glass Wall - Network Security Training",
     "httpTitle": "HTTP (Unencrypted)",
+    "httpBadge": "Not Safe",
+    "httpsBadge": "Safe",
+    "vpnBadge": "Extra Protection",
     "httpPoints": [
       "Data travels in plain text - anyone on the network can read it",
       "Passwords, usernames, and personal data are visible",

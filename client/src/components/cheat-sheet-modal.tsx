@@ -149,7 +149,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
           </div>
 
           <p style="text-align: center; margin-top: 32px; color: #64748b; font-size: 14px;">
-            The Glass Wall - Network Security Training
+            ${t("cheatSheet.printFooter")}
           </p>
         </body>
       </html>
@@ -184,7 +184,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
         <div className="flex gap-2 mb-4">
           <Button onClick={handlePrint} variant="outline" data-testid="button-print-cheat-sheet">
             <Printer className="w-4 h-4 mr-2" />
-            Print / Save as PDF
+            {t("cheatSheet.printButton")}
           </Button>
         </div>
 
@@ -193,7 +193,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             <div className="flex items-center gap-2 mb-3">
               <Unlock className="w-5 h-5 text-red-500" />
               <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.httpTitle")}</h3>
-              <Badge variant="destructive" className="text-xs">Not Safe</Badge>
+              <Badge variant="destructive" className="text-xs">{t("cheatSheet.httpBadge")}</Badge>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {Array.isArray(httpPoints) && httpPoints.map((point, i) => (
@@ -211,7 +211,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             <div className="flex items-center gap-2 mb-3">
               <Lock className="w-5 h-5 text-green-500" />
               <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.httpsTitle")}</h3>
-              <Badge className="bg-green-500/10 text-green-600 text-xs">Safe</Badge>
+              <Badge className="bg-green-500/10 text-green-600 text-xs">{t("cheatSheet.httpsBadge")}</Badge>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {Array.isArray(httpsPoints) && httpsPoints.map((point, i) => (
@@ -229,7 +229,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             <div className="flex items-center gap-2 mb-3">
               <Shield className="w-5 h-5 text-purple-500" />
               <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.vpnTitle")}</h3>
-              <Badge className="bg-purple-500/10 text-purple-600 text-xs">Extra Protection</Badge>
+              <Badge className="bg-purple-500/10 text-purple-600 text-xs">{t("cheatSheet.vpnBadge")}</Badge>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {Array.isArray(vpnPoints) && vpnPoints.map((point, i) => (

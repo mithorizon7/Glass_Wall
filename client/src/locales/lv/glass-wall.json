@@ -346,8 +346,13 @@
   "cheatSheet": {
     "modalTitle": "Tīkla drošības īsā pamācība",
     "modalDescription": "Ātrās uzziņas ceļvedis HTTP, HTTPS un VPN drošības konceptiem",
+    "printButton": "Drukāt / Saglabāt kā PDF",
     "printTitle": "HTTP vs HTTPS vs VPN — Īsā uzziņa",
+    "printFooter": "Stikla siena — Tīkla drošības apmācība",
     "httpTitle": "HTTP (Nešifrēts)",
+    "httpBadge": "Nedroši",
+    "httpsBadge": "Droši",
+    "vpnBadge": "Papildu aizsardzība",
     "httpPoints": [
       "Dati ceļo vienkāršā tekstā — ikviens tīklā tos var lasīt",
       "Paroles, lietotājvārdi un personas dati ir redzami",

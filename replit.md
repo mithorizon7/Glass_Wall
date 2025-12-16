@@ -77,6 +77,12 @@ client/src/
   - Added ciphertext disclaimer noting visualization is illustrative, not actual TLS dump
   - Fixed TypeScript iteration errors by adding ES2020 target
   - Fixed protocol switching regression when changing from HTTPS to HTTP mid-timeline
+- **December 2024 i18n & Design Fixes:**
+  - Fixed hardcoded English strings in cheat-sheet-modal.tsx (badges, print button, footer)
+  - Added translation keys: cheatSheet.printButton, httpBadge, httpsBadge, vpnBadge, printFooter
+  - Replaced one-sided borders on Cards with gradient backgrounds (design guideline compliance)
+  - Added gap to justify-between elements across control-panel, demo-login-form, progress-tracker, quiz-mode
+  - Added data-testid="button-close-dialog" to Dialog component for testing
 
 ## User Preferences
 - Educational/approachable design (not dry/corporate)
