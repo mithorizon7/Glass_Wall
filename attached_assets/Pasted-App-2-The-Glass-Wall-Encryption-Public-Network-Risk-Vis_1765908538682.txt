@@ -1,0 +1,97 @@
+App 2 — The Glass Wall (Encryption & Public Network Risk Visualizer)
+Purpose
+
+Make encryption tangible without teaching interception. Teach:
+
+What happens in HTTP vs HTTPS/TLS
+
+What a VPN does conceptually on public Wi-Fi
+
+The difference between content and metadata
+
+Safe behavior: “don’t enter sensitive creds on untrusted networks/pages”
+
+Core UX concept
+
+Split screen:
+
+Left: “User View” (a dummy site interaction)
+
+Right: “Wire View” (what would be observable in principle)
+
+Key rule: Do not show keystrokes “leaking as typed.”
+Show plaintext becoming visible upon Submit for HTTP, because that maps to a request body and avoids implying keylogging.
+
+Required interactions
+A) Toggle: HTTP ↔ HTTPS
+
+In HTTP mode:
+
+Wire View shows readable request: path, headers, and body containing submitted fake credentials.
+
+In HTTPS mode:
+
+Wire View shows:
+
+visible: domain, handshake presence, “encrypted payload”
+
+hidden: the actual credential content (render as ciphertext-like blocks)
+
+Include an info note: “The network can still learn some metadata (e.g., you connected), but not the protected content.”
+
+B) Toggle: VPN OFF ↔ ON
+
+VPN OFF:
+
+Show traffic goes “Device → Local network → Destination”
+
+VPN ON:
+
+Show a tunnel “Device → VPN server” (encrypted), then “VPN server → Destination”
+
+Emphasize: “VPN shifts trust; it doesn’t make you invincible.”
+
+C) Safe “public Wi-Fi” framing
+
+Include a banner:
+
+“Public networks increase risk of deception (rogue hotspots, fake portals). Encryption reduces some risks, but judgment still matters.”
+
+Dummy content requirements
+
+Use obviously fake credentials and domains:
+
+example-login.test, bank-demo.invalid (or a clearly fictional domain inside the app)
+
+Use fixed demo values like:
+
+username: demo_user
+
+password: not_a_real_password
+
+Never ask for real credentials.
+
+Wire View design guidelines
+
+Prefer progressive disclosure:
+
+Start with a simple “packet summary”
+
+Let learners expand to see “headers/body” (HTTP) or “handshake/payload blocks” (HTTPS)
+
+Include short tooltips for:
+
+“request,” “response,” “headers,” “payload,” “encrypted”
+
+Build requirements
+
+This is a simulation; no real packet capture.
+
+Model the “request” as a JSON object you render differently depending on mode.
+
+Add a small “timeline” animation: connect → request → response.
+
+Security posture
+
+Same as above: CSP, no external calls, no telemetry.
+If you include any crypto visuals, make it explicit that ciphertext is illustrative, not a real TLS dump.
