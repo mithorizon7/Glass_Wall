@@ -137,7 +137,7 @@ export function ControlPanel({
             </Tooltip>
           </Label>
         </div>
-        <div className="flex items-center justify-between px-2 py-3">
+        <div className="flex items-center justify-between gap-2 px-2 py-3">
           <div className="flex items-center gap-2">
             <Repeat className={`w-4 h-4 ${autoPlay ? "text-primary" : "text-muted-foreground"}`} />
             <span className={`font-medium ${autoPlay ? "text-foreground" : "text-muted-foreground"}`}>
@@ -167,7 +167,7 @@ export function ControlPanel({
             </Tooltip>
           </Label>
         </div>
-        <div className="flex items-center justify-between px-2 py-3">
+        <div className="flex items-center justify-between gap-2 px-2 py-3">
           <div className="flex items-center gap-2">
             <ListOrdered className={`w-4 h-4 ${stepMode ? "text-primary" : "text-muted-foreground"}`} />
             <span className={`font-medium ${stepMode ? "text-foreground" : "text-muted-foreground"}`}>

@@ -185,7 +185,7 @@ export function ProgressTracker({
         <CollapsibleContent className="mt-4">
           <div className="space-y-4">
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between gap-2 text-sm">
                 <span className="text-muted-foreground">
                   {t("common:plurals.ofTotal", { count: completedCount, total: 4 })} {t("progressTracker.modesExplored")}
                 </span>

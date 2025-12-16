@@ -189,7 +189,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
         </div>
 
         <div ref={printRef} className="space-y-6">
-          <Card className="p-4 border-l-4 border-l-red-500">
+          <Card className="p-4 pl-6 bg-gradient-to-r from-red-500/10 to-transparent">
             <div className="flex items-center gap-2 mb-3">
               <Unlock className="w-5 h-5 text-red-500" />
               <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.httpTitle")}</h3>
@@ -207,7 +207,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             </ul>
           </Card>
 
-          <Card className="p-4 border-l-4 border-l-green-500">
+          <Card className="p-4 pl-6 bg-gradient-to-r from-green-500/10 to-transparent">
             <div className="flex items-center gap-2 mb-3">
               <Lock className="w-5 h-5 text-green-500" />
               <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.httpsTitle")}</h3>
@@ -225,7 +225,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             </ul>
           </Card>
 
-          <Card className="p-4 border-l-4 border-l-purple-500">
+          <Card className="p-4 pl-6 bg-gradient-to-r from-purple-500/10 to-transparent">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="w-5 h-5 text-purple-500" />
               <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.vpnTitle")}</h3>

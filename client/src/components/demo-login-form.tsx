@@ -40,7 +40,7 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
       </div>
 
       <div className="bg-muted/30 rounded-lg p-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between gap-3 mb-6">
           <div className="flex items-center gap-2">
             <Globe className="w-5 h-5 text-muted-foreground" />
             <span className="font-medium text-foreground">{t("loginForm.title")}</span>

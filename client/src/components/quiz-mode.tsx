@@ -140,7 +140,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
         {!isComplete ? (
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between gap-2 text-sm">
                 <span className="text-muted-foreground">
                   {t("quiz.question")} {currentQuestionIndex + 1} {t("quiz.of")} {QUESTIONS.length}
                 </span>

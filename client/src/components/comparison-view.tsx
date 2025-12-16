@@ -236,7 +236,7 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Card className="p-4 border-l-4 border-l-red-500">
+          <Card className="p-4 pl-6 bg-gradient-to-r from-red-500/10 to-transparent">
             <ComparisonWireView
               protocolMode="http"
               vpnMode={vpnMode}
@@ -245,7 +245,7 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
             />
           </Card>
 
-          <Card className="p-4 border-l-4 border-l-green-500">
+          <Card className="p-4 pl-6 bg-gradient-to-r from-green-500/10 to-transparent">
             <ComparisonWireView
               protocolMode="https"
               vpnMode={vpnMode}
