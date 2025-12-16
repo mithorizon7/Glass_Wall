@@ -96,10 +96,40 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "pulse-node": {
+          "0%, 100%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.15)", opacity: "0.8" },
+        },
+        "line-grow": {
+          from: { height: "0" },
+          to: { height: "100%" },
+        },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-down": {
+          from: { opacity: "0", transform: "translateY(-10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "tunnel-dash": {
+          from: { strokeDashoffset: "20" },
+          to: { strokeDashoffset: "0" },
+        },
+        "glow": {
+          "0%, 100%": { boxShadow: "0 0 8px 2px var(--glow-color)" },
+          "50%": { boxShadow: "0 0 16px 4px var(--glow-color)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-node": "pulse-node 1s ease-in-out",
+        "line-grow": "line-grow 0.8s ease-out forwards",
+        "fade-in": "fade-in 0.3s ease-out forwards",
+        "slide-down": "slide-down 0.3s ease-out forwards",
+        "tunnel-dash": "tunnel-dash 1s linear infinite",
+        "glow": "glow 2s ease-in-out infinite",
       },
     },
   },
