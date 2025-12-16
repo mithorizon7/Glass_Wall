@@ -1,0 +1,119 @@
+Both—with a manual-first default.
+
+Here’s the rationale and a concrete spec you can hand to the dev.
+
+Recommendation
+
+Default: Manual (“Send Request”)
+
+Plus: an optional Auto-play toggle (off by default) that triggers on mode changes and on first load
+
+Why manual-first is best
+
+Pedagogically: novices learn better when they cause the event (“I pressed send, then the request happened”). It also lets you pause and discuss.
+
+Clarity: mode toggles should change the representation, not silently fire new “network events” that can confuse (“Did I just send my password again?”).
+
+OPSEC signaling: even though it’s simulated, manual interaction reduces the “this app is doing things to my network” vibe—important for high-security audiences.
+
+Why still offer auto-play
+
+Flow: some learners want a “show me” demo without extra clicks.
+
+Instructor mode: instructors will want quick repeats to compare HTTP vs HTTPS vs VPN.
+
+Implementation spec (tight and simple)
+Controls
+
+Primary CTA button: Send Request
+
+Secondary: Replay Timeline
+
+Toggle: Auto-play on mode change (default OFF)
+
+Optional: “Step mode” (advanced) — see below
+
+Behavior rules
+
+On first load: play a non-sensitive canned demo automatically (e.g., “fetch homepage”) OR show a “Try it” prompt and wait for click.
+
+My preference: show a short animated hint (no payload) then require click.
+
+When user clicks “Send Request”:
+
+Play full timeline: Connect → Request → Response
+
+If HTTP mode: show plaintext payload after “Request”
+
+If HTTPS mode: show ciphertext-like payload + “protected” labels
+
+If VPN ON: show tunnel animation wrapping the connect/request/response path
+
+When toggling HTTP↔HTTPS or VPN OFF↔ON:
+
+Do not auto-send by default
+
+Instead, update the UI labels and show a subtle banner: “Mode changed—click Send Request to see the difference.”
+
+If Auto-play toggle is ON: automatically play Replay Timeline (same payload, same action) after a 300–600ms delay.
+
+Preserve the “same request” across modes
+
+To make comparisons meaningful, keep a constant “demo payload” object in memory:
+
+action: POST /login
+
+username: demo_user
+
+password: not_a_real_password
+
+Then render it differently depending on mode. This prevents learners from thinking mode switches “changed what they typed.”
+
+Timeline animation design details
+Timeline component
+
+A horizontal or vertical timeline with three nodes:
+
+Connect
+
+Request
+
+Response
+
+Each node has:
+
+icon
+
+1–2 line description
+
+“Wire view” content that expands on click
+
+Timing
+
+Connect: 0.8–1.2s (include DNS/TCP/TLS hints as tooltips, not walls of text)
+
+Request: 0.8–1.2s
+
+Response: 0.8–1.2s
+Total ~3 seconds, plus optional pauses for step mode.
+
+Visual logic for modes
+
+HTTP: Request node reveals readable body fields.
+
+HTTPS: Request node reveals ciphertext blocks + “Encrypted payload (content hidden).”
+
+VPN ON: Draw a tunnel overlay from device to VPN endpoint for all three stages.
+
+Optional “Step mode” (worth it if you have time)
+
+A checkbox: Step through (default OFF)
+
+Then the button becomes Next Step
+
+Learner advances Connect → Request → Response
+This is amazing for instruction and reduces cognitive overload.
+
+What I’d tell the developer as the decision
+
+Implement manual trigger as the primary interaction. Add an Auto-play on mode change toggle (OFF by default). Ensure mode changes never imply new data is being transmitted unless the user explicitly triggers replay. Keep the same demo payload so comparisons across modes are apples-to-apples
