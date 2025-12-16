@@ -1,0 +1,62 @@
+Let's look carefully over this set of instructions and do a full audit of the current program and make a prioritized list of improvements and fixes and completions that we need to do:
+The Glass Wall
+What it is
+
+The Glass Wall is an interactive demonstration of what “unencrypted” vs “encrypted” communication means.
+
+Most people have heard: “Use HTTPS.”
+Almost nobody has a felt sense of why.
+
+This module gives you that felt sense.
+
+It has two panes:
+
+Left pane: what a normal user experiences (a login page, a message form, a website)
+
+Right pane: what the “network layer” would expose if communication is not protected
+
+It’s called “The Glass Wall” because it shows you how, without encryption, the boundary between “private” and “exposed” can be surprisingly thin.
+
+What it teaches (in beginner language)
+
+When you send information over a network, it becomes data in transit
+
+If it’s sent without encryption, it can be read by someone who can observe the traffic
+
+If it’s sent with encryption (TLS/HTTPS), the content becomes unreadable to observers—it’s transformed into ciphertext
+
+This is the moment where the phrase “encryption turns readable text into gibberish” stops being a metaphor and becomes intuitive.
+
+The “wow” moment
+
+Learners watch a “plain text” submission become visible in the “wire view” when it’s unencrypted.
+
+Then they toggle HTTPS on and watch the content become unreadable.
+
+That moment sticks.
+
+The “healthy fear” moment
+
+This module drives home a simple reality:
+
+A public network is not “safe by default.”
+
+On the wrong network, the wrong page, with the wrong habits, your data can leak.
+
+But it also teaches a crucial nuance:
+
+Modern HTTPS reduces many risks substantially.
+
+The remaining dangers on public Wi-Fi are often about deception (rogue networks, fake portals, phishing pages) and bad decisions under pressure.
+
+The goal is not paranoia. The goal is discernment.
+
+What learners should walk away able to say
+
+“I can explain what HTTPS is protecting.”
+
+“I can explain why HTTP is risky.”
+
+“I can explain what a VPN does conceptually and why it can matter on public Wi-Fi.”
+
+
