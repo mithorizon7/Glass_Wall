@@ -51,8 +51,21 @@ function flattenKeys(obj, prefix = '') {
 
 function extractPlaceholders(str) {
   if (typeof str !== 'string') return [];
+  
+  const icuPatterns = [
+    /\{[^}]+,\s*plural\s*,/,
+    /\{[^}]+,\s*select\s*,/,
+    /\{[^}]+,\s*selectordinal\s*,/
+  ];
+  const hasIcu = icuPatterns.some(p => p.test(str));
+  
+  if (hasIcu) {
+    const varMatches = str.match(/\{(\w+)\s*,\s*(?:plural|select|selectordinal)/g) || [];
+    return varMatches.map(m => m.match(/\{(\w+)/)?.[1]).filter(Boolean);
+  }
+  
   const matches = str.match(/\{([^,}]+)/g) || [];
-  return matches.map(m => m.replace('{', ''));
+  return matches.map(m => m.replace('{', '').trim());
 }
 
 function validateIcuSyntax(str, keyPath, lang) {

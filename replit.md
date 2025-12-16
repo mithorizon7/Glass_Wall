@@ -94,8 +94,15 @@ client/src/
 ### i18n (Internationalization)
 - **Library**: i18next with react-i18next, i18next-browser-languagedetector, i18next-icu
 - **Languages**: English (en), Latvian (lv), Russian (ru)
-- **Namespace**: `glassWall` for all Glass Wall translations
-- **Translation files**: `client/src/locales/{lang}/glass-wall.json`
+- **Fallback Language**: Latvian (lv) - primary deployment target is Latvia
+- **Namespaces**: `common` (shared strings), `glassWall` (app-specific)
+- **Translation files**: `client/src/locales/{lang}/common.json` and `glass-wall.json`
 - **Term locks** (never translated): HTTP, HTTPS, VPN, TLS, DNS, TCP, POST, Set-Cookie, SSL
-- **Pattern**: `t("section.key")` for nested keys
+- **Pattern**: `t("section.key")` for nested keys, `t("common:key")` for common namespace
+- **ICU Plurals**: Used for count-dependent strings (see `plurals` key in common.json)
+  - Russian uses full plural forms: one, few, many, other
+  - Latvian uses: =0, =1, other
+- **Dev Mode Features**: Missing keys show `[MISSING: key]` and log to console
+- **Validation Script**: `node scripts/validate-i18n.js` - checks for missing keys, duplicate keys, ICU syntax, placeholder consistency
+- **Aria Labels**: Stored in `common.json` under `aria` key for accessibility
 - **Important**: Avoid duplicate JSON keys - later definitions override earlier ones causing rendering errors
