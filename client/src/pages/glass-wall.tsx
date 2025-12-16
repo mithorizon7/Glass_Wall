@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -36,6 +37,7 @@ import { ProgressTracker } from "@/components/progress-tracker";
 import { ComparisonView } from "@/components/comparison-view";
 import { ScenarioSelector, SCENARIOS, type Scenario } from "@/components/scenario-selector";
 import { QuizMode } from "@/components/quiz-mode";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
@@ -71,6 +73,7 @@ const DEMO_PAYLOAD: DemoPayload = {
 };
 
 export default function GlassWall() {
+  const { t } = useTranslation("glassWall");
   const [protocolMode, setProtocolMode] = useState<ProtocolMode>("http");
   const [vpnMode, setVpnMode] = useState<VpnMode>("off");
   const [autoPlay, setAutoPlay] = useState(false);
@@ -199,18 +202,20 @@ export default function GlassWall() {
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
         <header className="text-center mb-10 md:mb-12">
+          <div className="flex justify-end mb-4">
+            <LanguageSwitcher />
+          </div>
           <h1 
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4"
             data-testid="text-page-title"
           >
-            The Glass Wall
+            {t("title")}
           </h1>
           <p 
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6"
             data-testid="text-page-subtitle"
           >
-            See what happens when you send data over the network. 
-            Toggle between HTTP and HTTPS to understand encryption—no real data leaves your browser.
+            {t("subtitle")}
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <ScenarioSelector 
@@ -226,8 +231,8 @@ export default function GlassWall() {
         <InfoBanner 
           type="warning"
           icon={<Wifi className="w-5 h-5" />}
-          title="Public Network Warning"
-          message="Public networks increase risk of deception (rogue hotspots, fake portals). Encryption reduces some risks, but judgment still matters. Don't enter sensitive credentials on untrusted networks or pages."
+          title={t("publicNetworkWarning.title")}
+          message={t("publicNetworkWarning.message")}
           className="mb-4"
         />
 
@@ -248,8 +253,8 @@ export default function GlassWall() {
           <InfoBanner 
             type="info"
             icon={<Shield className="w-5 h-5" />}
-            title="VPN Active"
-            message="VPN shifts trust from the local network to the VPN provider. It doesn't make you invincible—choose a reputable provider and remember that the VPN can see your traffic."
+            title={t("vpnActive.title")}
+            message={t("vpnActive.message")}
             className="mb-4"
           />
         )}
@@ -262,8 +267,8 @@ export default function GlassWall() {
             <InfoBanner 
               type="info"
               icon={<Info className="w-5 h-5" />}
-              title="Mode Changed"
-              message="Click 'Send Request' to see the difference in network traffic."
+              title={t("modeChanged.title")}
+              message={t("modeChanged.message")}
               dismissible
               onDismiss={() => setShowModeChangeBanner(false)}
             />
@@ -291,7 +296,7 @@ export default function GlassWall() {
               data-testid="button-next-step"
             >
               <ChevronRight className="w-5 h-5 mr-2" />
-              Next Step
+              {t("buttons.nextStep")}
             </Button>
           ) : (
             <Button
@@ -302,7 +307,7 @@ export default function GlassWall() {
               data-testid="button-send-request"
             >
               <Play className="w-5 h-5 mr-2" />
-              Send Request
+              {t("buttons.sendRequest")}
             </Button>
           )}
           <Button
@@ -314,7 +319,7 @@ export default function GlassWall() {
             data-testid="button-replay"
           >
             <RotateCcw className="w-5 h-5 mr-2" />
-            Replay Timeline
+            {t("buttons.replayTimeline")}
           </Button>
         </div>
 
@@ -326,10 +331,10 @@ export default function GlassWall() {
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-foreground" data-testid="text-user-view-title">
-                  User View
+                  {t("userView.title")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  What you see when logging in
+                  {t("userView.subtitle")}
                 </p>
               </div>
             </div>
@@ -355,10 +360,10 @@ export default function GlassWall() {
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-foreground" data-testid="text-wire-view-title">
-                  Wire View
+                  {t("wireView.title")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  What the network can observe
+                  {t("wireView.subtitle")}
                 </p>
               </div>
               <Badge 
@@ -405,7 +410,7 @@ export default function GlassWall() {
 
         <footer className="mt-16 text-center">
           <p className="text-sm text-muted-foreground mb-4">
-            This is a simulation. No real network traffic is generated.
+            {t("footer.simulationNote")}
           </p>
           <div className="flex items-center justify-center gap-6 flex-wrap">
             <Tooltip>
@@ -413,12 +418,12 @@ export default function GlassWall() {
                 <span className="cursor-help">
                   <Badge variant="secondary">
                     <Shield className="w-3 h-3 mr-1" />
-                    Zero-Risk Learning
+                    {t("footer.zeroRiskLearning")}
                   </Badge>
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>Everything you see is fictional but realistic. No actual network data is captured or transmitted.</p>
+                <p>{t("footer.zeroRiskTooltip")}</p>
               </TooltipContent>
             </Tooltip>
             <Tooltip>
@@ -426,12 +431,12 @@ export default function GlassWall() {
                 <span className="cursor-help">
                   <Badge variant="secondary">
                     <EyeOff className="w-3 h-3 mr-1" />
-                    No Telemetry
+                    {t("footer.noTelemetry")}
                   </Badge>
                 </span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>This application does not collect any data about your usage or send information to external servers.</p>
+                <p>{t("footer.noTelemetryTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </div>

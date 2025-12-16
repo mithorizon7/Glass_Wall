@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ interface DemoLoginFormProps {
 }
 
 export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
+  const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
   
   return (
@@ -41,17 +43,17 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Globe className="w-5 h-5 text-muted-foreground" />
-            <span className="font-medium text-foreground">Sign In</span>
+            <span className="font-medium text-foreground">{t("loginForm.title")}</span>
           </div>
           <Badge variant="outline" className="text-xs uppercase tracking-wider">
-            Demo Site
+            Demo
           </Badge>
         </div>
         
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="demo-username" className="text-sm font-medium">
-              Username
+              {t("loginForm.usernameLabel")}
             </Label>
             <Input
               id="demo-username"
@@ -65,7 +67,7 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
           
           <div className="space-y-2">
             <Label htmlFor="demo-password" className="text-sm font-medium">
-              Password
+              {t("loginForm.passwordLabel")}
             </Label>
             <Input
               id="demo-password"
@@ -83,12 +85,12 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
             disabled
             data-testid="button-demo-login"
           >
-            Log In
+            {t("loginForm.signInButton")}
           </Button>
         </div>
         
         <p className="text-xs text-muted-foreground text-center mt-4 italic">
-          These are fictional credentials for demonstration only
+          {t("loginForm.demoNote")}
         </p>
       </div>
     </div>

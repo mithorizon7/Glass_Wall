@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -33,12 +34,15 @@ export function ControlPanel({
   onStepModeChange,
   className = "",
 }: ControlPanelProps) {
+  const { t } = useTranslation("glassWall");
+  const { t: tc } = useTranslation("common");
+  
   return (
     <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ${className}`}>
       <Card className="p-4">
         <div className="flex items-center justify-between mb-3">
           <Label className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-            Protocol
+            {t("controls.protocol")}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Info className="w-3 h-3 cursor-help" />
@@ -80,7 +84,7 @@ export function ControlPanel({
       <Card className="p-4">
         <div className="flex items-center justify-between mb-3">
           <Label className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-            VPN
+            {t("controls.vpn")}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Info className="w-3 h-3 cursor-help" />
@@ -102,7 +106,7 @@ export function ControlPanel({
             data-testid="button-vpn-off"
           >
             <ShieldOff className="w-4 h-4" />
-            <span className="font-medium">OFF</span>
+            <span className="font-medium">{tc("off")}</span>
           </button>
           <button
             onClick={() => onVpnChange("on")}
@@ -114,7 +118,7 @@ export function ControlPanel({
             data-testid="button-vpn-on"
           >
             <Shield className="w-4 h-4" />
-            <span className="font-medium">ON</span>
+            <span className="font-medium">{tc("on")}</span>
           </button>
         </div>
       </Card>
@@ -122,7 +126,7 @@ export function ControlPanel({
       <Card className="p-4">
         <div className="flex items-center justify-between mb-3">
           <Label htmlFor="auto-play" className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-            Auto-Play
+            {t("controls.autoPlay")}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Info className="w-3 h-3 cursor-help" />
@@ -137,7 +141,7 @@ export function ControlPanel({
           <div className="flex items-center gap-2">
             <Repeat className={`w-4 h-4 ${autoPlay ? "text-primary" : "text-muted-foreground"}`} />
             <span className={`font-medium ${autoPlay ? "text-foreground" : "text-muted-foreground"}`}>
-              {autoPlay ? "Enabled" : "Disabled"}
+              {autoPlay ? tc("enabled") : tc("disabled")}
             </span>
           </div>
           <Switch
@@ -152,7 +156,7 @@ export function ControlPanel({
       <Card className="p-4">
         <div className="flex items-center justify-between mb-3">
           <Label htmlFor="step-mode" className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-            Step Mode
+            {t("controls.stepMode")}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Info className="w-3 h-3 cursor-help" />
@@ -167,7 +171,7 @@ export function ControlPanel({
           <div className="flex items-center gap-2">
             <ListOrdered className={`w-4 h-4 ${stepMode ? "text-primary" : "text-muted-foreground"}`} />
             <span className={`font-medium ${stepMode ? "text-foreground" : "text-muted-foreground"}`}>
-              {stepMode ? "Enabled" : "Disabled"}
+              {stepMode ? tc("enabled") : tc("disabled")}
             </span>
           </div>
           <Switch
