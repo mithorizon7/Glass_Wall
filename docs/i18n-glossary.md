@@ -70,7 +70,13 @@ When adding new translatable content:
 ## Quality Sign-off
 
 Translation quality is reviewed by:
-- **Latvian**: Native Latvian speaker (TBD)
-- **Russian**: Native Russian speaker (TBD)
+- **Latvian**: Native Latvian speaker (assign team member before production)
+- **Russian**: Native Russian speaker (assign team member before production)
 
-All translation changes require review before production deployment.
+**Process:**
+1. All translation PRs require review from assigned language owner
+2. Use this glossary as the source of truth for term consistency
+3. Run `npm run i18n:check` before merging any translation changes
+4. All translation changes require review before production deployment
+
+**Note:** Reviewer assignments should be finalized before production deployment. Update this section with actual names/contacts once assigned.

@@ -30,7 +30,7 @@ function runScript(scriptPath) {
 
 async function main() {
   console.log('='.repeat(60));
-  console.log('Running i18n:check (extract + validate)');
+  console.log('Running i18n:check (extract + validate + render-sweep)');
   console.log('='.repeat(60));
   console.log();
   
@@ -42,12 +42,17 @@ async function main() {
   const validateCode = await runScript(path.join(__dirname, 'validate-i18n.js'));
   
   console.log();
+  console.log('Step 3: Running render sweep...\n');
+  const sweepCode = await runScript(path.join(__dirname, 'i18n-render-sweep.js'));
+  
+  console.log();
   console.log('='.repeat(60));
   
-  if (extractCode !== 0 || validateCode !== 0) {
+  if (extractCode !== 0 || validateCode !== 0 || sweepCode !== 0) {
     console.log('i18n:check FAILED');
     console.log(`  Extract: ${extractCode === 0 ? 'PASS' : 'FAIL'}`);
     console.log(`  Validate: ${validateCode === 0 ? 'PASS' : 'FAIL'}`);
+    console.log(`  Render Sweep: ${sweepCode === 0 ? 'PASS' : 'FAIL'}`);
     process.exit(1);
   }
   

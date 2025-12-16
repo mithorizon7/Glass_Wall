@@ -123,7 +123,15 @@ Bad examples (avoid):
 #### i18n Scripts
 - `node scripts/validate-i18n.js` - Validate translations (key parity, ICU syntax)
 - `node scripts/i18n-extract.js` - Extract keys from source and check coverage
-- `node scripts/i18n-check.js` - Run extract + validate (CI-ready)
+- `node scripts/i18n-render-sweep.js` - Check for [MISSING: markers and empty translations
+- `node scripts/i18n-check.js` - Run extract + validate + render-sweep (CI-ready)
+
+**To add npm scripts (recommended):** Add to package.json scripts section:
+```json
+"i18n:extract": "node scripts/i18n-extract.js",
+"i18n:validate": "node scripts/validate-i18n.js",
+"i18n:check": "node scripts/i18n-check.js"
+```
 
 #### Pseudo-Locale Testing
 Use `pseudo` locale to test layout expansion and find missing translations:
