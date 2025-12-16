@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,7 @@ export function WireView({
   expandedNodes,
   onToggleNode,
 }: WireViewProps) {
+  const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
   const showHandshake = isSecure && (stage === "handshake" || stage === "request" || stage === "response" || stage === "complete");
   const showRequest = stage === "request" || stage === "response" || stage === "complete";
@@ -54,9 +56,9 @@ export function WireView({
 
   const visibleMetadata = useMemo(() => ({
     destination: payload.domain,
-    connectionType: vpnMode === "on" ? "VPN Tunnel (encrypted)" : "Direct",
-    tlsVersion: isSecure ? "TLS 1.3" : "None",
-  }), [payload.domain, vpnMode, isSecure]);
+    connectionType: vpnMode === "on" ? t("metadata.connectionVpn") : t("metadata.connectionDirect"),
+    tlsVersion: isSecure ? "TLS 1.3" : t("metadata.encryptionNone"),
+  }), [payload.domain, vpnMode, isSecure, t]);
 
   if (stage === "idle") {
     return (
@@ -65,10 +67,10 @@ export function WireView({
           <Eye className="w-8 h-8 text-muted-foreground" />
         </div>
         <h3 className="text-lg font-medium text-foreground mb-2">
-          Ready to observe
+          {t("wireView.readyToObserve")}
         </h3>
         <p className="text-sm text-muted-foreground max-w-sm">
-          Click "Send Request" to see what network observers could see when you submit the login form.
+          {t("wireView.readyToObserveHint")}
         </p>
       </div>
     );
@@ -87,9 +89,9 @@ export function WireView({
             data-testid="button-expand-metadata"
           >
             <div className="flex items-center gap-3">
-              <Badge variant="secondary">Metadata</Badge>
+              <Badge variant="secondary">{t("metadata.title")}</Badge>
               <span className="text-sm text-muted-foreground">
-                Always visible to network observers
+                {t("metadata.alwaysVisible")}
               </span>
             </div>
             {expandedNodes.has("metadata") ? (
@@ -103,24 +105,24 @@ export function WireView({
           <div className="px-4 pb-4">
             <div className="bg-muted/30 rounded-lg p-4 font-mono text-sm space-y-2">
               <div className="flex items-start gap-2">
-                <span className="text-muted-foreground shrink-0">Destination:</span>
+                <span className="text-muted-foreground shrink-0">{t("metadata.destination")}:</span>
                 <span className="text-foreground">{visibleMetadata.destination}</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-muted-foreground shrink-0">Connection:</span>
+                <span className="text-muted-foreground shrink-0">{t("metadata.connection")}:</span>
                 <span className={vpnMode === "on" ? "text-[hsl(var(--vpn-tunnel))]" : "text-foreground"}>
                   {visibleMetadata.connectionType}
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-muted-foreground shrink-0">Encryption:</span>
+                <span className="text-muted-foreground shrink-0">{t("metadata.encryption")}:</span>
                 <span className={isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"}>
                   {visibleMetadata.tlsVersion}
                 </span>
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-2 italic">
-              Even with encryption, the network can see you connected to this destination.
+              {t("metadata.metadataNote")}
             </p>
           </div>
         </CollapsibleContent>
@@ -142,17 +144,17 @@ export function WireView({
                   variant="outline"
                   className="border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]"
                 >
-                  TLS Handshake
+                  {t("handshake.title")}
                 </Badge>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="text-sm text-muted-foreground flex items-center gap-1 cursor-help">
-                      Encryption established
+                      {t("handshake.encryptionEstablished")}
                       <Info className="w-3 h-3" />
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>The handshake process is visible to observers—they can see a secure connection is being established—but the encryption keys remain secret.</p>
+                    <p>{t("handshake.tooltip")}</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -168,28 +170,28 @@ export function WireView({
               <div className="bg-[hsl(var(--https-success))]/5 border border-[hsl(var(--https-success))]/20 rounded-lg p-4 space-y-3">
                 <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
                   <ShieldCheck className="w-5 h-5" />
-                  <span className="font-medium">TLS 1.3 Handshake Complete</span>
+                  <span className="font-medium">{t("handshake.handshakeComplete")}</span>
                 </div>
                 <div className="font-mono text-xs text-muted-foreground space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground/60">1.</span>
-                    <span>Client Hello: supported cipher suites, random bytes</span>
+                    <span>{t("handshake.step1")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground/60">2.</span>
-                    <span>Server Hello: chosen cipher, server certificate</span>
+                    <span>{t("handshake.step2")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground/60">3.</span>
-                    <span>Key Exchange: ephemeral keys generated</span>
+                    <span>{t("handshake.step3")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground/60">4.</span>
-                    <span>Finished: encrypted session begins</span>
+                    <span>{t("handshake.step4")}</span>
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground italic">
-                  Observers can see this handshake occurred but cannot derive the session keys.
+                  {t("handshake.observersNote")}
                 </p>
               </div>
             </div>
@@ -218,24 +220,24 @@ export function WireView({
                         : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
                       }`}
                     >
-                      Request
+                      {t("request.title")}
                     </Badge>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>The HTTP request contains the data your browser sends to the server, including headers and body content.</p>
+                    <p>{t("request.tooltip")}</p>
                   </TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="text-sm text-muted-foreground cursor-help flex items-center gap-1">
-                      {isSecure ? "Encrypted payload" : "Plain text - VISIBLE"}
+                      {isSecure ? t("request.encryptedPayload") : t("request.plainTextVisible")}
                       <Info className="w-3 h-3" />
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <p>{isSecure 
-                      ? "The payload (request body) is encrypted and unreadable to network observers." 
-                      : "The payload is sent as plain text—anyone on the network can read it."
+                      ? t("request.tooltipEncrypted")
+                      : t("request.tooltipPlainText")
                     }</p>
                   </TooltipContent>
                 </Tooltip>
@@ -258,7 +260,7 @@ export function WireView({
                     <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
                       <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
                         <Lock className="w-5 h-5" />
-                        <span className="font-medium">Encrypted Payload</span>
+                        <span className="font-medium">{t("request.encryptedPayload")}</span>
                       </div>
                     </div>
                     <pre className="font-mono text-xs text-muted-foreground opacity-50 blur-[2px] select-none">
@@ -273,10 +275,10 @@ Content-Type: application/json
                   </div>
                   <p className="text-xs text-muted-foreground italic flex items-center gap-2">
                     <EyeOff className="w-3 h-3" />
-                    Network observers see encrypted data, not the actual content.
+                    {t("request.encryptedNote")}
                   </p>
                   <p className="text-xs text-muted-foreground/70 italic">
-                    Note: Ciphertext shown is illustrative, not an actual TLS dump.
+                    {t("request.ciphertextDisclaimer")}
                   </p>
                 </div>
               ) : (
@@ -296,7 +298,7 @@ User-Agent: ${payload.headers["User-Agent"]}
                   </div>
                   <p className="text-xs text-[hsl(var(--http-danger))] italic flex items-center gap-2">
                     <Eye className="w-3 h-3" />
-                    Anyone on the network can read your credentials!
+                    {t("request.plainTextWarning")}
                   </p>
                 </div>
               )}
@@ -326,24 +328,24 @@ User-Agent: ${payload.headers["User-Agent"]}
                         : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
                       }`}
                     >
-                      Response
+                      {t("response.title")}
                     </Badge>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>The HTTP response contains data the server sends back, including headers (like cookies) and body content.</p>
+                    <p>{t("response.tooltip")}</p>
                   </TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="text-sm text-muted-foreground cursor-help flex items-center gap-1">
-                      {isSecure ? "Encrypted response" : "Plain text response"}
+                      {isSecure ? t("response.encryptedResponse") : t("response.plainTextResponse")}
                       <Info className="w-3 h-3" />
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <p>{isSecure 
-                      ? "The response is encrypted—only your browser can decrypt it." 
-                      : "The response is in plain text—anyone on the network can read it, including session tokens."
+                      ? t("response.tooltipEncrypted")
+                      : t("response.tooltipPlainText")
                     }</p>
                   </TooltipContent>
                 </Tooltip>
@@ -363,7 +365,7 @@ User-Agent: ${payload.headers["User-Agent"]}
                     <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
                       <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
                         <Lock className="w-5 h-5" />
-                        <span className="font-medium">Encrypted Response</span>
+                        <span className="font-medium">{t("response.encryptedResponse")}</span>
                       </div>
                     </div>
                     <pre className="font-mono text-xs text-muted-foreground opacity-50 blur-[2px] select-none">
@@ -391,7 +393,7 @@ Content-Type: application/json
                   </div>
                   <p className="text-xs text-[hsl(var(--http-danger))] italic flex items-center gap-2">
                     <Eye className="w-3 h-3" />
-                    Session tokens are also visible! An attacker could hijack your session.
+                    {t("response.sessionWarning")}
                   </p>
                 </div>
               )}
@@ -412,12 +414,12 @@ Content-Type: application/json
           <h4 className={`font-semibold mb-2 ${
             isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
           }`}>
-            {isSecure ? "Protected Transaction" : "Exposed Transaction"}
+            {isSecure ? t("summary.protectedTitle") : t("summary.exposedTitle")}
           </h4>
           <p className="text-sm text-muted-foreground">
             {isSecure 
-              ? "Your credentials were encrypted. Network observers could see you connected, but not what you sent or received."
-              : "Your credentials were sent in plain text. Anyone on the network could have captured your username, password, and session token."
+              ? t("summary.protectedMessage")
+              : t("summary.exposedMessage")
             }
           </p>
         </div>

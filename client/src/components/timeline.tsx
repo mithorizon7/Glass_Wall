@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -46,54 +47,56 @@ export function Timeline({
   onToggleNode,
   stepMode,
 }: TimelineProps) {
+  const { t } = useTranslation("glassWall");
+
   const nodes: TimelineNode[] = useMemo(() => {
     const baseNodes: TimelineNode[] = [
       {
         id: "connect",
-        title: "Connect",
+        title: t("timeline.connect"),
         description: vpnMode === "on" 
-          ? "Establish VPN tunnel"
-          : "DNS lookup + TCP handshake",
+          ? t("timeline.connectDescVpn")
+          : t("timeline.connectDescDirect"),
         icon: <Globe className="w-5 h-5" />,
         tooltipContent: vpnMode === "on"
-          ? "Your device first connects to the VPN server through an encrypted tunnel, then the VPN connects to the destination."
-          : "DNS resolves domain name to IP address, then TCP establishes a connection to the server.",
+          ? t("timeline.connectTooltipVpn")
+          : t("timeline.connectTooltipDirect"),
       },
     ];
 
     if (protocolMode === "https") {
       baseNodes.push({
         id: "handshake",
-        title: "TLS Handshake",
-        description: "Negotiate encryption",
+        title: t("timeline.handshake"),
+        description: t("timeline.handshakeDesc"),
         icon: <Lock className="w-5 h-5" />,
-        tooltipContent: "Client and server exchange certificates and agree on encryption keys. This happens before any data is sent. An observer sees this handshake occur but cannot read the encrypted content.",
+        tooltipContent: t("timeline.handshakeTooltip"),
       });
     }
 
     baseNodes.push(
       {
         id: "request",
-        title: "Request",
-        description: "POST /login with credentials",
+        title: t("timeline.request"),
+        description: t("timeline.requestDesc"),
         icon: <Upload className="w-5 h-5" />,
         tooltipContent: protocolMode === "https"
-          ? "Your login credentials are encrypted before being sent. Observers see encrypted data."
-          : "Your login credentials are sent in plain text. Anyone on the network can read them.",
+          ? t("timeline.requestTooltipSecure")
+          : t("timeline.requestTooltipInsecure"),
       },
       {
         id: "response",
-        title: "Response",
-        description: "Server response received",
+        title: t("timeline.response"),
+        description: t("timeline.responseDesc"),
         icon: <Download className="w-5 h-5" />,
         tooltipContent: protocolMode === "https"
-          ? "The server's response is encrypted. Only you can decrypt and read it."
-          : "The server's response is in plain text. Anyone on the network can read it.",
+          ? t("timeline.responseTooltipSecure")
+          : t("timeline.responseTooltipInsecure"),
       }
     );
 
     return baseNodes;
-  }, [protocolMode, vpnMode]);
+  }, [protocolMode, vpnMode, t]);
 
   const getNodeState = (nodeId: string): "inactive" | "active" | "complete" => {
     const stageOrder = protocolMode === "https" 
@@ -131,7 +134,7 @@ export function Timeline({
           <Wifi className="w-4 h-4 text-[hsl(var(--vpn-tunnel))]" />
           <ArrowRight className="w-3 h-3 text-muted-foreground" />
           <Shield className="w-4 h-4 text-[hsl(var(--vpn-tunnel))]" />
-          <span className="text-sm font-medium text-[hsl(var(--vpn-tunnel))]">VPN Tunnel</span>
+          <span className="text-sm font-medium text-[hsl(var(--vpn-tunnel))]">{t("timeline.vpnTunnel")}</span>
           <ArrowRight className="w-3 h-3 text-muted-foreground" />
           <Server className="w-4 h-4 text-[hsl(var(--vpn-tunnel))]" />
           <ArrowRight className="w-3 h-3 text-muted-foreground" />

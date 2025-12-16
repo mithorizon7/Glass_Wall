@@ -3,9 +3,14 @@
   "subtitle": "See what happens when you send data over the network. Toggle between HTTP and HTTPS to understand encryption—no real data leaves your browser.",
   
   "scenarios": "Scenarios",
-  "cheatSheet": "Cheat Sheet",
+  "scenario": "Scenario",
+  "cheatSheetButton": "Cheat Sheet",
   "compareHttpVsHttps": "Compare HTTP vs HTTPS",
-  "quiz": "Quiz",
+  "quizButton": "Quiz",
+  "highRiskEnvironment": "High risk environment",
+  "mediumRisk": "Medium risk",
+  "lowRiskEnvironment": "Low risk environment",
+  "considerVpn": "Consider using a VPN for sensitive activities",
   
   "publicNetworkWarning": {
     "title": "Public Network Warning",
@@ -141,25 +146,6 @@
     "noTelemetryTooltip": "This application does not collect any data about your usage or send information to external servers."
   },
   
-  "scenarios": {
-    "coffeeShop": {
-      "name": "Coffee Shop Wi-Fi Scenario",
-      "highRisk": "High risk environment: Anyone else on the same network. Always verify the network name with staff."
-    },
-    "airport": {
-      "name": "Airport Wi-Fi Scenario",
-      "highRisk": "High risk environment: Hundreds of strangers on the same network. Use VPN for any sensitive activity."
-    },
-    "hotel": {
-      "name": "Hotel Wi-Fi Scenario",
-      "mediumRisk": "Medium risk: Other guests share the network. Consider using a VPN for sensitive activities."
-    },
-    "home": {
-      "name": "Home Network Scenario",
-      "lowRisk": "Low risk environment. Keep your router firmware updated and use a strong password."
-    }
-  },
-  
   "cheatSheetModal": {
     "title": "HTTP vs HTTPS vs VPN - Quick Reference",
     "downloadPdf": "Download as PDF",
@@ -208,6 +194,196 @@
     "seeResults": "See Results",
     "tryAgain": "Try Again",
     "quizComplete": "Quiz Complete!",
-    "yourScore": "Your Score"
+    "yourScore": "Your Score",
+    "questions": {
+      "q1": {
+        "question": "When you connect to a website using HTTP, who can see your password?",
+        "options": ["Only the website you're connecting to", "Anyone on the same network", "Only your internet service provider", "Nobody can see it"],
+        "explanation": "With HTTP, data is transmitted in plain text. Anyone on the same network (like a coffee shop Wi-Fi) can intercept and read your password using simple tools."
+      },
+      "q2": {
+        "question": "What does the 'S' in HTTPS stand for?",
+        "options": ["Speed", "Secure", "Server", "Standard"],
+        "explanation": "HTTPS stands for HyperText Transfer Protocol Secure. The 'S' indicates that the connection uses encryption (TLS) to protect data in transit."
+      },
+      "q3": {
+        "question": "Which of the following can a VPN hide from your local network?",
+        "options": ["Only your passwords", "Only the websites you visit", "Both your passwords and the websites you visit", "Neither - VPNs don't hide anything"],
+        "explanation": "A VPN creates an encrypted tunnel for ALL your traffic. This hides both the content (passwords, data) and metadata (which websites you visit) from local observers."
+      },
+      "q4": {
+        "question": "You're at a coffee shop and need to check your bank account. What should you do?",
+        "options": ["Connect to the free Wi-Fi and log in normally", "Make sure the bank website uses HTTPS, or use cellular data", "Ask the barista for the Wi-Fi password first", "Use an incognito/private browser window"],
+        "explanation": "For sensitive activities like banking, ensure the site uses HTTPS (look for the lock icon). Better yet, use your phone's cellular data instead of public Wi-Fi. Incognito mode doesn't protect network traffic."
+      },
+      "q5": {
+        "question": "When using HTTPS, what can your ISP still see?",
+        "options": ["Your passwords and form data", "The content of emails you send", "Which websites you visit (but not the specific pages or content)", "Everything you do online"],
+        "explanation": "HTTPS encrypts the content of your communication, but your ISP can still see which domains (websites) you connect to. This is called 'metadata'. To hide this, you would need a VPN."
+      },
+      "q6": {
+        "question": "What's the main risk of a 'fake hotspot' attack?",
+        "options": ["Slow internet speeds", "An attacker can see all your unencrypted traffic", "Your phone battery drains faster", "You get charged for Wi-Fi usage"],
+        "explanation": "In a fake hotspot (evil twin) attack, an attacker creates a network that mimics a legitimate one. All your traffic passes through their equipment, allowing them to intercept unencrypted data."
+      },
+      "q7": {
+        "question": "Which statement about VPNs is TRUE?",
+        "options": ["VPNs make you completely anonymous online", "VPNs slow down your internet but hide your traffic from local observers", "VPNs only work with HTTPS websites", "VPNs prevent all types of cyber attacks"],
+        "explanation": "VPNs add a layer of encryption that may slightly slow your connection, but they effectively hide your traffic from your local network and ISP. However, the VPN provider can still see your traffic, and VPNs don't prevent phishing or malware."
+      },
+      "q8": {
+        "question": "What information is always visible even when using HTTPS?",
+        "options": ["Your username and password", "The domain name you're connecting to", "Your credit card number", "The content of your messages"],
+        "explanation": "Even with HTTPS, the domain name (like 'example.com') is visible because DNS queries are typically unencrypted, and the TLS handshake reveals the server name. This is why VPNs are useful for hiding which sites you visit."
+      }
+    }
+  },
+
+  "vpnTunnelOverlay": {
+    "active": "VPN Tunnel Active"
+  },
+
+  "comparison": {
+    "title": "Side-by-Side Comparison",
+    "description": "See the same request in HTTP and HTTPS simultaneously",
+    "runComparison": "Run Comparison",
+    "reset": "Reset",
+    "clickToRun": "Click \"Run Comparison\" to see the difference",
+    "connection": "Connection",
+    "protocol": "Protocol",
+    "tlsEncrypted": "TLS 1.3 (encrypted)",
+    "tcpPlain": "TCP (plain)",
+    "requestBody": "Request Body",
+    "encryptedPayload": "Encrypted payload",
+    "plainTextVisible": "Plain text (visible!)",
+    "contentHidden": "Content hidden from observers",
+    "anyoneCanRead": "Anyone can read this!",
+    "serverResponse": "Server Response",
+    "encrypted": "Encrypted",
+    "secureConnection": "Connection secure - content encrypted",
+    "dataExposed": "Data exposed - credentials visible!",
+    "keyTakeaways": "Key Takeaways",
+    "httpExplained": "All data travels in plain text. Anyone on your network can see your username, password, and session tokens.",
+    "httpsExplained": "Data is encrypted before transmission. Observers see scrambled data, not your actual credentials."
+  },
+
+  "progressTracker": {
+    "title": "Learning Progress",
+    "modesExplored": "Modes explored",
+    "congratulations": "Congratulations! You've explored all security configurations.",
+    "httpWithoutVpn": "HTTP without VPN",
+    "httpWithVpn": "HTTP with VPN",
+    "httpsWithoutVpn": "HTTPS without VPN",
+    "httpsWithVpn": "HTTPS with VPN",
+    "mostVulnerable": "Most vulnerable configuration",
+    "contentVisibleToVpn": "Content visible to VPN, metadata hidden locally",
+    "contentEncryptedMetadataVisible": "Content encrypted, metadata visible locally",
+    "maximumProtection": "Maximum protection",
+    "resetProgress": "Reset Progress"
+  },
+
+  "scenarioSelector": {
+    "title": "Network Scenarios",
+    "description": "Explore different network environments and their security implications",
+    "risk": "risk",
+    "whoCanSee": "Who Can See Your Traffic",
+    "recommendations": "Recommendations",
+    "httpsUsuallyEnough": "HTTPS is usually sufficient for this environment",
+    "httpsRecommendedVpnSensitive": "HTTPS recommended, VPN for sensitive activities",
+    "vpnStronglyRecommended": "VPN strongly recommended in addition to HTTPS",
+    "home": {
+      "name": "Home Network",
+      "description": "Your personal Wi-Fi at home",
+      "details": "Home networks are generally safe because you control the router and who connects. Your main concern is your ISP's ability to see your browsing metadata and any family members sharing the network.",
+      "threat1": "Your ISP can see which websites you visit",
+      "threat2": "Family members on the same network",
+      "threat3": "Compromised smart home devices (rare)",
+      "rec1": "Use HTTPS for sensitive sites (usually automatic)",
+      "rec2": "Keep router firmware updated",
+      "rec3": "Use a strong Wi-Fi password"
+    },
+    "coffeeShop": {
+      "name": "Coffee Shop Wi-Fi",
+      "description": "Public Wi-Fi at cafes and restaurants",
+      "details": "Coffee shop Wi-Fi is high risk because anyone can join, and you can't verify who controls the network. Attackers often create fake hotspots with similar names to intercept traffic.",
+      "threat1": "Anyone else on the same network",
+      "threat2": "Fake hotspots impersonating the venue",
+      "threat3": "Network sniffers capturing unencrypted traffic",
+      "threat4": "Man-in-the-middle attacks",
+      "rec1": "Always verify the network name with staff",
+      "rec2": "Only use HTTPS websites",
+      "rec3": "Consider using a VPN",
+      "rec4": "Avoid logging into banking or sensitive accounts"
+    },
+    "airport": {
+      "name": "Airport Wi-Fi",
+      "description": "Public Wi-Fi in airports and lounges",
+      "details": "Airports are high-value targets for attackers due to the volume of business travelers. Fake hotspots are extremely common, and the high traffic provides cover for malicious activity.",
+      "threat1": "High volume of potential attackers",
+      "threat2": "Fake hotspots (very common)",
+      "threat3": "Corporate espionage",
+      "threat4": "Automated scanning tools",
+      "rec1": "Use cellular data if possible",
+      "rec2": "VPN is strongly recommended",
+      "rec3": "Avoid file sharing or remote access",
+      "rec4": "Log out of accounts when done"
+    },
+    "hotel": {
+      "name": "Hotel Wi-Fi",
+      "description": "Hotel and accommodation networks",
+      "details": "Hotel networks are moderately risky. While they typically have some security measures, you're sharing the network with strangers. Business travelers are often targeted.",
+      "threat1": "Other hotel guests",
+      "threat2": "Compromised hotel network equipment",
+      "threat3": "Hotel IT staff (insider threat)",
+      "threat4": "Fake networks in busy areas",
+      "rec1": "Use VPN for business activities",
+      "rec2": "Verify the official network name",
+      "rec3": "Avoid sensitive transactions",
+      "rec4": "Use your phone's hotspot for important work"
+    }
+  },
+
+  "cheatSheet": {
+    "modalTitle": "Network Security Cheat Sheet",
+    "modalDescription": "A quick reference guide for HTTP, HTTPS, and VPN security concepts",
+    "printTitle": "HTTP vs HTTPS vs VPN — Quick Reference",
+    "httpTitle": "HTTP (Unencrypted)",
+    "httpPoints": [
+      "Data travels in plain text - anyone on the network can read it",
+      "Passwords, usernames, and personal data are visible",
+      "No protection against eavesdropping on public Wi-Fi",
+      "Look for: http:// in the address bar (no lock icon)"
+    ],
+    "httpsTitle": "HTTPS (Encrypted)",
+    "httpsPoints": [
+      "Data is encrypted before sending",
+      "Passwords and personal data appear as scrambled gibberish to observers",
+      "Look for: https:// and a lock icon in the address bar",
+      "Note: Metadata (which sites you visit) is still visible to your network"
+    ],
+    "vpnTitle": "VPN (Virtual Private Network)",
+    "vpnPoints": [
+      "Creates an encrypted tunnel for ALL your traffic",
+      "Hides which websites you visit from local observers",
+      "Traffic appears to come from VPN server, not your device",
+      "Useful on untrusted networks (coffee shops, airports, hotels)",
+      "Note: VPN provider can see your traffic - choose a trusted one"
+    ],
+    "comparisonTableTitle": "Quick Comparison",
+    "tableHeaders": ["What observers see", "HTTP", "HTTPS", "HTTPS + VPN"],
+    "tableRows": {
+      "passwords": ["Your passwords", "Visible", "Encrypted", "Encrypted"],
+      "formData": ["Form data you submit", "Visible", "Encrypted", "Encrypted"],
+      "websites": ["Websites you visit", "Visible", "Visible", "Hidden"],
+      "ipAddress": ["Your IP address", "Visible", "Visible", "Hidden"]
+    },
+    "safetyTipsTitle": "Public Wi-Fi Safety Tips",
+    "safetyTips": [
+      "Always verify the network name with staff before connecting",
+      "Look for HTTPS (lock icon) before entering any sensitive information",
+      "Consider using a VPN when on untrusted networks",
+      "Avoid logging into banking or sensitive accounts on public Wi-Fi",
+      "Turn off auto-connect to Wi-Fi networks"
+    ]
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,118 +27,19 @@ import {
 
 interface Question {
   id: string;
-  question: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
   category: "http" | "https" | "vpn" | "general";
+  correctIndex: number;
 }
 
 const QUESTIONS: Question[] = [
-  {
-    id: "q1",
-    question: "When you connect to a website using HTTP, who can see your password?",
-    options: [
-      "Only the website you're connecting to",
-      "Anyone on the same network",
-      "Only your internet service provider",
-      "Nobody can see it",
-    ],
-    correctIndex: 1,
-    explanation: "With HTTP, data is transmitted in plain text. Anyone on the same network (like a coffee shop Wi-Fi) can intercept and read your password using simple tools.",
-    category: "http",
-  },
-  {
-    id: "q2",
-    question: "What does the 'S' in HTTPS stand for?",
-    options: [
-      "Speed",
-      "Secure",
-      "Server",
-      "Standard",
-    ],
-    correctIndex: 1,
-    explanation: "HTTPS stands for HyperText Transfer Protocol Secure. The 'S' indicates that the connection uses encryption (TLS/SSL) to protect data in transit.",
-    category: "https",
-  },
-  {
-    id: "q3",
-    question: "Which of the following can a VPN hide from your local network?",
-    options: [
-      "Only your passwords",
-      "Only the websites you visit",
-      "Both your passwords and the websites you visit",
-      "Neither - VPNs don't hide anything",
-    ],
-    correctIndex: 2,
-    explanation: "A VPN creates an encrypted tunnel for ALL your traffic. This hides both the content (passwords, data) and metadata (which websites you visit) from local observers.",
-    category: "vpn",
-  },
-  {
-    id: "q4",
-    question: "You're at a coffee shop and need to check your bank account. What should you do?",
-    options: [
-      "Connect to the free Wi-Fi and log in normally",
-      "Make sure the bank website uses HTTPS, or use cellular data",
-      "Ask the barista for the Wi-Fi password first",
-      "Use an incognito/private browser window",
-    ],
-    correctIndex: 1,
-    explanation: "For sensitive activities like banking, ensure the site uses HTTPS (look for the lock icon). Better yet, use your phone's cellular data instead of public Wi-Fi. Incognito mode doesn't protect network traffic.",
-    category: "general",
-  },
-  {
-    id: "q5",
-    question: "When using HTTPS, what can your ISP still see?",
-    options: [
-      "Your passwords and form data",
-      "The content of emails you send",
-      "Which websites you visit (but not the specific pages or content)",
-      "Everything you do online",
-    ],
-    correctIndex: 2,
-    explanation: "HTTPS encrypts the content of your communication, but your ISP can still see which domains (websites) you connect to. This is called 'metadata'. To hide this, you would need a VPN.",
-    category: "https",
-  },
-  {
-    id: "q6",
-    question: "What's the main risk of a 'fake hotspot' attack?",
-    options: [
-      "Slow internet speeds",
-      "An attacker can see all your unencrypted traffic",
-      "Your phone battery drains faster",
-      "You get charged for Wi-Fi usage",
-    ],
-    correctIndex: 1,
-    explanation: "In a fake hotspot (evil twin) attack, an attacker creates a network that mimics a legitimate one. All your traffic passes through their equipment, allowing them to intercept unencrypted data and even perform man-in-the-middle attacks.",
-    category: "general",
-  },
-  {
-    id: "q7",
-    question: "Which statement about VPNs is TRUE?",
-    options: [
-      "VPNs make you completely anonymous online",
-      "VPNs slow down your internet but hide your traffic from local observers",
-      "VPNs only work with HTTPS websites",
-      "VPNs prevent all types of cyber attacks",
-    ],
-    correctIndex: 1,
-    explanation: "VPNs add a layer of encryption that may slightly slow your connection, but they effectively hide your traffic from your local network and ISP. However, the VPN provider can still see your traffic, and VPNs don't prevent phishing or malware.",
-    category: "vpn",
-  },
-  {
-    id: "q8",
-    question: "You notice a website doesn't have a lock icon in the address bar. What does this mean?",
-    options: [
-      "The website is using HTTP and your data is not encrypted",
-      "The website is slow",
-      "The website is blocked by your firewall",
-      "Your browser is outdated",
-    ],
-    correctIndex: 0,
-    explanation: "The lock icon indicates HTTPS (encrypted connection). Without it, the site is using HTTP, meaning any data you submit (passwords, forms) can be intercepted by anyone on your network.",
-    category: "http",
-  },
+  { id: "q1", category: "http", correctIndex: 1 },
+  { id: "q2", category: "https", correctIndex: 1 },
+  { id: "q3", category: "vpn", correctIndex: 2 },
+  { id: "q4", category: "general", correctIndex: 1 },
+  { id: "q5", category: "https", correctIndex: 2 },
+  { id: "q6", category: "general", correctIndex: 1 },
+  { id: "q7", category: "vpn", correctIndex: 1 },
+  { id: "q8", category: "http", correctIndex: 1 },
 ];
 
 interface QuizModeProps {
@@ -145,6 +47,7 @@ interface QuizModeProps {
 }
 
 export function QuizMode({ trigger }: QuizModeProps) {
+  const { t } = useTranslation("glassWall");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -153,6 +56,10 @@ export function QuizMode({ trigger }: QuizModeProps) {
 
   const currentQuestion = QUESTIONS[currentQuestionIndex];
   const isCorrect = selectedAnswer === currentQuestion.correctIndex;
+
+  const questionText = t(`quiz.questions.${currentQuestion.id}.question`);
+  const optionsArray = t(`quiz.questions.${currentQuestion.id}.options`, { returnObjects: true }) as string[];
+  const explanationText = t(`quiz.questions.${currentQuestion.id}.explanation`);
 
   const score = useMemo(() => {
     return answers.reduce<number>((acc, answer, index) => {
@@ -215,7 +122,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
         {trigger || (
           <Button variant="outline" data-testid="button-quiz-mode">
             <HelpCircle className="w-4 h-4 mr-2" />
-            Quiz
+            {t("quizButton")}
           </Button>
         )}
       </DialogTrigger>
@@ -223,7 +130,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
-            Security Knowledge Quiz
+            {t("quiz.title")}
           </DialogTitle>
           <DialogDescription>
             Test your understanding of network security concepts
@@ -235,10 +142,10 @@ export function QuizMode({ trigger }: QuizModeProps) {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">
-                  Question {currentQuestionIndex + 1} of {QUESTIONS.length}
+                  {t("quiz.question")} {currentQuestionIndex + 1} {t("quiz.of")} {QUESTIONS.length}
                 </span>
                 <span className="font-medium text-foreground">
-                  Score: {score}/{answers.filter(a => a !== null).length}
+                  {t("quiz.score")}: {score}/{answers.filter(a => a !== null).length}
                 </span>
               </div>
               <Progress value={progressPercent} className="h-2" />
@@ -253,12 +160,11 @@ export function QuizMode({ trigger }: QuizModeProps) {
               </div>
 
               <h3 className="text-lg font-medium text-foreground" data-testid="text-question">
-                {currentQuestion.question}
+                {questionText}
               </h3>
 
               <div className="space-y-2">
-                {currentQuestion.options.map((option, index) => {
-                  let variant = "outline";
+                {Array.isArray(optionsArray) && optionsArray.map((option: string, index: number) => {
                   let bgColor = "";
                   let borderColor = "";
                   
@@ -309,10 +215,10 @@ export function QuizMode({ trigger }: QuizModeProps) {
                   )}
                   <div>
                     <p className={`font-medium mb-1 ${isCorrect ? "text-green-600" : "text-amber-600"}`}>
-                      {isCorrect ? "Correct!" : "Not quite right"}
+                      {isCorrect ? t("quiz.correct") : t("quiz.incorrect")}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {currentQuestion.explanation}
+                      {explanationText}
                     </p>
                   </div>
                 </div>
@@ -327,12 +233,12 @@ export function QuizMode({ trigger }: QuizModeProps) {
               >
                 {currentQuestionIndex < QUESTIONS.length - 1 ? (
                   <>
-                    Next Question
+                    {t("quiz.nextQuestion")}
                     <ChevronRight className="w-4 h-4 ml-2" />
                   </>
                 ) : (
                   <>
-                    See Results
+                    {t("quiz.seeResults")}
                     <Trophy className="w-4 h-4 ml-2" />
                   </>
                 )}
@@ -355,15 +261,10 @@ export function QuizMode({ trigger }: QuizModeProps) {
 
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-2" data-testid="text-final-score">
-                {score} out of {QUESTIONS.length}
+                {score} {t("quiz.of")} {QUESTIONS.length}
               </h3>
               <p className="text-muted-foreground">
-                {score >= QUESTIONS.length * 0.8 
-                  ? "Excellent! You have a strong understanding of network security."
-                  : score >= QUESTIONS.length * 0.5
-                  ? "Good effort! Review the explanations to strengthen your knowledge."
-                  : "Keep learning! Try exploring the visualizer to better understand these concepts."
-                }
+                {t("quiz.quizComplete")}
               </p>
             </div>
 
@@ -378,7 +279,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
                       answered === null ? "bg-muted" :
                       correct ? "bg-green-500/10" : "bg-red-500/10"
                     }`}
-                    title={`Question ${index + 1}: ${correct ? "Correct" : "Incorrect"}`}
+                    title={`${t("quiz.question")} ${index + 1}`}
                   >
                     {answered !== null && (
                       correct 
@@ -392,7 +293,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
 
             <Button onClick={handleRestart} className="w-full" data-testid="button-restart-quiz">
               <RotateCcw className="w-4 h-4 mr-2" />
-              Try Again
+              {t("quiz.tryAgain")}
             </Button>
           </div>
         )}

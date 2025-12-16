@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -57,6 +58,7 @@ export function ProgressTracker({
   timelineComplete,
   className = "" 
 }: ProgressTrackerProps) {
+  const { t } = useTranslation("glassWall");
   const [progress, setProgress] = useState<ProgressState>(DEFAULT_PROGRESS);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -115,39 +117,39 @@ export function ProgressTracker({
   const combinations = [
     { 
       key: "httpVpnOff", 
-      label: "HTTP without VPN", 
+      label: t("progressTracker.httpWithoutVpn"), 
       done: progress.httpVpnOff,
       protocolIcon: Unlock,
       vpnIcon: ShieldOff,
       protocolColor: "text-red-500",
-      description: "Most vulnerable configuration"
+      description: t("progressTracker.mostVulnerable")
     },
     { 
       key: "httpVpnOn", 
-      label: "HTTP with VPN", 
+      label: t("progressTracker.httpWithVpn"), 
       done: progress.httpVpnOn,
       protocolIcon: Unlock,
       vpnIcon: Shield,
       protocolColor: "text-red-500",
-      description: "Content visible to VPN, metadata hidden locally"
+      description: t("progressTracker.contentVisibleToVpn")
     },
     { 
       key: "httpsVpnOff", 
-      label: "HTTPS without VPN", 
+      label: t("progressTracker.httpsWithoutVpn"), 
       done: progress.httpsVpnOff,
       protocolIcon: Lock,
       vpnIcon: ShieldOff,
       protocolColor: "text-green-500",
-      description: "Content encrypted, metadata visible locally"
+      description: t("progressTracker.contentEncryptedMetadataVisible")
     },
     { 
       key: "httpsVpnOn", 
-      label: "HTTPS with VPN", 
+      label: t("progressTracker.httpsWithVpn"), 
       done: progress.httpsVpnOn,
       protocolIcon: Lock,
       vpnIcon: Shield,
       protocolColor: "text-green-500",
-      description: "Maximum protection"
+      description: t("progressTracker.maximumProtection")
     },
   ];
 
@@ -167,7 +169,7 @@ export function ProgressTracker({
                 <Circle className="w-5 h-5 text-muted-foreground" />
               )}
               <span className="font-semibold text-foreground">
-                Learning Progress
+                {t("progressTracker.title")}
               </span>
               <Badge variant="secondary" className="text-xs">
                 {completedCount}/4
@@ -183,7 +185,7 @@ export function ProgressTracker({
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Modes explored</span>
+                <span className="text-muted-foreground">{t("progressTracker.modesExplored")}</span>
                 <span className="font-medium text-foreground">{Math.round(progressPercent)}%</span>
               </div>
               <Progress value={progressPercent} className="h-2" data-testid="progress-bar" />
@@ -193,7 +195,7 @@ export function ProgressTracker({
               <div className="flex items-center gap-2 p-3 rounded-md bg-amber-500/10 border border-amber-500/20">
                 <Trophy className="w-5 h-5 text-amber-500" />
                 <p className="text-sm text-foreground font-medium">
-                  Congratulations! You've explored all security configurations.
+                  {t("progressTracker.congratulations")}
                 </p>
               </div>
             )}
@@ -238,7 +240,7 @@ export function ProgressTracker({
               data-testid="button-reset-progress"
             >
               <RotateCcw className="w-3 h-3 mr-2" />
-              Reset Progress
+              {t("progressTracker.resetProgress")}
             </Button>
           </div>
         </CollapsibleContent>

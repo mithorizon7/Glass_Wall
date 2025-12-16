@@ -1,6 +1,9 @@
-import { Shield, Wifi, Server, Globe, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Shield } from "lucide-react";
 
 export function VpnTunnelOverlay() {
+  const { t } = useTranslation("glassWall");
+
   return (
     <div 
       className="absolute inset-[-4px] pointer-events-none z-10 rounded-xl"
@@ -15,7 +18,9 @@ export function VpnTunnelOverlay() {
       />
       <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background px-4 py-1.5 rounded-full border-2 border-[hsl(var(--vpn-tunnel))] flex items-center gap-2 shadow-lg">
         <Shield className="w-4 h-4 text-[hsl(var(--vpn-tunnel))]" />
-        <span className="text-sm font-semibold text-[hsl(var(--vpn-tunnel))]">VPN Tunnel Active</span>
+        <span className="text-sm font-semibold text-[hsl(var(--vpn-tunnel))]" data-testid="text-vpn-active">
+          {t("vpnTunnelOverlay.active")}
+        </span>
       </div>
     </div>
   );

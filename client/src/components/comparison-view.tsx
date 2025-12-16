@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,7 @@ interface ComparisonWireViewProps {
 }
 
 function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: ComparisonWireViewProps) {
+  const { t } = useTranslation("glassWall");
   const isHttps = protocolMode === "https";
   const showRequest = stage === "request" || stage === "response" || stage === "complete";
   const showResponse = stage === "response" || stage === "complete";
@@ -61,22 +63,22 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 
       {stage === "idle" && (
         <div className="text-center py-8 text-muted-foreground text-sm">
-          Click "Run Comparison" to see the difference
+          {t("comparison.clickToRun")}
         </div>
       )}
 
       {stage === "connect" && (
         <div className="space-y-2 animate-fade-in">
-          <div className="text-xs text-muted-foreground font-medium">Connection</div>
+          <div className="text-xs text-muted-foreground font-medium">{t("comparison.connection")}</div>
           <div className="font-mono text-xs space-y-1 bg-muted/50 p-2 rounded">
             <div>
               <span className="text-muted-foreground">Host: </span>
               <span className="text-foreground">{payload.domain}</span>
             </div>
             <div>
-              <span className="text-muted-foreground">Protocol: </span>
+              <span className="text-muted-foreground">{t("comparison.protocol")}: </span>
               <span className={isHttps ? "text-green-600" : "text-red-600"}>
-                {isHttps ? "TLS 1.3 (encrypted)" : "TCP (plain)"}
+                {isHttps ? t("comparison.tlsEncrypted") : t("comparison.tcpPlain")}
               </span>
             </div>
           </div>
@@ -85,12 +87,12 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 
       {showRequest && (
         <div className="space-y-2 animate-fade-in">
-          <div className="text-xs text-muted-foreground font-medium">Request Body</div>
+          <div className="text-xs text-muted-foreground font-medium">{t("comparison.requestBody")}</div>
           <div className="font-mono text-xs space-y-1 bg-muted/50 p-2 rounded">
             {isHttps ? (
               <div className="space-y-1">
                 <div className="text-green-600 dark:text-green-400 text-[10px]">
-                  Encrypted payload
+                  {t("comparison.encryptedPayload")}
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {encryptedBlock("username")}
@@ -98,13 +100,13 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   <EyeOff className="w-3 h-3 text-green-500" />
-                  <span className="text-[10px] text-green-600">Content hidden from observers</span>
+                  <span className="text-[10px] text-green-600">{t("comparison.contentHidden")}</span>
                 </div>
               </div>
             ) : (
               <div className="space-y-1">
                 <div className="text-red-600 dark:text-red-400 text-[10px]">
-                  Plain text (visible!)
+                  {t("comparison.plainTextVisible")}
                 </div>
                 <div>
                   <span className="text-muted-foreground">username: </span>
@@ -116,7 +118,7 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   <Eye className="w-3 h-3 text-red-500" />
-                  <span className="text-[10px] text-red-600">Anyone can read this!</span>
+                  <span className="text-[10px] text-red-600">{t("comparison.anyoneCanRead")}</span>
                 </div>
               </div>
             )}
@@ -126,12 +128,12 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 
       {showResponse && (
         <div className="space-y-2 animate-fade-in">
-          <div className="text-xs text-muted-foreground font-medium">Server Response</div>
+          <div className="text-xs text-muted-foreground font-medium">{t("comparison.serverResponse")}</div>
           <div className="font-mono text-xs bg-muted/50 p-2 rounded">
             {isHttps ? (
               <div className="flex items-center gap-1">
                 <Badge className="bg-green-500/10 text-green-600 text-[10px]">
-                  Encrypted
+                  {t("comparison.encrypted")}
                 </Badge>
                 {encryptedBlock("response data")}
               </div>
@@ -151,8 +153,8 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
             : "bg-red-500/10 text-red-600 dark:text-red-400"
         }`}>
           {isHttps 
-            ? "Connection secure - content encrypted" 
-            : "Data exposed - credentials visible!"
+            ? t("comparison.secureConnection")
+            : t("comparison.dataExposed")
           }
         </div>
       )}
@@ -167,6 +169,7 @@ interface ComparisonViewProps {
 }
 
 export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProps) {
+  const { t } = useTranslation("glassWall");
   const [stage, setStage] = useState<TimelineStage>("idle");
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -197,7 +200,7 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
         {trigger || (
           <Button variant="outline" data-testid="button-comparison-view">
             <Columns className="w-4 h-4 mr-2" />
-            Compare HTTP vs HTTPS
+            {t("compareHttpVsHttps")}
           </Button>
         )}
       </DialogTrigger>
@@ -205,10 +208,10 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Columns className="w-5 h-5" />
-            Side-by-Side Comparison
+            {t("comparison.title")}
           </DialogTitle>
           <DialogDescription>
-            See the same request in HTTP and HTTPS simultaneously
+            {t("comparison.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -219,7 +222,7 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
             data-testid="button-run-comparison"
           >
             <Play className="w-4 h-4 mr-2" />
-            Run Comparison
+            {t("comparison.runComparison")}
           </Button>
           <Button 
             variant="outline" 
@@ -228,7 +231,7 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
             data-testid="button-reset-comparison"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
-            Reset
+            {t("comparison.reset")}
           </Button>
         </div>
 
@@ -256,16 +259,16 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
           <div className="mt-4 p-4 bg-muted rounded-lg animate-fade-in">
             <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
               <ArrowRight className="w-4 h-4" />
-              Key Takeaways
+              {t("comparison.keyTakeaways")}
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <Unlock className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-foreground">HTTP:</strong> All data travels in plain text. Anyone on your network can see your username, password, and session tokens.</span>
+                <span><strong className="text-foreground">HTTP:</strong> {t("comparison.httpExplained")}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Lock className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-foreground">HTTPS:</strong> Data is encrypted before transmission. Observers see scrambled data, not your actual credentials.</span>
+                <span><strong className="text-foreground">HTTPS:</strong> {t("comparison.httpsExplained")}</span>
               </li>
             </ul>
           </div>

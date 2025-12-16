@@ -82,7 +82,7 @@ export default function GlassWall() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-  const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[1]);
+  const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[0]);
 
   const resetTimeline = useCallback(() => {
     setTimelineStage("idle");
@@ -239,12 +239,12 @@ export default function GlassWall() {
         <InfoBanner 
           type={currentScenario.riskLevel === "low" ? "info" : "warning"}
           icon={<currentScenario.icon className="w-5 h-5" />}
-          title={`${currentScenario.name} Scenario`}
+          title={`${t(`scenarioSelector.${currentScenario.id}.name`)} ${t("scenario")}`}
           message={currentScenario.riskLevel === "high" 
-            ? `High risk environment: ${currentScenario.threatActors[0]}. ${currentScenario.recommendations[0]}.`
+            ? `${t("highRiskEnvironment")}: ${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
             : currentScenario.riskLevel === "medium"
-            ? `Medium risk: ${currentScenario.threatActors[0]}. Consider using a VPN for sensitive activities.`
-            : `Low risk environment. ${currentScenario.recommendations[0]}.`
+            ? `${t("mediumRisk")}: ${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t("considerVpn")}.`
+            : `${t("lowRiskEnvironment")}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
           }
           className="mb-4"
         />

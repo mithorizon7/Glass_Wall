@@ -90,3 +90,12 @@ client/src/
 - All "network traffic" is simulated using in-memory objects
 - Demo payload is constant across mode changes for apples-to-apples comparison
 - Uses functional state updates for reliable step mode progression
+
+### i18n (Internationalization)
+- **Library**: i18next with react-i18next, i18next-browser-languagedetector, i18next-icu
+- **Languages**: English (en), Latvian (lv), Russian (ru)
+- **Namespace**: `glassWall` for all Glass Wall translations
+- **Translation files**: `client/src/locales/{lang}/glass-wall.json`
+- **Term locks** (never translated): HTTP, HTTPS, VPN, TLS, DNS, TCP, POST, Set-Cookie, SSL
+- **Pattern**: `t("section.key")` for nested keys
+- **Important**: Avoid duplicate JSON keys - later definitions override earlier ones causing rendering errors

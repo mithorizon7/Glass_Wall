@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -30,12 +31,17 @@ interface CheatSheetModalProps {
 }
 
 export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
+  const { t } = useTranslation("glassWall");
   const printRef = useRef<HTMLDivElement>(null);
 
-  const handlePrint = useCallback(() => {
-    const printContent = printRef.current;
-    if (!printContent) return;
+  const httpPoints = t("cheatSheet.httpPoints", { returnObjects: true }) as string[];
+  const httpsPoints = t("cheatSheet.httpsPoints", { returnObjects: true }) as string[];
+  const vpnPoints = t("cheatSheet.vpnPoints", { returnObjects: true }) as string[];
+  const tableHeaders = t("cheatSheet.tableHeaders", { returnObjects: true }) as string[];
+  const safetyTips = t("cheatSheet.safetyTips", { returnObjects: true }) as string[];
+  const tableRows = t("cheatSheet.tableRows", { returnObjects: true }) as Record<string, string[]>;
 
+  const handlePrint = useCallback(() => {
     const printWindow = window.open('', '', 'width=800,height=600');
     if (!printWindow) return;
 
@@ -43,7 +49,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Network Security Cheat Sheet</title>
+          <title>${t("cheatSheet.printTitle")}</title>
           <style>
             body {
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -100,81 +106,45 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
           </style>
         </head>
         <body>
-          <h1>Network Security Cheat Sheet</h1>
+          <h1>${t("cheatSheet.printTitle")}</h1>
           
           <div class="section http">
-            <h2>HTTP (Insecure)</h2>
+            <h2>${t("cheatSheet.httpTitle")}</h2>
             <ul>
-              <li>Data travels in <strong>plain text</strong> - anyone on the network can read it</li>
-              <li>Passwords, usernames, and personal data are <strong>visible</strong></li>
-              <li>No protection against eavesdropping on public Wi-Fi</li>
-              <li>Look for: <code>http://</code> in the address bar (no lock icon)</li>
+              ${Array.isArray(httpPoints) ? httpPoints.map(point => `<li>${point}</li>`).join('') : ''}
             </ul>
           </div>
 
           <div class="section https">
-            <h2>HTTPS (Secure)</h2>
+            <h2>${t("cheatSheet.httpsTitle")}</h2>
             <ul>
-              <li>Data is <strong>encrypted</strong> before sending</li>
-              <li>Passwords and personal data appear as <strong>scrambled gibberish</strong> to observers</li>
-              <li>Look for: <code>https://</code> and a lock icon in the address bar</li>
-              <li>Note: Metadata (which sites you visit) is still visible to your network</li>
+              ${Array.isArray(httpsPoints) ? httpsPoints.map(point => `<li>${point}</li>`).join('') : ''}
             </ul>
           </div>
 
           <div class="section vpn">
-            <h2>VPN (Virtual Private Network)</h2>
+            <h2>${t("cheatSheet.vpnTitle")}</h2>
             <ul>
-              <li>Creates an <strong>encrypted tunnel</strong> for ALL your traffic</li>
-              <li>Hides which websites you visit from local observers</li>
-              <li>Traffic appears to come from VPN server, not your device</li>
-              <li>Useful on untrusted networks (coffee shops, airports, hotels)</li>
-              <li>Note: VPN provider can see your traffic - choose a trusted one</li>
+              ${Array.isArray(vpnPoints) ? vpnPoints.map(point => `<li>${point}</li>`).join('') : ''}
             </ul>
           </div>
 
-          <h2>Quick Comparison</h2>
+          <h2>${t("cheatSheet.comparisonTableTitle")}</h2>
           <table class="comparison-table">
             <tr>
-              <th>What's Protected?</th>
-              <th>HTTP</th>
-              <th>HTTPS</th>
-              <th>HTTPS + VPN</th>
+              ${Array.isArray(tableHeaders) ? tableHeaders.map(h => `<th>${h}</th>`).join('') : ''}
             </tr>
-            <tr>
-              <td>Your passwords</td>
-              <td class="bad">Visible</td>
-              <td class="good">Encrypted</td>
-              <td class="good">Encrypted</td>
-            </tr>
-            <tr>
-              <td>Form data you submit</td>
-              <td class="bad">Visible</td>
-              <td class="good">Encrypted</td>
-              <td class="good">Encrypted</td>
-            </tr>
-            <tr>
-              <td>Websites you visit</td>
-              <td class="bad">Visible</td>
-              <td class="bad">Visible</td>
-              <td class="good">Hidden</td>
-            </tr>
-            <tr>
-              <td>Your IP address</td>
-              <td class="bad">Visible</td>
-              <td class="bad">Visible</td>
-              <td class="good">Hidden</td>
-            </tr>
+            ${tableRows && typeof tableRows === 'object' ? Object.values(tableRows).map(row => `
+              <tr>
+                ${Array.isArray(row) ? row.map((cell, i) => `<td class="${i > 0 ? (cell.toLowerCase().includes('visible') || cell.toLowerCase().includes('рездам') || cell.toLowerCase().includes('виден') ? 'bad' : 'good') : ''}">${cell}</td>`).join('') : ''}
+              </tr>
+            `).join('') : ''}
           </table>
 
           <div class="tips">
-            <h3>Public Wi-Fi Safety Tips</h3>
+            <h3>${t("cheatSheet.safetyTipsTitle")}</h3>
             <ul>
-              <li>Always verify the network name with staff before connecting</li>
-              <li>Look for HTTPS (lock icon) before entering any sensitive information</li>
-              <li>Consider using a VPN when on untrusted networks</li>
-              <li>Avoid logging into banking or sensitive accounts on public Wi-Fi</li>
-              <li>Turn off auto-connect to Wi-Fi networks</li>
+              ${Array.isArray(safetyTips) ? safetyTips.map(tip => `<li>${tip}</li>`).join('') : ''}
             </ul>
           </div>
 
@@ -188,7 +158,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
     printWindow.focus();
     printWindow.print();
     printWindow.close();
-  }, []);
+  }, [t, httpPoints, httpsPoints, vpnPoints, tableHeaders, tableRows, safetyTips]);
 
   return (
     <Dialog>
@@ -196,7 +166,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
         {trigger || (
           <Button variant="outline" data-testid="button-cheat-sheet">
             <FileText className="w-4 h-4 mr-2" />
-            Cheat Sheet
+            {t("cheatSheetButton")}
           </Button>
         )}
       </DialogTrigger>
@@ -204,10 +174,10 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <FileText className="w-5 h-5" />
-            Network Security Cheat Sheet
+            {t("cheatSheet.modalTitle")}
           </DialogTitle>
           <DialogDescription>
-            A quick reference guide for HTTP, HTTPS, and VPN security concepts
+            {t("cheatSheet.modalDescription")}
           </DialogDescription>
         </DialogHeader>
 
@@ -222,66 +192,54 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
           <Card className="p-4 border-l-4 border-l-red-500">
             <div className="flex items-center gap-2 mb-3">
               <Unlock className="w-5 h-5 text-red-500" />
-              <h3 className="font-semibold text-lg text-foreground">HTTP (Insecure)</h3>
+              <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.httpTitle")}</h3>
               <Badge variant="destructive" className="text-xs">Not Safe</Badge>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                <span>Data travels in <strong className="text-foreground">plain text</strong> - anyone on the network can read it</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Eye className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                <span>Passwords, usernames, and personal data are <strong className="text-foreground">visible</strong></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                <span>No protection against eavesdropping on public Wi-Fi</span>
-              </li>
+              {Array.isArray(httpPoints) && httpPoints.map((point, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  {i === 0 ? <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" /> :
+                   i === 1 ? <Eye className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" /> :
+                   <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />}
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </Card>
 
           <Card className="p-4 border-l-4 border-l-green-500">
             <div className="flex items-center gap-2 mb-3">
               <Lock className="w-5 h-5 text-green-500" />
-              <h3 className="font-semibold text-lg text-foreground">HTTPS (Secure)</h3>
+              <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.httpsTitle")}</h3>
               <Badge className="bg-green-500/10 text-green-600 text-xs">Safe</Badge>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span>Data is <strong className="text-foreground">encrypted</strong> before sending</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <EyeOff className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span>Passwords and personal data appear as <strong className="text-foreground">scrambled gibberish</strong></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                <span>Note: Metadata (which sites you visit) is still visible to your network</span>
-              </li>
+              {Array.isArray(httpsPoints) && httpsPoints.map((point, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  {i < 2 ? <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" /> :
+                   i === 2 ? <EyeOff className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" /> :
+                   <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />}
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </Card>
 
           <Card className="p-4 border-l-4 border-l-purple-500">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="w-5 h-5 text-purple-500" />
-              <h3 className="font-semibold text-lg text-foreground">VPN (Virtual Private Network)</h3>
+              <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.vpnTitle")}</h3>
               <Badge className="bg-purple-500/10 text-purple-600 text-xs">Extra Protection</Badge>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                <span>Creates an <strong className="text-foreground">encrypted tunnel</strong> for ALL your traffic</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <EyeOff className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                <span>Hides which websites you visit from local observers</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                <span>Note: VPN provider can see your traffic - choose a trusted one</span>
-              </li>
+              {Array.isArray(vpnPoints) && vpnPoints.map((point, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  {i < 3 ? <CheckCircle className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" /> :
+                   i === 3 ? <EyeOff className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" /> :
+                   <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />}
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </Card>
 
@@ -289,61 +247,34 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             <table className="w-full text-sm">
               <thead className="bg-muted">
                 <tr>
-                  <th className="p-3 text-left font-semibold text-foreground">What's Protected?</th>
-                  <th className="p-3 text-center font-semibold text-foreground">HTTP</th>
-                  <th className="p-3 text-center font-semibold text-foreground">HTTPS</th>
-                  <th className="p-3 text-center font-semibold text-foreground">HTTPS + VPN</th>
+                  {Array.isArray(tableHeaders) && tableHeaders.map((header, i) => (
+                    <th key={i} className={`p-3 ${i === 0 ? 'text-left' : 'text-center'} font-semibold text-foreground`}>
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t">
-                  <td className="p-3 text-muted-foreground">Your passwords</td>
-                  <td className="p-3 text-center">
-                    <Badge variant="destructive" className="text-xs">Visible</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-green-500/10 text-green-600 text-xs">Encrypted</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-green-500/10 text-green-600 text-xs">Encrypted</Badge>
-                  </td>
-                </tr>
-                <tr className="border-t">
-                  <td className="p-3 text-muted-foreground">Form data you submit</td>
-                  <td className="p-3 text-center">
-                    <Badge variant="destructive" className="text-xs">Visible</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-green-500/10 text-green-600 text-xs">Encrypted</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-green-500/10 text-green-600 text-xs">Encrypted</Badge>
-                  </td>
-                </tr>
-                <tr className="border-t">
-                  <td className="p-3 text-muted-foreground">Websites you visit</td>
-                  <td className="p-3 text-center">
-                    <Badge variant="destructive" className="text-xs">Visible</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge variant="destructive" className="text-xs">Visible</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-green-500/10 text-green-600 text-xs">Hidden</Badge>
-                  </td>
-                </tr>
-                <tr className="border-t">
-                  <td className="p-3 text-muted-foreground">Your IP address</td>
-                  <td className="p-3 text-center">
-                    <Badge variant="destructive" className="text-xs">Visible</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge variant="destructive" className="text-xs">Visible</Badge>
-                  </td>
-                  <td className="p-3 text-center">
-                    <Badge className="bg-green-500/10 text-green-600 text-xs">Hidden</Badge>
-                  </td>
-                </tr>
+                {tableRows && typeof tableRows === 'object' && Object.entries(tableRows).map(([key, row]) => (
+                  <tr key={key} className="border-t">
+                    {Array.isArray(row) && row.map((cell, i) => (
+                      <td key={i} className={`p-3 ${i === 0 ? 'text-muted-foreground' : 'text-center'}`}>
+                        {i === 0 ? cell : (
+                          <Badge 
+                            variant={cell.toLowerCase().includes('visible') || cell.toLowerCase().includes('виден') || cell.toLowerCase().includes('redzam') ? "destructive" : "default"}
+                            className={`text-xs ${
+                              cell.toLowerCase().includes('visible') || cell.toLowerCase().includes('виден') || cell.toLowerCase().includes('redzam')
+                                ? '' 
+                                : 'bg-green-500/10 text-green-600'
+                            }`}
+                          >
+                            {cell}
+                          </Badge>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -351,25 +282,15 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
           <Card className="p-4 bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-amber-600" />
-              <h3 className="font-semibold text-foreground">Public Wi-Fi Safety Tips</h3>
+              <h3 className="font-semibold text-foreground">{t("cheatSheet.safetyTipsTitle")}</h3>
             </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Always verify the network name with staff before connecting</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Look for HTTPS (lock icon) before entering any sensitive information</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Consider using a VPN when on untrusted networks</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Avoid logging into banking or sensitive accounts on public Wi-Fi</span>
-              </li>
+              {Array.isArray(safetyTips) && safetyTips.map((tip, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <span>{tip}</span>
+                </li>
+              ))}
             </ul>
           </Card>
         </div>
