@@ -48,7 +48,7 @@ export function ControlPanel({
                 <Info className="w-3 h-3 cursor-help" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>HTTP sends data in plain text. HTTPS encrypts your data so observers can't read it.</p>
+                <p>{t("controls.protocolTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </Label>
@@ -90,7 +90,7 @@ export function ControlPanel({
                 <Info className="w-3 h-3 cursor-help" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>A VPN creates an encrypted tunnel. It shifts trust to the VPN provider but doesn't make you invincible.</p>
+                <p>{t("controls.vpnTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </Label>
@@ -132,7 +132,7 @@ export function ControlPanel({
                 <Info className="w-3 h-3 cursor-help" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>Automatically replay the timeline when you switch modes.</p>
+                <p>{t("controls.autoPlayTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </Label>
@@ -162,7 +162,7 @@ export function ControlPanel({
                 <Info className="w-3 h-3 cursor-help" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>Advance through the timeline one step at a time for detailed learning.</p>
+                <p>{t("controls.stepModeTooltip")}</p>
               </TooltipContent>
             </Tooltip>
           </Label>

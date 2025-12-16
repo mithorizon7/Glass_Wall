@@ -24,9 +24,13 @@
   
   "controls": {
     "protocol": "Protocol",
+    "protocolTooltip": "HTTP sends data in plain text. HTTPS encrypts your data so observers can't read it.",
     "vpn": "VPN",
+    "vpnTooltip": "A VPN creates an encrypted tunnel. It shifts trust to the VPN provider but doesn't make you invincible.",
     "autoPlay": "Auto-play",
-    "stepMode": "Step Mode"
+    "autoPlayTooltip": "Automatically replay the timeline when you switch modes.",
+    "stepMode": "Step Mode",
+    "stepModeTooltip": "Advance through the timeline one step at a time for detailed learning."
   },
   
   "buttons": {
@@ -121,11 +125,12 @@
   },
   
   "loginForm": {
-    "title": "Sign in to your account",
+    "title": "Sign In",
     "usernameLabel": "Username",
     "passwordLabel": "Password",
-    "signInButton": "Sign In",
-    "demoNote": "This is a demonstration. No real data is sent."
+    "signInButton": "Log In",
+    "demoNote": "These are fictional credentials for demonstration only",
+    "demoBadge": "Demo Site"
   },
   
   "footer": {

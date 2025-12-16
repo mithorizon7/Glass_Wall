@@ -46,7 +46,7 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
             <span className="font-medium text-foreground">{t("loginForm.title")}</span>
           </div>
           <Badge variant="outline" className="text-xs uppercase tracking-wider">
-            Demo
+            {t("loginForm.demoBadge")}
           </Badge>
         </div>
         

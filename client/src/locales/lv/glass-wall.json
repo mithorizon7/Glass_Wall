@@ -24,9 +24,13 @@
   
   "controls": {
     "protocol": "Protokols",
+    "protocolTooltip": "HTTP sūta datus vienkāršā tekstā. HTTPS šifrē jūsu datus, lai novērotāji nevarētu tos izlasīt.",
     "vpn": "VPN",
+    "vpnTooltip": "VPN izveido šifrētu tuneli. Tas pārceļ uzticēšanos uz VPN pakalpojuma sniedzēju, bet nepadara jūs neievainojamu.",
     "autoPlay": "Automātiskā atskaņošana",
-    "stepMode": "Soļu režīms"
+    "autoPlayTooltip": "Automātiski atkārtot laika līniju, mainot režīmus.",
+    "stepMode": "Soļu režīms",
+    "stepModeTooltip": "Virzieties pa laika līniju soli pa solim detalizētai mācīšanās pieredzei."
   },
   
   "buttons": {
@@ -121,11 +125,12 @@
   },
   
   "loginForm": {
-    "title": "Pierakstieties savā kontā",
+    "title": "Pierakstīties",
     "usernameLabel": "Lietotājvārds",
     "passwordLabel": "Parole",
-    "signInButton": "Pierakstīties",
-    "demoNote": "Šī ir demonstrācija. Nekādi reāli dati netiek sūtīti."
+    "signInButton": "Ienākt",
+    "demoNote": "Tie ir izdomāti akreditācijas dati tikai demonstrācijai",
+    "demoBadge": "Demo vietne"
   },
   
   "footer": {
