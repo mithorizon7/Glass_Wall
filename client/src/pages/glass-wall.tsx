@@ -31,6 +31,11 @@ import { Timeline } from "@/components/timeline";
 import { ControlPanel } from "@/components/control-panel";
 import { InfoBanner } from "@/components/info-banner";
 import { VpnTunnelOverlay } from "@/components/vpn-tunnel-overlay";
+import { CheatSheetModal } from "@/components/cheat-sheet-modal";
+import { ProgressTracker } from "@/components/progress-tracker";
+import { ComparisonView } from "@/components/comparison-view";
+import { ScenarioSelector, SCENARIOS, type Scenario } from "@/components/scenario-selector";
+import { QuizMode } from "@/components/quiz-mode";
 
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
@@ -74,6 +79,7 @@ export default function GlassWall() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+  const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[1]);
 
   const resetTimeline = useCallback(() => {
     setTimelineStage("idle");
@@ -186,19 +192,33 @@ export default function GlassWall() {
             The Glass Wall
           </h1>
           <p 
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6"
             data-testid="text-page-subtitle"
           >
             See what happens when you send data over the network. 
             Toggle between HTTP and HTTPS to understand encryption—no real data leaves your browser.
           </p>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <ScenarioSelector 
+              currentScenario={currentScenario} 
+              onScenarioChange={setCurrentScenario} 
+            />
+            <CheatSheetModal />
+            <ComparisonView payload={DEMO_PAYLOAD} vpnMode={vpnMode} />
+            <QuizMode />
+          </div>
         </header>
 
         <InfoBanner 
-          type="warning"
-          icon={<Wifi className="w-5 h-5" />}
-          title="Public Wi-Fi Advisory"
-          message="Public networks increase risk of deception (rogue hotspots, fake portals). Encryption reduces some risks, but judgment still matters."
+          type={currentScenario.riskLevel === "low" ? "info" : "warning"}
+          icon={<currentScenario.icon className="w-5 h-5" />}
+          title={`${currentScenario.name} Scenario`}
+          message={currentScenario.riskLevel === "high" 
+            ? `High risk environment: ${currentScenario.threatActors[0]}. ${currentScenario.recommendations[0]}.`
+            : currentScenario.riskLevel === "medium"
+            ? `Medium risk: ${currentScenario.threatActors[0]}. Consider using a VPN for sensitive activities.`
+            : `Low risk environment. ${currentScenario.recommendations[0]}.`
+          }
           className="mb-8"
         />
 
@@ -341,6 +361,14 @@ export default function GlassWall() {
               onToggleNode={toggleNodeExpansion}
             />
           </Card>
+        </div>
+
+        <div className="mt-10 max-w-md mx-auto">
+          <ProgressTracker
+            currentProtocol={protocolMode}
+            currentVpn={vpnMode}
+            timelineComplete={timelineStage === "complete"}
+          />
         </div>
 
         <footer className="mt-16 text-center">
