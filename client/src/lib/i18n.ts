@@ -25,13 +25,15 @@ const resources = {
   },
 };
 
+const isDev = import.meta.env.DEV;
+
 i18n
   .use(ICU)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'en',
+    fallbackLng: 'lv',
     defaultNS: 'common',
     ns: ['common', 'glassWall'],
     detection: {
@@ -44,6 +46,15 @@ i18n
     react: {
       useSuspense: false,
     },
+    saveMissing: isDev,
+    missingKeyHandler: isDev 
+      ? (lngs, ns, key, fallbackValue) => {
+          console.warn(`[MISSING i18n] ${ns}:${key} (langs: ${lngs.join(', ')})`);
+        }
+      : undefined,
+    parseMissingKeyHandler: isDev
+      ? (key) => `[MISSING: ${key}]`
+      : undefined,
   });
 
 export default i18n;

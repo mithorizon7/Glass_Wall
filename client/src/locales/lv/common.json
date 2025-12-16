@@ -17,5 +17,19 @@
   "language": "Valoda",
   "english": "Angļu",
   "latvian": "Latviešu",
-  "russian": "Krievu"
+  "russian": "Krievu",
+  "aria": {
+    "toggleSidebar": "Pārslēgt sānjoslu",
+    "pagination": "Lapošana",
+    "breadcrumb": "Navigācijas ceļš",
+    "goToPreviousPage": "Doties uz iepriekšējo lapu",
+    "goToNextPage": "Doties uz nākamo lapu",
+    "morePages": "Vairāk lapu"
+  },
+  "plurals": {
+    "modesExplored": "{count, plural, =0 {Nav izpētītu režīmu} =1 {1 režīms izpētīts} other {# režīmi izpētīti}}",
+    "questionsAnswered": "{count, plural, =0 {Nav atbildētu jautājumu} =1 {1 jautājums atbildēts} other {# jautājumi atbildēti}}",
+    "correctAnswers": "{count, plural, =0 {Nav pareizu atbilžu} =1 {1 pareiza atbilde} other {# pareizas atbildes}}",
+    "ofTotal": "{count} no {total}"
+  }
 }

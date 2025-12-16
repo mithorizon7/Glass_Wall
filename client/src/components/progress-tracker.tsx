@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -185,7 +186,9 @@ export function ProgressTracker({
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">{t("progressTracker.modesExplored")}</span>
+                <span className="text-muted-foreground">
+                  {t("common:plurals.ofTotal", { count: completedCount, total: 4 })} {t("progressTracker.modesExplored")}
+                </span>
                 <span className="font-medium text-foreground">{Math.round(progressPercent)}%</span>
               </div>
               <Progress value={progressPercent} className="h-2" data-testid="progress-bar" />
