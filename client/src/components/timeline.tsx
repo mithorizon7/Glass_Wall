@@ -15,6 +15,7 @@ import {
   Server,
   Shield,
   Wifi,
+  Lock,
 } from "lucide-react";
 import type { TimelineStage, ProtocolMode, VpnMode, DemoPayload } from "@/pages/glass-wall";
 
@@ -45,42 +46,59 @@ export function Timeline({
   onToggleNode,
   stepMode,
 }: TimelineProps) {
-  const nodes: TimelineNode[] = useMemo(() => [
-    {
-      id: "connect",
-      title: "Connect",
-      description: vpnMode === "on" 
-        ? "Establish VPN tunnel, then connect to destination"
-        : "DNS lookup + TCP handshake" + (protocolMode === "https" ? " + TLS handshake" : ""),
-      icon: <Globe className="w-5 h-5" />,
-      tooltipContent: vpnMode === "on"
-        ? "Your device first connects to the VPN server through an encrypted tunnel, then the VPN connects to the destination."
-        : protocolMode === "https"
-          ? "DNS resolves domain to IP, TCP establishes connection, TLS negotiates encryption keys."
-          : "DNS resolves domain to IP, TCP establishes connection. No encryption layer.",
-    },
-    {
-      id: "request",
-      title: "Request",
-      description: "POST /login with credentials",
-      icon: <Upload className="w-5 h-5" />,
-      tooltipContent: protocolMode === "https"
-        ? "Your login credentials are encrypted before being sent. Observers see encrypted data."
-        : "Your login credentials are sent in plain text. Anyone on the network can read them.",
-    },
-    {
-      id: "response",
-      title: "Response",
-      description: "Server response received",
-      icon: <Download className="w-5 h-5" />,
-      tooltipContent: protocolMode === "https"
-        ? "The server's response is encrypted. Only you can decrypt and read it."
-        : "The server's response is in plain text. Anyone on the network can read it.",
-    },
-  ], [protocolMode, vpnMode]);
+  const nodes: TimelineNode[] = useMemo(() => {
+    const baseNodes: TimelineNode[] = [
+      {
+        id: "connect",
+        title: "Connect",
+        description: vpnMode === "on" 
+          ? "Establish VPN tunnel"
+          : "DNS lookup + TCP handshake",
+        icon: <Globe className="w-5 h-5" />,
+        tooltipContent: vpnMode === "on"
+          ? "Your device first connects to the VPN server through an encrypted tunnel, then the VPN connects to the destination."
+          : "DNS resolves domain name to IP address, then TCP establishes a connection to the server.",
+      },
+    ];
+
+    if (protocolMode === "https") {
+      baseNodes.push({
+        id: "handshake",
+        title: "TLS Handshake",
+        description: "Negotiate encryption",
+        icon: <Lock className="w-5 h-5" />,
+        tooltipContent: "Client and server exchange certificates and agree on encryption keys. This happens before any data is sent. An observer sees this handshake occur but cannot read the encrypted content.",
+      });
+    }
+
+    baseNodes.push(
+      {
+        id: "request",
+        title: "Request",
+        description: "POST /login with credentials",
+        icon: <Upload className="w-5 h-5" />,
+        tooltipContent: protocolMode === "https"
+          ? "Your login credentials are encrypted before being sent. Observers see encrypted data."
+          : "Your login credentials are sent in plain text. Anyone on the network can read them.",
+      },
+      {
+        id: "response",
+        title: "Response",
+        description: "Server response received",
+        icon: <Download className="w-5 h-5" />,
+        tooltipContent: protocolMode === "https"
+          ? "The server's response is encrypted. Only you can decrypt and read it."
+          : "The server's response is in plain text. Anyone on the network can read it.",
+      }
+    );
+
+    return baseNodes;
+  }, [protocolMode, vpnMode]);
 
   const getNodeState = (nodeId: string): "inactive" | "active" | "complete" => {
-    const stageOrder = ["idle", "connect", "request", "response", "complete"];
+    const stageOrder = protocolMode === "https" 
+      ? ["idle", "connect", "handshake", "request", "response", "complete"]
+      : ["idle", "connect", "request", "response", "complete"];
     const currentIndex = stageOrder.indexOf(stage);
     const nodeIndex = stageOrder.indexOf(nodeId);
     

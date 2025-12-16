@@ -39,7 +39,7 @@ import { QuizMode } from "@/components/quiz-mode";
 
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
-export type TimelineStage = "idle" | "connect" | "request" | "response" | "complete";
+export type TimelineStage = "idle" | "connect" | "handshake" | "request" | "response" | "complete";
 
 export interface DemoPayload {
   action: string;
@@ -100,7 +100,9 @@ export default function GlassWall() {
       return;
     }
     
-    const stages: TimelineStage[] = ["connect", "request", "response", "complete"];
+    const stages: TimelineStage[] = protocolMode === "https"
+      ? ["connect", "handshake", "request", "response", "complete"]
+      : ["connect", "request", "response", "complete"];
     const stageDuration = 1000;
     
     for (let i = 0; i < stages.length; i++) {
@@ -109,6 +111,8 @@ export default function GlassWall() {
       
       if (stage === "connect") {
         setExpandedNodes(new Set(["metadata"]));
+      } else if (stage === "handshake") {
+        setExpandedNodes(prev => new Set([...prev, "handshake"]));
       } else if (stage === "request") {
         setExpandedNodes(prev => new Set([...prev, "request"]));
       } else if (stage === "response") {
@@ -121,10 +125,12 @@ export default function GlassWall() {
     }
     
     setIsAnimating(false);
-  }, [isAnimating, stepMode]);
+  }, [isAnimating, stepMode, protocolMode]);
 
   const handleNextStep = useCallback(() => {
-    const stageOrder: TimelineStage[] = ["idle", "connect", "request", "response", "complete"];
+    const stageOrder: TimelineStage[] = protocolMode === "https"
+      ? ["idle", "connect", "handshake", "request", "response", "complete"]
+      : ["idle", "connect", "request", "response", "complete"];
     
     setTimelineStage(currentStage => {
       const currentIndex = stageOrder.indexOf(currentStage);
@@ -133,6 +139,8 @@ export default function GlassWall() {
         
         if (nextStage === "connect") {
           setExpandedNodes(new Set(["metadata"]));
+        } else if (nextStage === "handshake") {
+          setExpandedNodes(prev => new Set([...prev, "handshake"]));
         } else if (nextStage === "request") {
           setExpandedNodes(prev => new Set([...prev, "request"]));
         } else if (nextStage === "response") {
@@ -143,11 +151,17 @@ export default function GlassWall() {
       }
       return currentStage;
     });
-  }, []);
+  }, [protocolMode]);
 
   const handleModeChange = useCallback((type: "protocol" | "vpn", value: string) => {
     if (type === "protocol") {
-      setProtocolMode(value as ProtocolMode);
+      const newProtocol = value as ProtocolMode;
+      setProtocolMode(newProtocol);
+      
+      if (timelineStage === "handshake" && newProtocol === "http") {
+        setTimelineStage("connect");
+        setExpandedNodes(new Set(["metadata"]));
+      }
     } else {
       setVpnMode(value as VpnMode);
     }
@@ -210,6 +224,14 @@ export default function GlassWall() {
         </header>
 
         <InfoBanner 
+          type="warning"
+          icon={<Wifi className="w-5 h-5" />}
+          title="Public Network Warning"
+          message="Public networks increase risk of deception (rogue hotspots, fake portals). Encryption reduces some risks, but judgment still matters. Don't enter sensitive credentials on untrusted networks or pages."
+          className="mb-4"
+        />
+
+        <InfoBanner 
           type={currentScenario.riskLevel === "low" ? "info" : "warning"}
           icon={<currentScenario.icon className="w-5 h-5" />}
           title={`${currentScenario.name} Scenario`}
@@ -219,8 +241,18 @@ export default function GlassWall() {
             ? `Medium risk: ${currentScenario.threatActors[0]}. Consider using a VPN for sensitive activities.`
             : `Low risk environment. ${currentScenario.recommendations[0]}.`
           }
-          className="mb-8"
+          className="mb-4"
         />
+
+        {vpnMode === "on" && (
+          <InfoBanner 
+            type="info"
+            icon={<Shield className="w-5 h-5" />}
+            title="VPN Active"
+            message="VPN shifts trust from the local network to the VPN provider. It doesn't make you invincible—choose a reputable provider and remember that the VPN can see your traffic."
+            className="mb-4"
+          />
+        )}
 
         {showModeChangeBanner && (
           <div 

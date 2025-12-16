@@ -7,7 +7,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, Lock, Eye, EyeOff, AlertTriangle } from "lucide-react";
+import { ChevronDown, ChevronRight, Lock, Eye, EyeOff, AlertTriangle, ShieldCheck, Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { TimelineStage, ProtocolMode, VpnMode, DemoPayload } from "@/pages/glass-wall";
 
 interface WireViewProps {
@@ -43,6 +48,7 @@ export function WireView({
   onToggleNode,
 }: WireViewProps) {
   const isSecure = protocolMode === "https";
+  const showHandshake = isSecure && (stage === "handshake" || stage === "request" || stage === "response" || stage === "complete");
   const showRequest = stage === "request" || stage === "response" || stage === "complete";
   const showResponse = stage === "response" || stage === "complete";
 
@@ -120,6 +126,77 @@ export function WireView({
         </CollapsibleContent>
       </Collapsible>
 
+      {showHandshake && (
+        <Collapsible
+          open={expandedNodes.has("handshake")}
+          onOpenChange={() => onToggleNode("handshake")}
+        >
+          <CollapsibleTrigger asChild>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-between p-4 h-auto"
+              data-testid="button-expand-handshake"
+            >
+              <div className="flex items-center gap-3">
+                <Badge 
+                  variant="outline"
+                  className="border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]"
+                >
+                  TLS Handshake
+                </Badge>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-sm text-muted-foreground flex items-center gap-1 cursor-help">
+                      Encryption established
+                      <Info className="w-3 h-3" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>The handshake process is visible to observers—they can see a secure connection is being established—but the encryption keys remain secret.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              {expandedNodes.has("handshake") ? (
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              ) : (
+                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+              )}
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="px-4 pb-4 animate-fade-in">
+              <div className="bg-[hsl(var(--https-success))]/5 border border-[hsl(var(--https-success))]/20 rounded-lg p-4 space-y-3">
+                <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
+                  <ShieldCheck className="w-5 h-5" />
+                  <span className="font-medium">TLS 1.3 Handshake Complete</span>
+                </div>
+                <div className="font-mono text-xs text-muted-foreground space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground/60">1.</span>
+                    <span>Client Hello: supported cipher suites, random bytes</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground/60">2.</span>
+                    <span>Server Hello: chosen cipher, server certificate</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground/60">3.</span>
+                    <span>Key Exchange: ephemeral keys generated</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground/60">4.</span>
+                    <span>Finished: encrypted session begins</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground italic">
+                  Observers can see this handshake occurred but cannot derive the session keys.
+                </p>
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      )}
+
       {showRequest && (
         <Collapsible
           open={expandedNodes.has("request")}
@@ -132,18 +209,36 @@ export function WireView({
               data-testid="button-expand-request"
             >
               <div className="flex items-center gap-3">
-                <Badge 
-                  variant="outline"
-                  className={isSecure 
-                    ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]" 
-                    : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
-                  }
-                >
-                  Request
-                </Badge>
-                <span className="text-sm text-muted-foreground">
-                  {isSecure ? "Encrypted payload" : "Plain text - VISIBLE"}
-                </span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge 
+                      variant="outline"
+                      className={`cursor-help ${isSecure 
+                        ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]" 
+                        : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
+                      }`}
+                    >
+                      Request
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>The HTTP request contains the data your browser sends to the server, including headers and body content.</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-sm text-muted-foreground cursor-help flex items-center gap-1">
+                      {isSecure ? "Encrypted payload" : "Plain text - VISIBLE"}
+                      <Info className="w-3 h-3" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>{isSecure 
+                      ? "The payload (request body) is encrypted and unreadable to network observers." 
+                      : "The payload is sent as plain text—anyone on the network can read it."
+                    }</p>
+                  </TooltipContent>
+                </Tooltip>
                 {!isSecure && (
                   <AlertTriangle className="w-4 h-4 text-[hsl(var(--http-danger))]" />
                 )}
@@ -179,6 +274,9 @@ Content-Type: application/json
                   <p className="text-xs text-muted-foreground italic flex items-center gap-2">
                     <EyeOff className="w-3 h-3" />
                     Network observers see encrypted data, not the actual content.
+                  </p>
+                  <p className="text-xs text-muted-foreground/70 italic">
+                    Note: Ciphertext shown is illustrative, not an actual TLS dump.
                   </p>
                 </div>
               ) : (
@@ -219,18 +317,36 @@ User-Agent: ${payload.headers["User-Agent"]}
               data-testid="button-expand-response"
             >
               <div className="flex items-center gap-3">
-                <Badge 
-                  variant="outline"
-                  className={isSecure 
-                    ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]" 
-                    : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
-                  }
-                >
-                  Response
-                </Badge>
-                <span className="text-sm text-muted-foreground">
-                  {isSecure ? "Encrypted response" : "Plain text response"}
-                </span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge 
+                      variant="outline"
+                      className={`cursor-help ${isSecure 
+                        ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]" 
+                        : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
+                      }`}
+                    >
+                      Response
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>The HTTP response contains data the server sends back, including headers (like cookies) and body content.</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-sm text-muted-foreground cursor-help flex items-center gap-1">
+                      {isSecure ? "Encrypted response" : "Plain text response"}
+                      <Info className="w-3 h-3" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>{isSecure 
+                      ? "The response is encrypted—only your browser can decrypt it." 
+                      : "The response is in plain text—anyone on the network can read it, including session tokens."
+                    }</p>
+                  </TooltipContent>
+                </Tooltip>
               </div>
               {expandedNodes.has("response") ? (
                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
