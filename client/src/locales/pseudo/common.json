@@ -1,0 +1,35 @@
+{
+  "start": "[Stàrt !!!]",
+  "continue": "[Çöñtïñüé !!!]",
+  "learnMore": "[Léàrñ möré !!!]",
+  "back": "[Bàçk !!!]",
+  "reset": "[Rését !!!]",
+  "enabled": "[Éñàbléd !!!]",
+  "disabled": "[Dïsàbléd !!!]",
+  "on": "[ÖÑ !!!]",
+  "off": "[ÖFF !!!]",
+  "close": "[Çlösé !!!]",
+  "download": "[Döwñlöàd !!!]",
+  "next": "[Ñéxt !!!]",
+  "previous": "[Prévïöüs !!!]",
+  "submit": "[Sübmït !!!]",
+  "cancel": "[Çàñçél !!!]",
+  "language": "[Làñgüàgé !!!]",
+  "english": "[Éñglïsh !!!]",
+  "latvian": "[Làtvïàñ !!!]",
+  "russian": "[Rüssïàñ !!!]",
+  "aria": {
+    "toggleSidebar": "[Tögglé Sïdébàr !!!]",
+    "pagination": "[Pàgïñàtïöñ !!!]",
+    "breadcrumb": "[Bréàdçrümb !!!]",
+    "goToPreviousPage": "[Gö tö prévïöüs pàgé !!!]",
+    "goToNextPage": "[Gö tö ñéxt pàgé !!!]",
+    "morePages": "[Möré pàgés !!!]"
+  },
+  "plurals": {
+    "modesExplored": "[{count, plural, =0 {Ñö mödés éxplöréd} =1 {1 mödé éxplöréd} other {# mödés éxplöréd}} !!!]",
+    "questionsAnswered": "[{count, plural, =0 {Ñö qüéstïöñs àñswéréd} =1 {1 qüéstïöñ àñswéréd} other {# qüéstïöñs àñswéréd}} !!!]",
+    "correctAnswers": "[{count, plural, =0 {Ñö çörréçt àñswérs} =1 {1 çörréçt àñswér} other {# çörréçt àñswérs}} !!!]",
+    "ofTotal": "[{count} öf {total} !!!]"
+  }
+}

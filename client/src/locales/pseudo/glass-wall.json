@@ -1,0 +1,179 @@
+{
+  "title": "[Thé Glàss Wàll !!!]",
+  "subtitle": "[Sée whàt hàppéñs whéñ yöü séñd dàtà övér thé ñétwörk. Tögglé bétwééñ HTTP àñd HTTPS tö üñdérstàñd éñçryptïöñ—ñö réàl dàtà léàvés yöür bröwsér. !!!]",
+  
+  "scenarios": "[Sçéñàrïös !!!]",
+  "scenario": "[Sçéñàrïö !!!]",
+  "cheatSheetButton": "[Çhéàt Shéét !!!]",
+  "compareHttpVsHttps": "[Çömpàré HTTP vs HTTPS !!!]",
+  "quizButton": "[Qüïz !!!]",
+  "highRiskEnvironment": "[Hïgh rïsk éñvïröñméñt !!!]",
+  "mediumRisk": "[Médïüm rïsk !!!]",
+  "lowRiskEnvironment": "[Löw rïsk éñvïröñméñt !!!]",
+  "considerVpn": "[Çöñsïdér üsïñg à VPN för séñsïtïvé àçtïvïtïés !!!]",
+  
+  "publicNetworkWarning": {
+    "title": "[Pübliç Ñétwörk Wàrñïñg !!!]",
+    "message": "[Pübliç ñétwörks ïñçréàsé rïsk öf déçéptïöñ !!!]"
+  },
+  
+  "vpnActive": {
+    "title": "[VPN Àçtïvé !!!]",
+    "message": "[VPN shïfts trüst fröm thé löçàl ñétwörk !!!]"
+  },
+  
+  "modeChanged": {
+    "title": "[Mödé Çhàñgéd !!!]",
+    "message": "[Çlïçk Séñd Réqüést tö sée thé dïfféréñçé !!!]"
+  },
+  
+  "controls": {
+    "protocol": "[Prötöçöl !!!]",
+    "protocolTooltip": "[HTTP séñds dàtà ïñ plàïñ téxt !!!]",
+    "vpn": "[VPN !!!]",
+    "vpnTooltip": "[À VPN çréàtés àñ éñçryptéd tüññél !!!]",
+    "autoPlay": "[Àütö-plày !!!]",
+    "autoPlayTooltip": "[Àütömàtïçàlly réplày thé tïmélïñé !!!]",
+    "stepMode": "[Stép Mödé !!!]",
+    "stepModeTooltip": "[Àdvàñçé thröügh thé tïmélïñé öñé stép !!!]"
+  },
+  
+  "buttons": {
+    "sendRequest": "[Séñd Réqüést !!!]",
+    "nextStep": "[Ñéxt Stép !!!]",
+    "replayTimeline": "[Réplày Tïmélïñé !!!]"
+  },
+  
+  "userView": {
+    "title": "[Üsér Vïéw !!!]",
+    "subtitle": "[Whàt yöü sée whéñ löggïñg ïñ !!!]"
+  },
+  
+  "wireView": {
+    "title": "[Wïré Vïéw !!!]",
+    "subtitle": "[Whàt thé ñétwörk çàñ öbsérvé !!!]",
+    "readyToObserve": "[Réàdy tö öbsérvé !!!]",
+    "readyToObserveHint": "[Çlïçk Séñd Réqüést tö sée whàt ñétwörk öbsérvérs çöüld sée !!!]"
+  },
+  
+  "metadata": {
+    "title": "[Métàdàtà !!!]",
+    "alwaysVisible": "[Àlwàys vïsïblé tö ñétwörk öbsérvérs !!!]",
+    "destination": "[Déstïñàtïöñ !!!]",
+    "connection": "[Çöññéçtïöñ !!!]",
+    "encryption": "[Éñçryptïöñ !!!]",
+    "connectionDirect": "[Dïréçt !!!]",
+    "connectionVpn": "[VPN Tüññél (éñçryptéd) !!!]",
+    "encryptionNone": "[Ñöñé !!!]",
+    "metadataNote": "[Évéñ wïth éñçryptïöñ, thé ñétwörk çàñ sée yöü çöññéçtéd !!!]"
+  },
+  
+  "handshake": {
+    "title": "[TLS Hàñdshàké !!!]",
+    "encryptionEstablished": "[Éñçryptïöñ éstàblïshéd !!!]",
+    "handshakeComplete": "[TLS 1.3 Hàñdshàké Çömplété !!!]",
+    "step1": "[Çlïéñt Héllö: süppörtéd çïphér süïtés !!!]",
+    "step2": "[Sérvér Héllö: çhöséñ çïphér !!!]",
+    "step3": "[Kéy Éxçhàñgé: éphéméràl kéys !!!]",
+    "step4": "[Fïñïshéd: éñçryptéd séssïöñ bégïñs !!!]",
+    "observersNote": "[Öbsérvérs çàñ sée thïs hàñdshàké öççürréd !!!]",
+    "tooltip": "[Thé hàñdshàké pröçéss ïs vïsïblé !!!]"
+  },
+  
+  "request": {
+    "title": "[Réqüést !!!]",
+    "encryptedPayload": "[Éñçryptéd pàylöàd !!!]",
+    "plainTextVisible": "[Plàïñ téxt - VÏSÏBLÉ !!!]",
+    "encryptedNote": "[Ñétwörk öbsérvérs sée éñçryptéd dàtà !!!]",
+    "ciphertextDisclaimer": "[Ñöté: Çïphértéxt shöwñ ïs ïllüstràtïvé !!!]",
+    "plainTextWarning": "[Àñyöñé öñ thé ñétwörk çàñ réàd yöür çrédéñtïàls! !!!]",
+    "tooltip": "[Thé HTTP réqüést çöñtàïñs thé dàtà !!!]",
+    "tooltipEncrypted": "[Thé pàylöàd ïs éñçryptéd !!!]",
+    "tooltipPlainText": "[Thé pàylöàd ïs séñt às plàïñ téxt !!!]"
+  },
+  
+  "response": {
+    "title": "[Réspöñsé !!!]",
+    "encryptedResponse": "[Éñçryptéd réspöñsé !!!]",
+    "plainTextResponse": "[Plàïñ téxt réspöñsé !!!]",
+    "sessionWarning": "[Séssïöñ tökéñs àré àlsö vïsïblé! !!!]",
+    "tooltip": "[Thé HTTP réspöñsé çöñtàïñs dàtà !!!]",
+    "tooltipEncrypted": "[Thé réspöñsé ïs éñçryptéd !!!]",
+    "tooltipPlainText": "[Thé réspöñsé ïs ïñ plàïñ téxt !!!]"
+  },
+  
+  "summary": {
+    "protectedTitle": "[Prötéçtéd Tràñsàçtïöñ !!!]",
+    "exposedTitle": "[Éxpöséd Tràñsàçtïöñ !!!]",
+    "protectedMessage": "[Yöür çrédéñtïàls wéré éñçryptéd !!!]",
+    "exposedMessage": "[Yöür çrédéñtïàls wéré séñt ïñ plàïñ téxt !!!]"
+  },
+  
+  "timeline": {
+    "connect": "[Çöññéçt !!!]",
+    "connectDescVpn": "[Éstàblïsh VPN tüññél !!!]",
+    "connectDescDirect": "[DNS lööküp + TCP hàñdshàké !!!]",
+    "connectTooltipVpn": "[Yöür dévïçé fïrst çöññéçts tö thé VPN sérvér !!!]",
+    "connectTooltipDirect": "[DNS résölvés dömàïñ ñàmé tö IP àddréss !!!]",
+    "handshake": "[TLS Hàñdshàké !!!]",
+    "handshakeDesc": "[Ñégötïàté éñçryptïöñ !!!]",
+    "handshakeTooltip": "[Çlïéñt àñd sérvér éxçhàñgé çértïfïçàtés !!!]",
+    "request": "[Réqüést !!!]",
+    "requestDesc": "[POST /login wïth çrédéñtïàls !!!]",
+    "requestTooltipSecure": "[Yöür lögïñ çrédéñtïàls àré éñçryptéd !!!]",
+    "requestTooltipInsecure": "[Yöür lögïñ çrédéñtïàls àré séñt ïñ plàïñ téxt !!!]",
+    "response": "[Réspöñsé !!!]",
+    "responseDesc": "[Sérvér réspöñsé réçéïvéd !!!]",
+    "responseTooltipSecure": "[Thé sérvér's réspöñsé ïs éñçryptéd !!!]",
+    "responseTooltipInsecure": "[Thé sérvér's réspöñsé ïs ïñ plàïñ téxt !!!]",
+    "vpnTunnel": "[VPN Tüññél !!!]"
+  },
+  
+  "loginForm": {
+    "title": "[Sïgñ Ïñ !!!]",
+    "usernameLabel": "[Üsérnàmé !!!]",
+    "passwordLabel": "[Pàsswörd !!!]",
+    "signInButton": "[Lög Ïñ !!!]",
+    "demoNote": "[Théåé àré fïçtïöñàl çrédéñtïàls !!!]",
+    "demoBadge": "[Démö Sïté !!!]"
+  },
+  
+  "footer": {
+    "simulationNote": "[Thïs ïs à sïmülàtïöñ !!!]",
+    "zeroRiskLearning": "[Zérö-Rïsk Léàrñïñg !!!]",
+    "zeroRiskTooltip": "[Évérythïñg yöü sée ïs fïçtïöñàl !!!]",
+    "noTelemetry": "[Ñö Télémétry !!!]",
+    "noTelemetryTooltip": "[Thïs àpplïçàtïöñ döés ñöt çölléçt !!!]"
+  },
+  
+  "progressTracker": {
+    "title": "[Léàrñïñg Prögrés !!!]",
+    "modesExplored": "[Mödés éxplöréd !!!]",
+    "congratulations": "[Çöñgràtülàtïöñs! Yöü'vé éxplöréd àll !!!]",
+    "httpWithoutVpn": "[HTTP wïthöüt VPN !!!]",
+    "httpWithVpn": "[HTTP wïth VPN !!!]",
+    "httpsWithoutVpn": "[HTTPS wïthöüt VPN !!!]",
+    "httpsWithVpn": "[HTTPS wïth VPN !!!]",
+    "mostVulnerable": "[Möst vülñéràblé çöñfïgüràtïöñ !!!]",
+    "contentVisibleToVpn": "[Çöñtéñt vïsïblé tö VPN !!!]",
+    "contentEncryptedMetadataVisible": "[Çöñtéñt éñçryptéd, métàdàtà vïsïblé !!!]",
+    "maximumProtection": "[Màxïmüm prötéçtïöñ !!!]",
+    "resetProgress": "[Rését Prögrés !!!]"
+  },
+  
+  "quiz": {
+    "title": "[Séçürïty Kñöwlédgé Qüïz !!!]",
+    "startQuiz": "[Stàrt Qüïz !!!]",
+    "question": "[Qüéstïöñ !!!]",
+    "of": "[öf !!!]",
+    "score": "[Sçöré !!!]",
+    "correct": "[Çörréçt! !!!]",
+    "incorrect": "[Ïñçörréçt !!!]",
+    "explanation": "[Éxplàñàtïöñ !!!]",
+    "nextQuestion": "[Ñéxt Qüéstïöñ !!!]",
+    "seeResults": "[Sée Résülts !!!]",
+    "tryAgain": "[Try Àgàïñ !!!]",
+    "quizComplete": "[Qüïz Çömplété! !!!]",
+    "yourScore": "[Yöür Sçöré !!!]"
+  }
+}

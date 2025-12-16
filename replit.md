@@ -106,3 +106,30 @@ client/src/
 - **Validation Script**: `node scripts/validate-i18n.js` - checks for missing keys, duplicate keys, ICU syntax, placeholder consistency
 - **Aria Labels**: Stored in `common.json` under `aria` key for accessibility
 - **Important**: Avoid duplicate JSON keys - later definitions override earlier ones causing rendering errors
+
+#### Key Naming Conventions
+Follow this pattern: `feature.screen.element.state`
+
+Examples:
+- `controls.protocol` - Protocol toggle control
+- `timeline.connect` - Timeline connect step
+- `quiz.questions.q1.question` - Quiz question 1 text
+- `progressTracker.httpWithVpn` - Progress tracker mode label
+
+Bad examples (avoid):
+- `button1`, `msg_42`, `text123` - Non-descriptive
+- `Login button` - Text as ID (use stable keys)
+
+#### i18n Scripts
+- `node scripts/validate-i18n.js` - Validate translations (key parity, ICU syntax)
+- `node scripts/i18n-extract.js` - Extract keys from source and check coverage
+- `node scripts/i18n-check.js` - Run extract + validate (CI-ready)
+
+#### Pseudo-Locale Testing
+Use `pseudo` locale to test layout expansion and find missing translations:
+1. Set `localStorage.setItem('i18nextLng', 'pseudo')` in browser console
+2. Refresh page - all text should show `[Bràçkétéd téxt !!!]`
+3. Any text NOT in brackets = hardcoded/missing translation
+
+#### Glossary
+See `docs/i18n-glossary.md` for term consistency across languages.

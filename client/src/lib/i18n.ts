@@ -9,6 +9,8 @@ import lvCommon from '../locales/lv/common.json';
 import lvGlassWall from '../locales/lv/glass-wall.json';
 import ruCommon from '../locales/ru/common.json';
 import ruGlassWall from '../locales/ru/glass-wall.json';
+import pseudoCommon from '../locales/pseudo/common.json';
+import pseudoGlassWall from '../locales/pseudo/glass-wall.json';
 
 const resources = {
   en: {
@@ -23,6 +25,10 @@ const resources = {
     common: ruCommon,
     glassWall: ruGlassWall,
   },
+  pseudo: {
+    common: pseudoCommon,
+    glassWall: pseudoGlassWall,
+  },
 };
 
 const isDev = import.meta.env.DEV;
@@ -33,7 +39,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'lv',
+    fallbackLng: ['lv', 'en'],
     defaultNS: 'common',
     ns: ['common', 'glassWall'],
     detection: {
@@ -46,6 +52,8 @@ i18n
     react: {
       useSuspense: false,
     },
+    returnEmptyString: false,
+    returnNull: false,
     saveMissing: isDev,
     missingKeyHandler: isDev 
       ? (lngs, ns, key, fallbackValue) => {
@@ -54,7 +62,7 @@ i18n
       : undefined,
     parseMissingKeyHandler: isDev
       ? (key) => `[MISSING: ${key}]`
-      : undefined,
+      : (key) => '',
   });
 
 export default i18n;
