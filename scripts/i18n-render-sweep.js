@@ -2,30 +2,26 @@
 /**
  * i18n Render Sweep Test
  * 
- * Scans all locale files for [MISSING: patterns that indicate
- * untranslated keys. This catches cases where pseudo-locale
- * text or missing key markers have leaked into translations.
- * 
- * Run: node scripts/i18n-render-sweep.js
- * 
- * This script is designed to be run in CI to catch:
+ * Scans all locale files for patterns that indicate problems:
  * - [MISSING: markers left in locale files
  * - Pseudo-locale text accidentally committed
  * - Empty translations that would show nothing in prod
+ * 
+ * Run: node scripts/i18n-render-sweep.js
  */
 
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { flattenKeys, loadJsonFile, getNestedValue, getConfig } from './i18n-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOCALES_DIR = path.join(__dirname, '../client/src/locales');
-const PRODUCTION_LANGUAGES = ['en', 'lv', 'ru'];
-const NAMESPACES = ['common', 'glass-wall'];
+const config = getConfig(__dirname);
 
 const issues = [];
+
+const PSEUDO_LOCALE_PATTERN = /^\[.+\s*!!!\]$/;
 
 function scanForProblems(obj, filePath, keyPath = '') {
   for (const [key, value] of Object.entries(obj)) {
@@ -41,7 +37,7 @@ function scanForProblems(obj, filePath, keyPath = '') {
         });
       }
       
-      if (value.match(/\[.*!!!\]/)) {
+      if (PSEUDO_LOCALE_PATTERN.test(value)) {
         issues.push({
           type: 'pseudo_locale',
           file: filePath,
@@ -68,32 +64,25 @@ function main() {
   console.log('Running i18n Render Sweep...\n');
   console.log('Checking production locales for problems:\n');
   
-  for (const lang of PRODUCTION_LANGUAGES) {
-    for (const ns of NAMESPACES) {
-      const filePath = path.join(LOCALES_DIR, lang, `${ns}.json`);
+  for (const lang of config.productionLanguages) {
+    for (const ns of config.namespaces) {
+      const filePath = path.join(config.localesDir, lang, `${ns}.json`);
+      const displayPath = `${lang}/${ns}.json`;
       
-      if (!fs.existsSync(filePath)) {
+      const { data, error } = loadJsonFile(filePath);
+      
+      if (error) {
         issues.push({
-          type: 'missing_file',
-          file: filePath,
+          type: error.includes('not found') ? 'missing_file' : 'json_error',
+          file: displayPath,
           key: '-',
-          value: 'File not found'
+          value: error
         });
         continue;
       }
       
-      try {
-        const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        scanForProblems(content, `${lang}/${ns}.json`);
-        console.log(`  Scanned: ${lang}/${ns}.json`);
-      } catch (e) {
-        issues.push({
-          type: 'json_error',
-          file: filePath,
-          key: '-',
-          value: e.message
-        });
-      }
+      scanForProblems(data, displayPath);
+      console.log(`  Scanned: ${displayPath}`);
     }
   }
   
@@ -112,20 +101,21 @@ function main() {
     byType[issue.type].push(issue);
   }
   
+  const typeLabels = {
+    missing_marker: '[MISSING: markers found',
+    pseudo_locale: 'Pseudo-locale text leaked',
+    empty_translation: 'Empty translations',
+    missing_file: 'Missing locale files',
+    json_error: 'JSON parse errors'
+  };
+  
   for (const [type, typeIssues] of Object.entries(byType)) {
-    const typeLabel = {
-      missing_marker: '[MISSING: markers found',
-      pseudo_locale: 'Pseudo-locale text leaked',
-      empty_translation: 'Empty translations',
-      missing_file: 'Missing locale files',
-      json_error: 'JSON parse errors'
-    }[type] || type;
-    
-    console.log(`${typeLabel}:`);
+    const label = typeLabels[type] || type;
+    console.log(`${label}:`);
     for (const issue of typeIssues) {
       console.log(`  - ${issue.file}: ${issue.key}`);
       if (issue.value !== '(empty)' && issue.value !== '-') {
-        console.log(`    "${issue.value}..."`);
+        console.log(`    "${issue.value}${issue.value.length >= 50 ? '...' : ''}"`);
       }
     }
     console.log();

@@ -14,40 +14,16 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { flattenKeys, getNestedValue, loadJsonFile, getConfig } from './i18n-utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOCALES_DIR = path.join(__dirname, '../client/src/locales');
-const LANGUAGES = ['en', 'lv', 'ru'];
-const NAMESPACES = ['common', 'glass-wall'];
+const config = getConfig(__dirname);
+const { localesDir, languages, namespaces } = config;
 
 const errors = [];
 const warnings = [];
-
-function validateJsonSyntax(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    JSON.parse(content);
-    return true;
-  } catch (e) {
-    errors.push(`JSON syntax error in ${filePath}: ${e.message}`);
-    return false;
-  }
-}
-
-function flattenKeys(obj, prefix = '') {
-  const keys = [];
-  for (const key of Object.keys(obj)) {
-    const fullKey = prefix ? `${prefix}.${key}` : key;
-    if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
-      keys.push(...flattenKeys(obj[key], fullKey));
-    } else {
-      keys.push(fullKey);
-    }
-  }
-  return keys;
-}
 
 function extractPlaceholders(str) {
   if (typeof str !== 'string') return [];
@@ -84,6 +60,10 @@ function validateIcuSyntax(str, keyPath, lang) {
   for (const char of str) {
     if (char === '{') braceCount++;
     if (char === '}') braceCount--;
+    if (braceCount < 0) {
+      errors.push(`Unbalanced braces (extra closing brace) in ICU message: ${lang}/${keyPath}`);
+      return;
+    }
   }
   
   if (braceCount !== 0) {
@@ -94,21 +74,19 @@ function validateIcuSyntax(str, keyPath, lang) {
 function loadTranslations() {
   const translations = {};
   
-  for (const lang of LANGUAGES) {
+  for (const lang of languages) {
     translations[lang] = {};
     
-    for (const ns of NAMESPACES) {
-      const filePath = path.join(LOCALES_DIR, lang, `${ns}.json`);
+    for (const ns of namespaces) {
+      const filePath = path.join(localesDir, lang, `${ns}.json`);
+      const { data, error } = loadJsonFile(filePath);
       
-      if (!fs.existsSync(filePath)) {
-        errors.push(`Missing locale file: ${filePath}`);
+      if (error) {
+        errors.push(error);
         continue;
       }
       
-      if (!validateJsonSyntax(filePath)) continue;
-      
-      const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      translations[lang][ns] = content;
+      translations[lang][ns] = data;
     }
   }
   
@@ -116,21 +94,29 @@ function loadTranslations() {
 }
 
 function compareKeys(translations) {
-  for (const ns of NAMESPACES) {
-    const allKeys = new Set();
-    const keysByLang = {};
+  for (const ns of namespaces) {
+    const enContent = translations['en']?.[ns];
+    if (!enContent) continue;
     
-    for (const lang of LANGUAGES) {
-      if (!translations[lang][ns]) continue;
-      const keys = flattenKeys(translations[lang][ns]);
-      keysByLang[lang] = new Set(keys);
-      keys.forEach(k => allKeys.add(k));
-    }
+    const enKeys = new Set(flattenKeys(enContent));
     
-    for (const key of allKeys) {
-      for (const lang of LANGUAGES) {
-        if (keysByLang[lang] && !keysByLang[lang].has(key)) {
-          warnings.push(`Missing key "${key}" in ${lang}/${ns}.json`);
+    for (const lang of languages) {
+      if (lang === 'en') continue;
+      
+      const langContent = translations[lang]?.[ns];
+      if (!langContent) continue;
+      
+      const langKeys = new Set(flattenKeys(langContent));
+      
+      for (const key of enKeys) {
+        if (!langKeys.has(key)) {
+          errors.push(`Missing key "${key}" in ${lang}/${ns}.json (exists in en)`);
+        }
+      }
+      
+      for (const key of langKeys) {
+        if (!enKeys.has(key)) {
+          warnings.push(`Extra key "${key}" in ${lang}/${ns}.json (not in en)`);
         }
       }
     }
@@ -138,30 +124,32 @@ function compareKeys(translations) {
 }
 
 function validatePlaceholderConsistency(translations) {
-  for (const ns of NAMESPACES) {
+  for (const ns of namespaces) {
     const enContent = translations['en']?.[ns];
     if (!enContent) continue;
     
     const enKeys = flattenKeys(enContent);
     
     for (const key of enKeys) {
-      const enValue = key.split('.').reduce((o, k) => o?.[k], enContent);
+      const enValue = getNestedValue(enContent, key);
       const enPlaceholders = extractPlaceholders(enValue);
       
       if (enPlaceholders.length === 0) continue;
       
-      for (const lang of LANGUAGES) {
+      for (const lang of languages) {
         if (lang === 'en') continue;
         
         const langContent = translations[lang]?.[ns];
         if (!langContent) continue;
         
-        const langValue = key.split('.').reduce((o, k) => o?.[k], langContent);
+        const langValue = getNestedValue(langContent, key);
+        if (langValue === undefined) continue;
+        
         const langPlaceholders = extractPlaceholders(langValue);
         
         for (const ph of enPlaceholders) {
           if (!langPlaceholders.includes(ph)) {
-            warnings.push(`Missing placeholder {${ph}} in ${lang}/${ns}.json key "${key}"`);
+            errors.push(`Missing placeholder {${ph}} in ${lang}/${ns}.json key "${key}"`);
           }
         }
       }
@@ -170,8 +158,8 @@ function validatePlaceholderConsistency(translations) {
 }
 
 function validateIcuMessages(translations) {
-  for (const lang of LANGUAGES) {
-    for (const ns of NAMESPACES) {
+  for (const lang of languages) {
+    for (const ns of namespaces) {
       const content = translations[lang]?.[ns];
       if (!content) continue;
       
