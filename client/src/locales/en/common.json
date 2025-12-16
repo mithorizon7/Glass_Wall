@@ -1,0 +1,21 @@
+{
+  "start": "Start",
+  "continue": "Continue",
+  "learnMore": "Learn more",
+  "back": "Back",
+  "reset": "Reset",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "on": "ON",
+  "off": "OFF",
+  "close": "Close",
+  "download": "Download",
+  "next": "Next",
+  "previous": "Previous",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "language": "Language",
+  "english": "English",
+  "latvian": "Latvian",
+  "russian": "Russian"
+}

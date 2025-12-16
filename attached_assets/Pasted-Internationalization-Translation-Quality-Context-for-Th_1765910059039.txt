@@ -1,0 +1,66 @@
+Internationalization & Translation Quality — Context for This Checklist (Latvia v1)
+We are launching this suite of online learning apps in Latvia first, and from day one the product must feel like it was designed in-language, not “translated later.”
+That means Latvian (lv) and Russian (ru) are not optional add-ons or rough drafts. They are primary experiences. Learners should never feel that English is the “real” version and Latvian/Russian are approximations.
+Our quality bar
+For Latvian and Russian, the standard is:
+* Reads as native — natural phrasing, not literal word-for-word translation
+* Technically accurate — networking terms are correct and consistent across apps
+* Consistent tone — clear, calm, professional, learner-friendly
+* Culturally fluent — examples and microcopy feel local and appropriate
+* Polished UI fit — no awkward truncation or broken layouts that betray translation
+In other words: we want the Latvian and Russian experiences to look and feel as if a professional native translator (with technical fluency) produced every string, and a native reviewer signed off on the final product.
+Why this checklist exists
+High-quality localization is easiest when it is built in from the beginning. If internationalization is bolted on later, teams end up rewriting components, hardcoding workarounds, and shipping uneven translations.
+This checklist is our shared baseline to make sure:
+* All user-facing text is translatable and consistently managed
+* Plurals and grammar work correctly (especially important for Russian and Latvian)
+* Date/number formatting matches local expectations
+* UI layouts can handle real translated text without breaking
+* The translation workflow stays manageable as the product evolves
+Scope: Four separate apps, one shared standard
+We are building four separate applications (Cartographer, Glass Wall, Coffee Shop Challenge, Fix-It Planner). Even though they are separate codebases, they must feel like one coherent suite in Latvian and Russian—using the same terminology, style, and tone everywhere.
+This checklist is not meant to slow development down. It’s meant to prevent rework and ensure that Latvia’s first release meets the quality bar we’re setting for everything that comes next.
+ Latvia v1 — Term Locks (LV + RU) — Minimal Glossary for Consistency
+1) Do-not-translate tokens (keep exactly as shown)
+Use these exactly across all apps:
+* Wi-Fi, VPN, IP, MAC, SSID, HTTP, HTTPS, TLS, NAT, IoT
+If you need to explain once (tooltip or first mention):
+* LV: “tīkla nosaukums (SSID)”
+* RU: “имя сети (SSID)”
+
+2) Preferred translation locks (use these consistently)
+English (Canonical)	Russian (Use)	Latvian (Use)	Notes
+Network	сеть	tīkls	Core term—don’t alternate synonyms.
+Private network	частная сеть	privātais tīkls	
+Public network	общедоступная сеть	publiskais tīkls	“Public” = shared/less trusted.
+Router	маршрутизатор	maršrutētājs	Use formal term consistently.
+Access point	точка доступа	piekļuves punkts	For Wi-Fi infrastructure when needed.
+Device	устройство	ierīce	
+Connected device	подключённое устройство	pieslēgtā ierīce	
+Unknown device	неизвестное устройство	nezināma ierīce	
+Guest network	гостевая сеть	viesu tīkls	
+Main network	основная сеть	galvenais tīkls	Lock RU as “основная сеть” for simplicity.
+IoT device	устройство IoT	IoT ierīce	Optional first-use expansion: LV “lietu interneta (IoT) ierīce”.
+Encryption	шифрование	šifrēšana	
+Encrypted	зашифрованный	šifrēts	
+Unencrypted	незашифрованный	nešifrēts	
+Request	запрос	pieprasījums	App 2 uses this constantly.
+Response	ответ	atbilde	
+Port	порт	ports	Keep as the networking meaning.
+Risk	риск	risks	Used in scoring and debriefs.
+Risk score	оценка риска	riska vērtējums	App 4.
+Phishing	фишинг	pikšķerēšana	Appears in public Wi-Fi app.
+Tracking	отслеживание	izsekošana	
+3) Microcopy locks (keep UI consistent)
+English	Russian (Use)	Latvian (Use)
+Start	Начать	Sākt
+Continue	Продолжить	Turpināt
+Learn more	Подробнее	Uzzināt vairāk
+Back	Назад	Atpakaļ
+Reset	Сбросить	Atiestatīt
+4) Guardrails (so translators don’t fight the UI)
+* Use ICU plurals/selects (no handmade plural logic), especially important for Russian and Latvian.
+* Avoid “sentence Lego” (no concatenating fragments like "Hello " + name).
+* Use Intl.* for dates/numbers (Latvia/Russia formatting differs from US).
+* If a translator wants to change a locked term, it must be a deliberate glossary update, not a one-off variation.
+ 

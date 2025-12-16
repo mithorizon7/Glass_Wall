@@ -1,0 +1,21 @@
+{
+  "start": "Sākt",
+  "continue": "Turpināt",
+  "learnMore": "Uzzināt vairāk",
+  "back": "Atpakaļ",
+  "reset": "Atiestatīt",
+  "enabled": "Iespējots",
+  "disabled": "Atspējots",
+  "on": "IESLĒGTS",
+  "off": "IZSLĒGTS",
+  "close": "Aizvērt",
+  "download": "Lejupielādēt",
+  "next": "Nākamais",
+  "previous": "Iepriekšējais",
+  "submit": "Iesniegt",
+  "cancel": "Atcelt",
+  "language": "Valoda",
+  "english": "Angļu",
+  "latvian": "Latviešu",
+  "russian": "Krievu"
+}
