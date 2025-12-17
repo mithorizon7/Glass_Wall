@@ -390,5 +390,102 @@
       "Avoid logging into banking or sensitive accounts on public Wi-Fi",
       "Turn off auto-connect to Wi-Fi networks"
     ]
+  },
+
+  "guidedLearning": {
+    "stepIndicator": "Step {current} of {total}",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "startExploring": "Start Exploring",
+    "restartGuide": "Restart Guide",
+
+    "introduction": {
+      "title": "Welcome to The Glass Wall",
+      "content": [
+        "You've probably heard \"use HTTPS\" — but do you really know why?",
+        "Most people don't. And that's okay. In the next few minutes, you'll see what happens when your data travels across a network — and why encryption matters.",
+        "We call this \"The Glass Wall\" because without protection, the barrier between your private data and anyone watching is as thin as glass. You just can't see it."
+      ]
+    },
+
+    "userView": {
+      "title": "What You See",
+      "content": [
+        "This is a familiar sight — a login page. You type your credentials, click submit, and trust that it works.",
+        "But here's what most people don't think about: your data doesn't teleport to the server. It travels through wires, routers, and wireless signals. And on that journey, someone might be watching."
+      ]
+    },
+
+    "wireView": {
+      "title": "What the Network Sees",
+      "content": [
+        "This is the other side of the glass — what's visible to anyone observing your network traffic.",
+        "On an unprotected network, this could be the person at the next table in a coffee shop, or software silently monitoring the network.",
+        "Think of it like a one-way mirror: you can't see who's watching, but they can see everything you send."
+      ]
+    },
+
+    "protocolToggle": {
+      "title": "The Critical Choice",
+      "content": [
+        "This is where everything changes.",
+        "HTTP sends your data as plain text — readable by anyone observing the network. HTTPS encrypts your data before it leaves your device. To observers, your passwords and personal information become unreadable scrambled characters.",
+        "Soon, you'll toggle between these and see the difference with your own eyes. That moment sticks."
+      ]
+    },
+
+    "vpnToggle": {
+      "title": "An Extra Shield",
+      "content": [
+        "A VPN creates an encrypted tunnel for ALL your traffic — not just one website.",
+        "It hides which websites you visit from anyone on the local network. Useful in coffee shops, airports, and hotels.",
+        "But here's the nuance: a VPN shifts trust to the VPN provider. It doesn't make you invisible. Choose wisely."
+      ]
+    },
+
+    "actionArea": {
+      "title": "Watch Your Data Travel",
+      "content": [
+        "When you click \"Send Request,\" you'll watch your data travel from your browser to the server — step by step.",
+        "Pay close attention to what appears in the Wire View. With HTTP, you'll see your password in plain text. With HTTPS, you'll see encrypted gibberish.",
+        "This is the moment the lesson becomes real."
+      ]
+    },
+
+    "scenarioSelector": {
+      "title": "Context Matters",
+      "content": [
+        "Not all networks are equal in risk.",
+        "Your home Wi-Fi is different from airport Wi-Fi. A corporate network has different protections than a coffee shop.",
+        "Try different scenarios to understand how your environment affects your risk level. Awareness is the first step to safe behavior."
+      ]
+    },
+
+    "learningTools": {
+      "title": "Deepen Your Understanding",
+      "content": [
+        "Use these tools to reinforce what you learn:",
+        "Cheat Sheet — A printable reference guide. Compare — See HTTP and HTTPS side-by-side. Quiz — Test your knowledge.",
+        "Come back to these after you've experimented with the main visualization."
+      ]
+    },
+
+    "progressTracker": {
+      "title": "Track Your Exploration",
+      "content": [
+        "This tracks which combinations you've tried — HTTP, HTTPS, with and without VPN.",
+        "Try all four combinations to fully understand how each layer of protection changes what's visible on the network."
+      ]
+    },
+
+    "ready": {
+      "title": "You're Ready",
+      "content": [
+        "Here's your first exploration: Make sure HTTP is selected (no encryption), then click \"Send Request\" and watch what appears in the Wire View — notice your password is visible.",
+        "Then switch to HTTPS and send again. See the difference.",
+        "That moment when readable text becomes encrypted scrambles — that's when this lesson sticks."
+      ]
+    }
   }
 }

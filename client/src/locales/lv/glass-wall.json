@@ -390,5 +390,102 @@
       "Izvairieties no pierakstīšanās bankas vai sensitīvos kontos publiskajā Wi-Fi",
       "Izslēdziet automātisko pieslēgšanos Wi-Fi tīkliem"
     ]
+  },
+
+  "guidedLearning": {
+    "stepIndicator": "Solis {current} no {total}",
+    "next": "Tālāk",
+    "back": "Atpakaļ",
+    "skip": "Izlaist",
+    "startExploring": "Sākt izpēti",
+    "restartGuide": "Sākt no jauna",
+
+    "introduction": {
+      "title": "Laipni lūgti Stikla sienā",
+      "content": [
+        "Jūs droši vien esat dzirdējuši \"lietojiet HTTPS\" — bet vai tiešām zināt, kāpēc?",
+        "Lielākā daļa cilvēku nezina. Un tas ir normāli. Nākamo dažu minūšu laikā jūs redzēsiet, kas notiek, kad jūsu dati ceļo pa tīklu — un kāpēc šifrēšana ir svarīga.",
+        "Mēs to saucam par \"Stikla sienu\", jo bez aizsardzības barjera starp jūsu privātajiem datiem un ikvienu, kas vēro, ir tikpat plāna kā stikls. Jūs to vienkārši neredzat."
+      ]
+    },
+
+    "userView": {
+      "title": "Ko jūs redzat",
+      "content": [
+        "Šis ir pazīstams skats — pieteikšanās lapa. Jūs ievadāt savus datus, nospiežat pogu un uzticaties, ka tas strādā.",
+        "Bet lūk, ko lielākā daļa cilvēku neapdomā: jūsu dati neteleportējas uz serveri. Tie ceļo caur vadiem, maršrutētājiem un bezvadu signāliem. Un šajā ceļojumā kāds var vērot."
+      ]
+    },
+
+    "wireView": {
+      "title": "Ko redz tīkls",
+      "content": [
+        "Šī ir stikla otra puse — tas, kas ir redzams ikvienam, kas novēro jūsu tīkla trafiku.",
+        "Neaizsargātā tīklā tas varētu būt cilvēks pie blakus galdiņa kafejnīcā vai programmatūra, kas klusi uzrauga tīklu.",
+        "Iedomājieties to kā vienpusēju spoguli: jūs neredzat, kas vēro, bet viņi var redzēt visu, ko jūs sūtāt."
+      ]
+    },
+
+    "protocolToggle": {
+      "title": "Kritiskā izvēle",
+      "content": [
+        "Šeit viss mainās.",
+        "HTTP sūta jūsu datus kā vienkāršu tekstu — lasāmu ikvienam, kas novēro tīklu. HTTPS šifrē jūsu datus pirms tie atstāj jūsu ierīci. Novērotājiem jūsu paroles un personīgā informācija kļūst par nelasāmām sajauktām rakstzīmēm.",
+        "Drīz jūs pārslēgsieties starp šiem režīmiem un redzēsiet atšķirību ar savām acīm. Šis brīdis paliks atmiņā."
+      ]
+    },
+
+    "vpnToggle": {
+      "title": "Papildu aizsardzība",
+      "content": [
+        "VPN izveido šifrētu tuneli VISAI jūsu datplūsmai — ne tikai vienai vietnei.",
+        "Tas slēpj, kuras vietnes jūs apmeklējat, no jebkura lokālajā tīklā. Noderīgi kafejnīcās, lidostās un viesnīcās.",
+        "Bet šeit ir nianse: VPN pārnes uzticību uz VPN pakalpojuma sniedzēju. Tas nepadara jūs neredzamu. Izvēlieties gudri."
+      ]
+    },
+
+    "actionArea": {
+      "title": "Skatieties, kā ceļo jūsu dati",
+      "content": [
+        "Kad nospiežat \"Sūtīt pieprasījumu\", jūs redzēsiet, kā jūsu dati ceļo no pārlūka uz serveri — soli pa solim.",
+        "Pievērsiet uzmanību tam, kas parādās Tīkla skatā. Ar HTTP jūs redzēsiet savu paroli vienkāršā tekstā. Ar HTTPS jūs redzēsiet šifrētu jucekli.",
+        "Šis ir brīdis, kad mācība kļūst reāla."
+      ]
+    },
+
+    "scenarioSelector": {
+      "title": "Konteksts ir svarīgs",
+      "content": [
+        "Ne visi tīkli ir vienādi pēc riska.",
+        "Jūsu mājas Wi-Fi atšķiras no lidostas Wi-Fi. Korporatīvajam tīklam ir citādāka aizsardzība nekā kafejnīcai.",
+        "Izmēģiniet dažādus scenārijus, lai saprastu, kā jūsu vide ietekmē riska līmeni. Apzināšanās ir pirmais solis uz drošu uzvedību."
+      ]
+    },
+
+    "learningTools": {
+      "title": "Padziļiniet savu izpratni",
+      "content": [
+        "Izmantojiet šos rīkus, lai nostiprinātu apgūto:",
+        "Īsā pamācība — Drukājama uzziņu rokasgrāmata. Salīdzināt — Skatiet HTTP un HTTPS blakus. Tests — Pārbaudiet savas zināšanas.",
+        "Atgriezieties pie šiem pēc eksperimentēšanas ar galveno vizualizāciju."
+      ]
+    },
+
+    "progressTracker": {
+      "title": "Sekojiet savai izpētei",
+      "content": [
+        "Šeit tiek uzskaitīts, kuras kombinācijas esat izmēģinājuši — HTTP, HTTPS, ar un bez VPN.",
+        "Izmēģiniet visas četras kombinācijas, lai pilnībā saprastu, kā katrs aizsardzības slānis maina to, kas ir redzams tīklā."
+      ]
+    },
+
+    "ready": {
+      "title": "Jūs esat gatavi",
+      "content": [
+        "Lūk, jūsu pirmā izpēte: Pārliecinieties, ka ir izvēlēts HTTP (bez šifrēšanas), tad nospiediet \"Sūtīt pieprasījumu\" un skatieties, kas parādās Tīkla skatā — ievērojiet, ka jūsu parole ir redzama.",
+        "Tad pārslēdzieties uz HTTPS un sūtiet vēlreiz. Redziet atšķirību.",
+        "Tas brīdis, kad lasāms teksts kļūst par šifrētu jucekli — tad šī mācība paliek atmiņā."
+      ]
+    }
   }
 }

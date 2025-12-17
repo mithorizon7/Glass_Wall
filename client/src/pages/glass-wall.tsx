@@ -38,6 +38,7 @@ import { ComparisonView } from "@/components/comparison-view";
 import { ScenarioSelector, SCENARIOS, type Scenario } from "@/components/scenario-selector";
 import { QuizMode } from "@/components/quiz-mode";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { GuidedLearningOverlay, RestartGuideButton } from "@/components/guided-learning-overlay";
 
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
@@ -218,13 +219,17 @@ export default function GlassWall() {
             {t("subtitle")}
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
-            <ScenarioSelector 
-              currentScenario={currentScenario} 
-              onScenarioChange={setCurrentScenario} 
-            />
-            <CheatSheetModal />
-            <ComparisonView payload={DEMO_PAYLOAD} vpnMode={vpnMode} />
-            <QuizMode />
+            <div data-onboarding="scenario-selector">
+              <ScenarioSelector 
+                currentScenario={currentScenario} 
+                onScenarioChange={setCurrentScenario} 
+              />
+            </div>
+            <div data-onboarding="learning-tools" className="flex items-center gap-3">
+              <CheatSheetModal />
+              <ComparisonView payload={DEMO_PAYLOAD} vpnMode={vpnMode} />
+              <QuizMode />
+            </div>
           </div>
         </header>
 
@@ -287,7 +292,7 @@ export default function GlassWall() {
           className="mb-8"
         />
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 md:mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 md:mb-12" data-onboarding="action-area">
           {stepMode && timelineStage !== "idle" && timelineStage !== "complete" ? (
             <Button
               size="lg"
@@ -324,7 +329,7 @@ export default function GlassWall() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="p-6 md:p-8 relative overflow-visible">
+          <Card className="p-6 md:p-8 relative overflow-visible" data-onboarding="user-view-card">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                 <Eye className="w-5 h-5 text-primary" />
@@ -344,7 +349,7 @@ export default function GlassWall() {
             />
           </Card>
 
-          <Card className="p-6 md:p-8 relative overflow-visible">
+          <Card className="p-6 md:p-8 relative overflow-visible" data-onboarding="wire-view-card">
             {vpnMode === "on" && <VpnTunnelOverlay />}
             <div className="flex items-center gap-3 mb-6">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -400,7 +405,7 @@ export default function GlassWall() {
           </Card>
         </div>
 
-        <div className="mt-10 max-w-md mx-auto">
+        <div className="mt-10 max-w-md mx-auto" data-onboarding="progress-tracker">
           <ProgressTracker
             currentProtocol={protocolMode}
             currentVpn={vpnMode}
@@ -440,8 +445,12 @@ export default function GlassWall() {
               </TooltipContent>
             </Tooltip>
           </div>
+          <div className="mt-4">
+            <RestartGuideButton />
+          </div>
         </footer>
       </div>
+      <GuidedLearningOverlay />
     </div>
   );
 }

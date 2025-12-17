@@ -30,7 +30,8 @@ client/src/
 │   ├── progress-tracker.tsx  # LocalStorage-based learning progress
 │   ├── comparison-view.tsx   # Side-by-side HTTP vs HTTPS comparison
 │   ├── scenario-selector.tsx # Network scenario selection (4 scenarios)
-│   └── quiz-mode.tsx         # Interactive security knowledge quiz
+│   ├── quiz-mode.tsx         # Interactive security knowledge quiz
+│   └── guided-learning-overlay.tsx # 10-step educational onboarding tour
 └── App.tsx                   # Router setup
 ```
 
@@ -50,6 +51,7 @@ client/src/
 10. **Comparison View**: Side-by-side HTTP vs HTTPS wire views with animated comparison
 11. **Scenario Selector**: 4 real-world scenarios (Home, Coffee Shop, Airport, Hotel) with risk levels
 12. **Quiz Mode**: 8-question interactive quiz testing encryption knowledge with explanations
+13. **Guided Learning Overlay**: 10-step educational onboarding tour with spotlight effects, explaining WHY encryption matters
 
 ### Design Tokens
 - **Fonts**: Inter (primary), JetBrains Mono (code/wire view)
@@ -83,6 +85,14 @@ client/src/
   - Replaced one-sided borders on Cards with gradient backgrounds (design guideline compliance)
   - Added gap to justify-between elements across control-panel, demo-login-form, progress-tracker, quiz-mode
   - Added data-testid="button-close-dialog" to Dialog component for testing
+- **December 2024 Guided Learning Feature:**
+  - Implemented 10-step guided learning overlay with spotlight effect
+  - Educational philosophy: Explains WHY encryption matters, not just HOW to use the tool
+  - Steps cover: Introduction, User View, Wire View, Protocol Toggle, VPN Toggle, Action Area, Scenarios, Tools, Progress Tracker, Ready
+  - Spotlight uses SVG mask to create cutout highlighting target elements
+  - LocalStorage persistence (`glassWall_onboardingCompleted`) so users only see once
+  - Restart Guide button in footer for returning users
+  - Full translations in EN, LV, RU with educational messaging
 
 ## User Preferences
 - Educational/approachable design (not dry/corporate)
