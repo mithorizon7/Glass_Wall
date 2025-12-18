@@ -429,9 +429,9 @@
     "protocolToggle": {
       "title": "The Critical Choice",
       "content": [
-        "This is where everything changes.",
-        "HTTP sends your data as plain text — readable by anyone observing the network. HTTPS encrypts your data before it leaves your device. To observers, your passwords and personal information become unreadable scrambled characters.",
-        "Soon, you'll toggle between these and see the difference with your own eyes. That moment sticks."
+        "HTTP sends your data as plain text — readable by anyone observing the network.",
+        "HTTPS encrypts your data before it leaves your device. To observers, your passwords and personal information become unreadable scrambled characters.",
+        "Toggle between these modes and watch what appears in the Wire View."
       ]
     },
 
@@ -448,8 +448,7 @@
       "title": "Watch Your Data Travel",
       "content": [
         "When you click \"Send Request,\" you'll watch your data travel from your browser to the server — step by step.",
-        "Pay close attention to what appears in the Wire View. With HTTP, you'll see your password in plain text. With HTTPS, you'll see encrypted gibberish.",
-        "This is the moment the lesson becomes real."
+        "Pay close attention to what appears in the Wire View. With HTTP, you'll see your password in plain text. With HTTPS, you'll see encrypted gibberish."
       ]
     },
 
@@ -482,9 +481,8 @@
     "ready": {
       "title": "You're Ready",
       "content": [
-        "Here's your first exploration: Make sure HTTP is selected (no encryption), then click \"Send Request\" and watch what appears in the Wire View — notice your password is visible.",
-        "Then switch to HTTPS and send again. See the difference.",
-        "That moment when readable text becomes encrypted scrambles — that's when this lesson sticks."
+        "Try this: Make sure HTTP is selected (no encryption), then click \"Send Request\" and watch what appears in the Wire View — notice your password is visible.",
+        "Then switch to HTTPS and send again. See the difference."
       ]
     }
   }

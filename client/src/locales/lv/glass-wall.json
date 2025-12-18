@@ -429,9 +429,9 @@
     "protocolToggle": {
       "title": "Kritiskā izvēle",
       "content": [
-        "Šeit viss mainās.",
-        "HTTP sūta jūsu datus kā vienkāršu tekstu — lasāmu ikvienam, kas novēro tīklu. HTTPS šifrē jūsu datus pirms tie atstāj jūsu ierīci. Novērotājiem jūsu paroles un personīgā informācija kļūst par nelasāmām sajauktām rakstzīmēm.",
-        "Drīz jūs pārslēgsieties starp šiem režīmiem un redzēsiet atšķirību ar savām acīm. Šis brīdis paliks atmiņā."
+        "HTTP sūta jūsu datus kā vienkāršu tekstu — lasāmu ikvienam, kas novēro tīklu.",
+        "HTTPS šifrē jūsu datus pirms tie atstāj jūsu ierīci. Novērotājiem jūsu paroles un personīgā informācija kļūst par nelasāmām sajauktām rakstzīmēm.",
+        "Pārslēdzieties starp šiem režīmiem un skatieties, kas parādās Tīkla skatā."
       ]
     },
 
@@ -448,8 +448,7 @@
       "title": "Skatieties, kā ceļo jūsu dati",
       "content": [
         "Kad nospiežat \"Sūtīt pieprasījumu\", jūs redzēsiet, kā jūsu dati ceļo no pārlūka uz serveri — soli pa solim.",
-        "Pievērsiet uzmanību tam, kas parādās Tīkla skatā. Ar HTTP jūs redzēsiet savu paroli vienkāršā tekstā. Ar HTTPS jūs redzēsiet šifrētu jucekli.",
-        "Šis ir brīdis, kad mācība kļūst reāla."
+        "Pievērsiet uzmanību tam, kas parādās Tīkla skatā. Ar HTTP jūs redzēsiet savu paroli vienkāršā tekstā. Ar HTTPS jūs redzēsiet šifrētu jucekli."
       ]
     },
 
@@ -482,9 +481,8 @@
     "ready": {
       "title": "Jūs esat gatavi",
       "content": [
-        "Lūk, jūsu pirmā izpēte: Pārliecinieties, ka ir izvēlēts HTTP (bez šifrēšanas), tad nospiediet \"Sūtīt pieprasījumu\" un skatieties, kas parādās Tīkla skatā — ievērojiet, ka jūsu parole ir redzama.",
-        "Tad pārslēdzieties uz HTTPS un sūtiet vēlreiz. Redziet atšķirību.",
-        "Tas brīdis, kad lasāms teksts kļūst par šifrētu jucekli — tad šī mācība paliek atmiņā."
+        "Pamēģiniet: Pārliecinieties, ka ir izvēlēts HTTP (bez šifrēšanas), tad nospiediet \"Sūtīt pieprasījumu\" un skatieties, kas parādās Tīkla skatā — ievērojiet, ka jūsu parole ir redzama.",
+        "Tad pārslēdzieties uz HTTPS un sūtiet vēlreiz. Redziet atšķirību."
       ]
     }
   }

@@ -41,7 +41,7 @@ export function ControlPanel({
     <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ${className}`}>
       <Card className="p-4" data-onboarding="protocol-toggle">
         <div className="flex items-center justify-between mb-3">
-          <Label className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+          <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
             {t("controls.protocol")}
             <Tooltip>
               <TooltipTrigger asChild>
@@ -83,7 +83,7 @@ export function ControlPanel({
 
       <Card className="p-4" data-onboarding="vpn-toggle">
         <div className="flex items-center justify-between mb-3">
-          <Label className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+          <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
             {t("controls.vpn")}
             <Tooltip>
               <TooltipTrigger asChild>
