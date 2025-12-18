@@ -53,7 +53,14 @@
     "title": "Tīkla skats",
     "subtitle": "Ko tīkls var novērot",
     "readyToObserve": "Gatavs novērošanai",
-    "readyToObserveHint": "Noklikšķiniet uz \"Sūtīt pieprasījumu\", lai redzētu, ko tīkla novērotāji varētu redzēt, kad iesniedzat pieteikšanās veidlapu."
+    "readyToObserveHint": "Noklikšķiniet uz \"Sūtīt pieprasījumu\", lai redzētu, ko tīkla novērotāji varētu redzēt, kad iesniedzat pieteikšanās veidlapu.",
+    "encrypted": "Šifrēts",
+    "plainText": "Vienkāršs teksts",
+    "browser": "Pārlūks",
+    "server": "Serveris",
+    "whatObserverSeesSecure": "Ko redz novērotājs: šifrēts juceklis",
+    "whatObserverSeesPlain": "Ko redz novērotājs: jūsu īstie dati",
+    "destinationVisible": "Galamērķis"
   },
   
   "metadata": {

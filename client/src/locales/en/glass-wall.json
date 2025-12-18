@@ -53,7 +53,14 @@
     "title": "Wire View",
     "subtitle": "What the network can observe",
     "readyToObserve": "Ready to observe",
-    "readyToObserveHint": "Click \"Send Request\" to see what network observers could see when you submit the login form."
+    "readyToObserveHint": "Click \"Send Request\" to see what network observers could see when you submit the login form.",
+    "encrypted": "Encrypted",
+    "plainText": "Plain text",
+    "browser": "Browser",
+    "server": "Server",
+    "whatObserverSeesSecure": "What an observer sees: encrypted gibberish",
+    "whatObserverSeesPlain": "What an observer sees: your actual data",
+    "destinationVisible": "Destination"
   },
   
   "metadata": {

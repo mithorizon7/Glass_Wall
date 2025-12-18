@@ -56,7 +56,7 @@ export interface DemoPayload {
   };
 }
 
-const DEMO_PAYLOAD: DemoPayload = {
+const DEFAULT_PAYLOAD: Omit<DemoPayload, 'body'> = {
   action: "POST /login",
   method: "POST",
   path: "/login",
@@ -66,10 +66,6 @@ const DEMO_PAYLOAD: DemoPayload = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
     "Accept": "application/json",
     "Host": "example-login.test",
-  },
-  body: {
-    username: "demo_user",
-    password: "not_a_real_password",
   },
 };
 
@@ -84,6 +80,13 @@ export default function GlassWall() {
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[0]);
+  const [username, setUsername] = useState("your_username");
+  const [password, setPassword] = useState("your_password");
+
+  const payload: DemoPayload = {
+    ...DEFAULT_PAYLOAD,
+    body: { username, password },
+  };
 
   const resetTimeline = useCallback(() => {
     setTimelineStage("idle");
@@ -227,7 +230,7 @@ export default function GlassWall() {
             </div>
             <div data-onboarding="learning-tools" className="flex items-center gap-3">
               <CheatSheetModal />
-              <ComparisonView payload={DEMO_PAYLOAD} vpnMode={vpnMode} />
+              <ComparisonView payload={payload} vpnMode={vpnMode} />
               <QuizMode />
             </div>
           </div>
@@ -344,8 +347,10 @@ export default function GlassWall() {
               </div>
             </div>
             <DemoLoginForm 
-              payload={DEMO_PAYLOAD}
+              payload={payload}
               protocolMode={protocolMode}
+              onUsernameChange={setUsername}
+              onPasswordChange={setPassword}
             />
           </Card>
 
@@ -388,7 +393,7 @@ export default function GlassWall() {
               stage={timelineStage}
               protocolMode={protocolMode}
               vpnMode={vpnMode}
-              payload={DEMO_PAYLOAD}
+              payload={payload}
               expandedNodes={expandedNodes}
               onToggleNode={toggleNodeExpansion}
               stepMode={stepMode}
@@ -398,9 +403,7 @@ export default function GlassWall() {
               stage={timelineStage}
               protocolMode={protocolMode}
               vpnMode={vpnMode}
-              payload={DEMO_PAYLOAD}
-              expandedNodes={expandedNodes}
-              onToggleNode={toggleNodeExpansion}
+              payload={payload}
             />
           </Card>
         </div>

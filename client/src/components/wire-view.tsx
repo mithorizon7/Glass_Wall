@@ -1,19 +1,8 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, Lock, Eye, EyeOff, AlertTriangle, ShieldCheck, Info } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Lock, Unlock, Eye, EyeOff, AlertTriangle, ShieldCheck, Monitor, Server, Wifi } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import type { TimelineStage, ProtocolMode, VpnMode, DemoPayload } from "@/pages/glass-wall";
 
 interface WireViewProps {
@@ -21,55 +10,109 @@ interface WireViewProps {
   protocolMode: ProtocolMode;
   vpnMode: VpnMode;
   payload: DemoPayload;
-  expandedNodes: Set<string>;
-  onToggleNode: (nodeId: string) => void;
 }
 
-function generateCiphertext(length: number): string {
+function generateCiphertext(text: string): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
   let result = "";
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < text.length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;
 }
 
-const CIPHERTEXT_BLOCKS = {
-  headers: generateCiphertext(48),
-  body: generateCiphertext(64),
-  response: generateCiphertext(32),
-};
-
-export function WireView({
+function DataPacket({ 
+  username, 
+  password, 
+  isSecure,
   stage,
-  protocolMode,
-  vpnMode,
-  payload,
-  expandedNodes,
-  onToggleNode,
-}: WireViewProps) {
+  isVisible
+}: { 
+  username: string; 
+  password: string; 
+  isSecure: boolean;
+  stage: TimelineStage;
+  isVisible: boolean;
+}) {
+  const { t } = useTranslation("glassWall");
+  
+  const encryptedUsername = useMemo(() => generateCiphertext(username), [username]);
+  const encryptedPassword = useMemo(() => generateCiphertext(password), [password]);
+
+  if (!isVisible) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      className={`rounded-lg p-3 font-mono text-xs border-2 max-w-[200px] ${
+        isSecure 
+          ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/40" 
+          : "bg-[hsl(var(--http-danger))]/10 border-[hsl(var(--http-danger))]/40"
+      }`}
+    >
+      {isSecure ? (
+        <div className="space-y-1">
+          <div className="flex items-center gap-1 text-[hsl(var(--https-success))] mb-2">
+            <Lock className="w-3 h-3" />
+            <span className="text-[10px] font-medium">{t("wireView.encrypted")}</span>
+          </div>
+          <div className="text-muted-foreground break-all leading-tight opacity-70">
+            {encryptedUsername}
+          </div>
+          <div className="text-muted-foreground break-all leading-tight opacity-70">
+            {encryptedPassword}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-1">
+          <div className="flex items-center gap-1 text-[hsl(var(--http-danger))] mb-2">
+            <AlertTriangle className="w-3 h-3" />
+            <span className="text-[10px] font-medium">{t("wireView.plainText")}</span>
+          </div>
+          <div className="flex gap-1">
+            <span className="text-muted-foreground">user:</span>
+            <span className="text-foreground font-semibold" data-testid="text-wire-username">{username}</span>
+          </div>
+          <div className="flex gap-1">
+            <span className="text-muted-foreground">pass:</span>
+            <span className="text-[hsl(var(--http-danger))] font-semibold" data-testid="text-wire-password">{password}</span>
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProps) {
   const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
-  const showHandshake = isSecure && (stage === "handshake" || stage === "request" || stage === "response" || stage === "complete");
+  const isActive = stage !== "idle";
   const showRequest = stage === "request" || stage === "response" || stage === "complete";
   const showResponse = stage === "response" || stage === "complete";
+  const showHandshake = isSecure && (stage === "handshake" || showRequest);
 
-  const visibleMetadata = useMemo(() => ({
-    destination: payload.domain,
-    connectionType: vpnMode === "on" ? t("metadata.connectionVpn") : t("metadata.connectionDirect"),
-    tlsVersion: isSecure ? "TLS 1.3" : t("metadata.encryptionNone"),
-  }), [payload.domain, vpnMode, isSecure, t]);
+  const getPacketPosition = () => {
+    if (stage === "connect" || stage === "handshake") return 0;
+    if (stage === "request") return 1;
+    if (stage === "response" || stage === "complete") return 2;
+    return -1;
+  };
+
+  const packetPosition = getPacketPosition();
 
   if (stage === "idle") {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
-          <Eye className="w-8 h-8 text-muted-foreground" />
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mb-3">
+          <Eye className="w-6 h-6 text-muted-foreground" />
         </div>
-        <h3 className="text-lg font-medium text-foreground mb-2">
+        <h3 className="text-base font-medium text-foreground mb-1">
           {t("wireView.readyToObserve")}
         </h3>
-        <p className="text-sm text-muted-foreground max-w-sm">
+        <p className="text-sm text-muted-foreground max-w-xs">
           {t("wireView.readyToObserveHint")}
         </p>
       </div>
@@ -78,333 +121,167 @@ export function WireView({
 
   return (
     <div className="space-y-4 animate-fade-in">
-      <Collapsible
-        open={expandedNodes.has("metadata")}
-        onOpenChange={() => onToggleNode("metadata")}
-      >
-        <CollapsibleTrigger asChild>
-          <Button 
-            variant="ghost" 
-            className="w-full justify-between p-4 h-auto"
-            data-testid="button-expand-metadata"
-          >
-            <div className="flex items-center gap-3">
-              <Badge variant="secondary">{t("metadata.title")}</Badge>
-              <span className="text-sm text-muted-foreground">
-                {t("metadata.alwaysVisible")}
-              </span>
+      <div className="relative">
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex flex-col items-center gap-1">
+            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+              isActive ? "bg-primary/10" : "bg-muted/30"
+            }`}>
+              <Monitor className={`w-6 h-6 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
             </div>
-            {expandedNodes.has("metadata") ? (
-              <ChevronDown className="w-4 h-4 text-muted-foreground" />
-            ) : (
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            )}
-          </Button>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <div className="px-4 pb-4">
-            <div className="bg-muted/30 rounded-lg p-4 font-mono text-sm space-y-2">
-              <div className="flex items-start gap-2">
-                <span className="text-muted-foreground shrink-0">{t("metadata.destination")}:</span>
-                <span className="text-foreground">{visibleMetadata.destination}</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-muted-foreground shrink-0">{t("metadata.connection")}:</span>
-                <span className={vpnMode === "on" ? "text-[hsl(var(--vpn-tunnel))]" : "text-foreground"}>
-                  {visibleMetadata.connectionType}
-                </span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-muted-foreground shrink-0">{t("metadata.encryption")}:</span>
-                <span className={isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"}>
-                  {visibleMetadata.tlsVersion}
-                </span>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2 italic">
-              {t("metadata.metadataNote")}
-            </p>
+            <span className="text-xs text-muted-foreground">{t("wireView.browser")}</span>
           </div>
-        </CollapsibleContent>
-      </Collapsible>
 
-      {showHandshake && (
-        <Collapsible
-          open={expandedNodes.has("handshake")}
-          onOpenChange={() => onToggleNode("handshake")}
-        >
-          <CollapsibleTrigger asChild>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-between p-4 h-auto"
-              data-testid="button-expand-handshake"
-            >
-              <div className="flex items-center gap-3">
-                <Badge 
-                  variant="outline"
-                  className="border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]"
-                >
-                  {t("handshake.title")}
-                </Badge>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="text-sm text-muted-foreground flex items-center gap-1 cursor-help">
-                      {t("handshake.encryptionEstablished")}
-                      <Info className="w-3 h-3" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t("handshake.tooltip")}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              {expandedNodes.has("handshake") ? (
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-              ) : (
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="px-4 pb-4 animate-fade-in">
-              <div className="bg-[hsl(var(--https-success))]/5 border border-[hsl(var(--https-success))]/20 rounded-lg p-4 space-y-3">
-                <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
-                  <ShieldCheck className="w-5 h-5" />
-                  <span className="font-medium">{t("handshake.handshakeComplete")}</span>
-                </div>
-                <div className="font-mono text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground/60">1.</span>
-                    <span>{t("handshake.step1")}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground/60">2.</span>
-                    <span>{t("handshake.step2")}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground/60">3.</span>
-                    <span>{t("handshake.step3")}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground/60">4.</span>
-                    <span>{t("handshake.step4")}</span>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground italic">
-                  {t("handshake.observersNote")}
-                </p>
-              </div>
+          <div className="flex-1 flex items-center justify-center relative h-24">
+            <div className={`absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full transition-colors ${
+              isSecure 
+                ? "bg-[hsl(var(--https-success))]/20" 
+                : "bg-[hsl(var(--http-danger))]/20"
+            }`}>
+              <motion.div
+                className={`h-full rounded-full ${
+                  isSecure 
+                    ? "bg-[hsl(var(--https-success))]" 
+                    : "bg-[hsl(var(--http-danger))]"
+                }`}
+                initial={{ width: "0%" }}
+                animate={{ 
+                  width: stage === "connect" ? "25%" : 
+                         stage === "handshake" ? "40%" : 
+                         stage === "request" ? "70%" : 
+                         stage === "response" || stage === "complete" ? "100%" : "0%"
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              />
             </div>
-          </CollapsibleContent>
-        </Collapsible>
-      )}
 
-      {showRequest && (
-        <Collapsible
-          open={expandedNodes.has("request")}
-          onOpenChange={() => onToggleNode("request")}
-        >
-          <CollapsibleTrigger asChild>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-between p-4 h-auto"
-              data-testid="button-expand-request"
-            >
-              <div className="flex items-center gap-3">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Badge 
-                      variant="outline"
-                      className={`cursor-help ${isSecure 
-                        ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]" 
-                        : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
-                      }`}
-                    >
-                      {t("request.title")}
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t("request.tooltip")}</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="text-sm text-muted-foreground cursor-help flex items-center gap-1">
-                      {isSecure ? t("request.encryptedPayload") : t("request.plainTextVisible")}
-                      <Info className="w-3 h-3" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{isSecure 
-                      ? t("request.tooltipEncrypted")
-                      : t("request.tooltipPlainText")
-                    }</p>
-                  </TooltipContent>
-                </Tooltip>
-                {!isSecure && (
-                  <AlertTriangle className="w-4 h-4 text-[hsl(var(--http-danger))]" />
+            {vpnMode === "on" && (
+              <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 h-8 border-2 border-dashed border-[hsl(var(--vpn-tunnel))]/40 rounded-full flex items-center justify-center">
+                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-background px-2">VPN</span>
+              </div>
+            )}
+
+            <AnimatePresence mode="wait">
+              {showRequest && (
+                <motion.div
+                  key="packet"
+                  className="absolute z-10"
+                  initial={{ left: "10%", opacity: 0 }}
+                  animate={{ 
+                    left: packetPosition === 1 ? "40%" : packetPosition === 2 ? "70%" : "10%",
+                    opacity: 1
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  style={{ top: "50%", transform: "translate(-50%, -50%)" }}
+                >
+                  <DataPacket
+                    username={payload.body.username}
+                    password={payload.body.password}
+                    isSecure={isSecure}
+                    stage={stage}
+                    isVisible={true}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-2 pointer-events-none">
+              {showHandshake && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute left-1/4 -translate-x-1/2 -top-10"
+                >
+                  <Badge 
+                    variant="outline" 
+                    className="text-[10px] border-[hsl(var(--https-success))]/50 text-[hsl(var(--https-success))] bg-background"
+                  >
+                    <ShieldCheck className="w-3 h-3 mr-1" />
+                    TLS
+                  </Badge>
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {vpnMode === "on" && (
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-10 h-10 rounded-lg bg-[hsl(var(--vpn-tunnel))]/10 flex items-center justify-center">
+                  <Wifi className="w-5 h-5 text-[hsl(var(--vpn-tunnel))]" />
+                </div>
+                <span className="text-[10px] text-muted-foreground">VPN</span>
+              </div>
+            )}
+            <div className="flex flex-col items-center gap-1">
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                showResponse ? (isSecure ? "bg-[hsl(var(--https-success))]/10" : "bg-[hsl(var(--http-danger))]/10") : "bg-muted/30"
+              }`}>
+                <Server className={`w-6 h-6 ${
+                  showResponse 
+                    ? (isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]")
+                    : "text-muted-foreground"
+                }`} />
+              </div>
+              <span className="text-xs text-muted-foreground">{t("wireView.server")}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={`p-4 rounded-lg border transition-colors ${
+        isSecure 
+          ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20" 
+          : "bg-[hsl(var(--http-danger))]/5 border-[hsl(var(--http-danger))]/20"
+      }`}>
+        <div className="flex items-start gap-3">
+          {isSecure ? (
+            <EyeOff className="w-5 h-5 text-[hsl(var(--https-success))] shrink-0 mt-0.5" />
+          ) : (
+            <Eye className="w-5 h-5 text-[hsl(var(--http-danger))] shrink-0 mt-0.5" />
+          )}
+          <div className="flex-1 min-w-0">
+            <p className={`text-sm font-medium mb-2 ${
+              isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
+            }`}>
+              {isSecure ? t("wireView.whatObserverSeesSecure") : t("wireView.whatObserverSeesPlain")}
+            </p>
+            
+            {showRequest && (
+              <div className="font-mono text-xs space-y-1 bg-background/50 rounded p-3">
+                {isSecure ? (
+                  <div className="text-muted-foreground">
+                    <div className="opacity-60">{t("wireView.destinationVisible")}: {payload.domain}</div>
+                    <div className="mt-2 break-all opacity-40">
+                      {generateCiphertext(payload.body.username + payload.body.password + "additional_encrypted_data")}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-muted-foreground">POST /login HTTP/1.1</div>
+                    <div className="text-muted-foreground">Host: {payload.domain}</div>
+                    <div className="mt-2">
+                      <span className="text-muted-foreground">username: </span>
+                      <span className="text-foreground font-semibold">{payload.body.username}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">password: </span>
+                      <span className="text-[hsl(var(--http-danger))] font-semibold">{payload.body.password}</span>
+                    </div>
+                  </>
                 )}
               </div>
-              {expandedNodes.has("request") ? (
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-              ) : (
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="px-4 pb-4 animate-fade-in">
-              {isSecure ? (
-                <div className="space-y-3">
-                  <div className="bg-muted/30 rounded-lg p-4 relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
-                      <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
-                        <Lock className="w-5 h-5" />
-                        <span className="font-medium">{t("request.encryptedPayload")}</span>
-                      </div>
-                    </div>
-                    <pre className="font-mono text-xs text-muted-foreground opacity-50 blur-[2px] select-none">
-{`POST /login HTTP/1.1
-Content-Type: application/json
-
-{
-  "username": "${payload.body.username}",
-  "password": "${payload.body.password}"
-}`}
-                    </pre>
-                  </div>
-                  <p className="text-xs text-muted-foreground italic flex items-center gap-2">
-                    <EyeOff className="w-3 h-3" />
-                    {t("request.encryptedNote")}
-                  </p>
-                  <p className="text-xs text-muted-foreground/70 italic">
-                    {t("request.ciphertextDisclaimer")}
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="bg-[hsl(var(--http-danger))]/5 border border-[hsl(var(--http-danger))]/20 rounded-lg p-4">
-                    <pre className="font-mono text-xs text-foreground whitespace-pre-wrap" data-testid="text-request-body">
-{`POST /login HTTP/1.1
-Host: ${payload.domain}
-Content-Type: ${payload.headers["Content-Type"]}
-User-Agent: ${payload.headers["User-Agent"]}
-
-{
-  "username": "${payload.body.username}",
-  "password": "${payload.body.password}"
-}`}
-                    </pre>
-                  </div>
-                  <p className="text-xs text-[hsl(var(--http-danger))] italic flex items-center gap-2">
-                    <Eye className="w-3 h-3" />
-                    {t("request.plainTextWarning")}
-                  </p>
-                </div>
-              )}
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-      )}
-
-      {showResponse && (
-        <Collapsible
-          open={expandedNodes.has("response")}
-          onOpenChange={() => onToggleNode("response")}
-        >
-          <CollapsibleTrigger asChild>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-between p-4 h-auto"
-              data-testid="button-expand-response"
-            >
-              <div className="flex items-center gap-3">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Badge 
-                      variant="outline"
-                      className={`cursor-help ${isSecure 
-                        ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]" 
-                        : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
-                      }`}
-                    >
-                      {t("response.title")}
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{t("response.tooltip")}</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="text-sm text-muted-foreground cursor-help flex items-center gap-1">
-                      {isSecure ? t("response.encryptedResponse") : t("response.plainTextResponse")}
-                      <Info className="w-3 h-3" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{isSecure 
-                      ? t("response.tooltipEncrypted")
-                      : t("response.tooltipPlainText")
-                    }</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              {expandedNodes.has("response") ? (
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-              ) : (
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="px-4 pb-4 animate-fade-in">
-              {isSecure ? (
-                <div className="space-y-3">
-                  <div className="bg-muted/30 rounded-lg p-4 relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
-                      <div className="flex items-center gap-2 text-[hsl(var(--https-success))]">
-                        <Lock className="w-5 h-5" />
-                        <span className="font-medium">{t("response.encryptedResponse")}</span>
-                      </div>
-                    </div>
-                    <pre className="font-mono text-xs text-muted-foreground opacity-50 blur-[2px] select-none">
-{`HTTP/1.1 200 OK
-Set-Cookie: session=abc123xyz
-
-{ "success": true, "token": "jwt..." }`}
-                    </pre>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="bg-[hsl(var(--http-danger))]/5 border border-[hsl(var(--http-danger))]/20 rounded-lg p-4">
-                    <pre className="font-mono text-xs text-foreground whitespace-pre-wrap" data-testid="text-response-body">
-{`HTTP/1.1 200 OK
-Set-Cookie: session=abc123xyz789def
-Content-Type: application/json
-
-{
-  "success": true,
-  "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5..."
-}`}
-                    </pre>
-                  </div>
-                  <p className="text-xs text-[hsl(var(--http-danger))] italic flex items-center gap-2">
-                    <Eye className="w-3 h-3" />
-                    {t("response.sessionWarning")}
-                  </p>
-                </div>
-              )}
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-      )}
+            )}
+          </div>
+        </div>
+      </div>
 
       {stage === "complete" && (
-        <div 
-          className={`mt-4 p-4 rounded-lg border ${
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-4 rounded-lg border ${
             isSecure 
               ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/30" 
               : "bg-[hsl(var(--http-danger))]/10 border-[hsl(var(--http-danger))]/30"
@@ -422,7 +299,7 @@ Content-Type: application/json
               : t("summary.exposedMessage")
             }
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );

@@ -10,9 +10,11 @@ import type { DemoPayload, ProtocolMode } from "@/pages/glass-wall";
 interface DemoLoginFormProps {
   payload: DemoPayload;
   protocolMode: ProtocolMode;
+  onUsernameChange: (value: string) => void;
+  onPasswordChange: (value: string) => void;
 }
 
-export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
+export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPasswordChange }: DemoLoginFormProps) {
   const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
   
@@ -59,8 +61,9 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
               id="demo-username"
               type="text"
               value={payload.body.username}
-              readOnly
-              className="bg-background/50 font-mono"
+              onChange={(e) => onUsernameChange(e.target.value)}
+              className="bg-background font-mono"
+              placeholder="Enter username"
               data-testid="input-demo-username"
             />
           </div>
@@ -73,8 +76,9 @@ export function DemoLoginForm({ payload, protocolMode }: DemoLoginFormProps) {
               id="demo-password"
               type="password"
               value={payload.body.password}
-              readOnly
-              className="bg-background/50 font-mono"
+              onChange={(e) => onPasswordChange(e.target.value)}
+              className="bg-background font-mono"
+              placeholder="Enter password"
               data-testid="input-demo-password"
             />
           </div>
