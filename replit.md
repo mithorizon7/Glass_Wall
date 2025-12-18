@@ -93,6 +93,13 @@ client/src/
   - LocalStorage persistence (`glassWall_onboardingCompleted`) so users only see once
   - Restart Guide button in footer for returning users
   - Full translations in EN, LV, RU with educational messaging
+  - **Robustness Improvements:**
+    - `useTourTarget` hook with ResizeObserver for robust element tracking
+    - Smart card positioning via `computeCardPosition` with viewport edge detection
+    - SSR-safe `useViewportSize` hook (defers window access to useEffect)
+    - CleanupRef pattern prevents observer/listener memory leaks
+    - Scroll lock during tour with scrollbar width compensation
+    - SVG animation guards prevent undefined attribute errors
 
 ## User Preferences
 - Educational/approachable design (not dry/corporate)
