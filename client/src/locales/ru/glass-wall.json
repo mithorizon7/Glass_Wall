@@ -60,7 +60,9 @@
     "server": "Сервер",
     "whatObserverSeesSecure": "Что видит наблюдатель: зашифрованная абракадабра",
     "whatObserverSeesPlain": "Что видит наблюдатель: ваши реальные данные",
-    "destinationVisible": "Назначение"
+    "destinationVisible": "Назначение",
+    "tlsRecord": "Заголовок записи TLS",
+    "encryptedPayload": "Зашифрованные данные (hex дамп)"
   },
   
   "metadata": {

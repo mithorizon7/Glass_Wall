@@ -60,7 +60,9 @@
     "server": "Server",
     "whatObserverSeesSecure": "What an observer sees: encrypted gibberish",
     "whatObserverSeesPlain": "What an observer sees: your actual data",
-    "destinationVisible": "Destination"
+    "destinationVisible": "Destination",
+    "tlsRecord": "TLS Record Header",
+    "encryptedPayload": "Encrypted Data (hex dump)"
   },
   
   "metadata": {

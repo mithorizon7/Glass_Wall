@@ -60,7 +60,9 @@
     "server": "Serveris",
     "whatObserverSeesSecure": "Ko redz novērotājs: šifrēts juceklis",
     "whatObserverSeesPlain": "Ko redz novērotājs: jūsu īstie dati",
-    "destinationVisible": "Galamērķis"
+    "destinationVisible": "Galamērķis",
+    "tlsRecord": "TLS ieraksta galvene",
+    "encryptedPayload": "Šifrēti dati (hex izgāztne)"
   },
   
   "metadata": {
