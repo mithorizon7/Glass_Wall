@@ -20,6 +20,9 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 const STORAGE_KEY = "glassWall_onboardingCompleted";
+const SPOTLIGHT_PADDING = 12;
+const CARD_MARGIN = 16;
+const SCROLL_MARGIN = 100;
 
 function getStorageValue(key: string): string | null {
   if (typeof window === "undefined") return null;
@@ -46,6 +49,12 @@ interface SpotlightRect {
   height: number;
 }
 
+interface CardPosition {
+  top: number;
+  left: number;
+  placement: "top" | "bottom" | "left" | "right";
+}
+
 interface GuidedLearningStep {
   id: string;
   targetSelector: string | null;
@@ -66,13 +75,266 @@ const STEPS: GuidedLearningStep[] = [
   { id: "ready", targetSelector: null, icon: <Rocket className="w-6 h-6" />, position: "center" },
 ];
 
+function computeCardPosition(
+  spotlightRect: SpotlightRect | null,
+  cardWidth: number,
+  cardHeight: number,
+  viewportWidth: number,
+  viewportHeight: number
+): CardPosition | null {
+  if (!spotlightRect || viewportWidth === 0 || viewportHeight === 0) return null;
+
+  const spotlightCenterX = spotlightRect.left + spotlightRect.width / 2;
+  const spotlightCenterY = spotlightRect.top + spotlightRect.height / 2;
+
+  const spaceAbove = spotlightRect.top - SCROLL_MARGIN;
+  const spaceBelow = viewportHeight - (spotlightRect.top + spotlightRect.height) - SCROLL_MARGIN;
+  const spaceLeft = spotlightRect.left - CARD_MARGIN;
+  const spaceRight = viewportWidth - (spotlightRect.left + spotlightRect.width) - CARD_MARGIN;
+
+  let placement: "top" | "bottom" | "left" | "right" = "bottom";
+  let top = 0;
+  let left = 0;
+
+  // Prefer bottom, then top, then sides
+  if (spaceBelow >= cardHeight + CARD_MARGIN) {
+    placement = "bottom";
+    top = spotlightRect.top + spotlightRect.height + CARD_MARGIN;
+    left = Math.max(CARD_MARGIN, Math.min(spotlightCenterX - cardWidth / 2, viewportWidth - cardWidth - CARD_MARGIN));
+  } else if (spaceAbove >= cardHeight + CARD_MARGIN) {
+    placement = "top";
+    top = spotlightRect.top - cardHeight - CARD_MARGIN;
+    left = Math.max(CARD_MARGIN, Math.min(spotlightCenterX - cardWidth / 2, viewportWidth - cardWidth - CARD_MARGIN));
+  } else if (spaceRight >= cardWidth + CARD_MARGIN) {
+    placement = "right";
+    left = spotlightRect.left + spotlightRect.width + CARD_MARGIN;
+    top = Math.max(CARD_MARGIN, Math.min(spotlightCenterY - cardHeight / 2, viewportHeight - cardHeight - CARD_MARGIN));
+  } else if (spaceLeft >= cardWidth + CARD_MARGIN) {
+    placement = "left";
+    left = spotlightRect.left - cardWidth - CARD_MARGIN;
+    top = Math.max(CARD_MARGIN, Math.min(spotlightCenterY - cardHeight / 2, viewportHeight - cardHeight - CARD_MARGIN));
+  } else {
+    // Fallback: position at bottom of viewport
+    placement = "bottom";
+    top = viewportHeight - cardHeight - CARD_MARGIN * 2;
+    left = Math.max(CARD_MARGIN, (viewportWidth - cardWidth) / 2);
+  }
+
+  return { top, left, placement };
+}
+
+function useTourTarget(
+  selector: string | null,
+  isActive: boolean
+): { rect: SpotlightRect | null; isReady: boolean } {
+  const [rect, setRect] = useState<SpotlightRect | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const cleanupRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    // Cleanup any previous observers
+    if (cleanupRef.current) {
+      cleanupRef.current();
+      cleanupRef.current = null;
+    }
+
+    if (!isActive || !selector) {
+      setRect(null);
+      setIsReady(true);
+      return;
+    }
+
+    if (typeof window === "undefined") {
+      setIsReady(true);
+      return;
+    }
+
+    setIsReady(false);
+    let cancelled = false;
+    let element: Element | null = null;
+    let resizeObserver: ResizeObserver | null = null;
+    let rafId: number | null = null;
+    let scrollTimeout: number | null = null;
+
+    const updateRect = () => {
+      if (cancelled || !element) return;
+      
+      const domRect = element.getBoundingClientRect();
+      setRect({
+        top: domRect.top - SPOTLIGHT_PADDING,
+        left: domRect.left - SPOTLIGHT_PADDING,
+        width: domRect.width + SPOTLIGHT_PADDING * 2,
+        height: domRect.height + SPOTLIGHT_PADDING * 2,
+      });
+      setIsReady(true);
+    };
+
+    const scheduleUpdate = () => {
+      if (cancelled) return;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateRect);
+    };
+
+    const handleScroll = () => scheduleUpdate();
+
+    const setupObservers = (el: Element) => {
+      element = el;
+
+      // Scroll element into view first
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
+
+      // Initial measurement after scroll settles
+      scrollTimeout = window.setTimeout(() => {
+        if (!cancelled) updateRect();
+      }, 400);
+
+      // ResizeObserver for size changes
+      resizeObserver = new ResizeObserver(() => {
+        if (!cancelled) scheduleUpdate();
+      });
+      resizeObserver.observe(el);
+
+      // Scroll/resize handlers
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener("resize", handleScroll, { passive: true });
+    };
+
+    const cleanup = () => {
+      cancelled = true;
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (resizeObserver) resizeObserver.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+
+    cleanupRef.current = cleanup;
+
+    // Find element with retry for async rendering
+    const foundElement = document.querySelector(selector);
+    if (foundElement) {
+      setupObservers(foundElement);
+    } else {
+      // Retry for dynamically rendered elements
+      let attempts = 0;
+      const maxAttempts = 10;
+      const retryInterval = setInterval(() => {
+        if (cancelled) {
+          clearInterval(retryInterval);
+          return;
+        }
+        attempts++;
+        const el = document.querySelector(selector);
+        if (el) {
+          clearInterval(retryInterval);
+          setupObservers(el);
+        } else if (attempts >= maxAttempts) {
+          clearInterval(retryInterval);
+          setIsReady(true);
+        }
+      }, 50);
+
+      // Store interval cleanup in the main cleanup
+      const originalCleanup = cleanup;
+      cleanupRef.current = () => {
+        clearInterval(retryInterval);
+        originalCleanup();
+      };
+    }
+
+    return () => {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = null;
+      }
+    };
+  }, [selector, isActive]);
+
+  return { rect, isReady };
+}
+
+function useViewportSize() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const updateSize = () => {
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    updateSize();
+    window.addEventListener("resize", updateSize, { passive: true });
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return size;
+}
+
 export function GuidedLearningOverlay() {
   const { t } = useTranslation("glassWall");
   const [isVisible, setIsVisible] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [spotlightRect, setSpotlightRect] = useState<SpotlightRect | null>(null);
+  const [cardDimensions, setCardDimensions] = useState({ width: 400, height: 300 });
   const cardRef = useRef<HTMLDivElement>(null);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
+
+  const step = STEPS[currentStep];
+  const isIntroOrReady = step.position === "center";
+
+  const { rect: spotlightRect, isReady } = useTourTarget(
+    step.targetSelector,
+    isVisible && !isIntroOrReady
+  );
+
+  const viewport = useViewportSize();
+
+  // Lock body scroll when overlay is visible
+  useEffect(() => {
+    if (!isVisible) return;
+    if (typeof window === "undefined") return;
+    
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    
+    // Calculate scrollbar width to prevent layout shift
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+    };
+  }, [isVisible]);
+
+  // Measure card dimensions for positioning
+  useEffect(() => {
+    if (cardRef.current) {
+      const { width, height } = cardRef.current.getBoundingClientRect();
+      if (width > 0 && height > 0) {
+        setCardDimensions({ width, height });
+      }
+    }
+  }, [currentStep, isVisible]);
+
+  // Calculate card position based on spotlight (SSR-safe)
+  const cardPosition = (!isIntroOrReady && spotlightRect && viewport.width > 0)
+    ? computeCardPosition(
+        spotlightRect,
+        cardDimensions.width,
+        cardDimensions.height,
+        viewport.width,
+        viewport.height
+      )
+    : null;
 
   useEffect(() => {
     const completed = getStorageValue(STORAGE_KEY);
@@ -83,61 +345,10 @@ export function GuidedLearningOverlay() {
   }, []);
 
   useEffect(() => {
-    if (isVisible && nextButtonRef.current) {
+    if (isVisible && nextButtonRef.current && isReady) {
       nextButtonRef.current.focus();
     }
-  }, [isVisible, currentStep]);
-
-  const updateSpotlight = useCallback(() => {
-    const step = STEPS[currentStep];
-    if (!step.targetSelector) {
-      setSpotlightRect(null);
-      return;
-    }
-
-    const element = document.querySelector(step.targetSelector);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-      
-      setTimeout(() => {
-        const rect = element.getBoundingClientRect();
-        const padding = 12;
-        setSpotlightRect({
-          top: rect.top - padding + window.scrollY,
-          left: rect.left - padding,
-          width: rect.width + padding * 2,
-          height: rect.height + padding * 2,
-        });
-      }, 350);
-    }
-  }, [currentStep]);
-
-  useEffect(() => {
-    if (isVisible) {
-      const timer = setTimeout(updateSpotlight, 100);
-      const handleResize = () => {
-        const step = STEPS[currentStep];
-        if (step.targetSelector) {
-          const element = document.querySelector(step.targetSelector);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            const padding = 12;
-            setSpotlightRect({
-              top: rect.top - padding + window.scrollY,
-              left: rect.left - padding,
-              width: rect.width + padding * 2,
-              height: rect.height + padding * 2,
-            });
-          }
-        }
-      };
-      window.addEventListener("resize", handleResize);
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener("resize", handleResize);
-      };
-    }
-  }, [isVisible, updateSpotlight, currentStep]);
+  }, [isVisible, currentStep, isReady]);
 
   const handleNext = useCallback(() => {
     if (currentStep < STEPS.length - 1) {
@@ -200,8 +411,7 @@ export function GuidedLearningOverlay() {
 
   if (!isVisible) return null;
 
-  const step = STEPS[currentStep];
-  const isIntroOrReady = step.position === "center";
+  const showSpotlight = !isIntroOrReady && spotlightRect && isReady;
 
   return (
     <AnimatePresence>
@@ -232,12 +442,17 @@ export function GuidedLearningOverlay() {
               <defs>
                 <mask id="spotlight-mask">
                   <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                  {spotlightRect && (
-                    <rect
-                      x={spotlightRect.left}
-                      y={spotlightRect.top}
-                      width={spotlightRect.width}
-                      height={spotlightRect.height}
+                  {showSpotlight && spotlightRect.width > 0 && spotlightRect.height > 0 && (
+                    <motion.rect
+                      initial={{ opacity: 0, x: 0, y: 0, width: 100, height: 100 }}
+                      animate={{ 
+                        x: spotlightRect.left ?? 0,
+                        y: spotlightRect.top ?? 0,
+                        width: spotlightRect.width ?? 100,
+                        height: spotlightRect.height ?? 100,
+                        opacity: 1
+                      }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                       rx="12"
                       fill="black"
                     />
@@ -253,30 +468,57 @@ export function GuidedLearningOverlay() {
                 mask="url(#spotlight-mask)"
               />
             </svg>
-            {spotlightRect && (
-              <div
-                className="absolute rounded-xl ring-4 ring-primary/50 ring-offset-2 ring-offset-transparent"
-                style={{
-                  top: spotlightRect.top,
-                  left: spotlightRect.left,
-                  width: spotlightRect.width,
-                  height: spotlightRect.height,
-                  pointerEvents: "none",
+            {showSpotlight && spotlightRect.width > 0 && spotlightRect.height > 0 && (
+              <motion.div
+                initial={{ opacity: 0, top: 0, left: 0, width: 100, height: 100 }}
+                animate={{ 
+                  top: spotlightRect.top ?? 0,
+                  left: spotlightRect.left ?? 0,
+                  width: spotlightRect.width ?? 100,
+                  height: spotlightRect.height ?? 100,
+                  opacity: 1
                 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute rounded-xl ring-4 ring-primary/50 ring-offset-2 ring-offset-transparent"
+                style={{ pointerEvents: "none" }}
                 aria-hidden="true"
               />
             )}
           </>
         )}
 
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[10000] w-[90vw] max-w-md">
+        {/* Card Container - either centered or positioned near spotlight */}
+        <div 
+          className={
+            isIntroOrReady 
+              ? "fixed inset-0 flex items-center justify-center p-4 z-[10000]"
+              : "fixed z-[10000]"
+          }
+          style={
+            !isIntroOrReady && cardPosition
+              ? {
+                  top: cardPosition.top,
+                  left: cardPosition.left,
+                  maxWidth: "calc(100vw - 32px)",
+                }
+              : !isIntroOrReady
+              ? {
+                  bottom: CARD_MARGIN * 2,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  maxWidth: "calc(100vw - 32px)",
+                }
+              : undefined
+          }
+        >
           <motion.div
             ref={cardRef}
             key={currentStep}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="w-full max-w-md"
           >
             <Card className="p-6 shadow-2xl border-primary/20 bg-card/95 backdrop-blur-md">
               <div className="flex items-start justify-between mb-4 gap-2">
