@@ -264,36 +264,51 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
             </p>
             
             {showRequest && (
-              <div className="font-mono text-xs space-y-1 bg-background/50 rounded p-3">
-                {isSecure ? (
-                  <div className="text-muted-foreground space-y-2">
-                    <div className="opacity-70">
-                      <span className="text-[hsl(var(--https-success))]">{t("wireView.destinationVisible")}:</span> {payload.domain}
+              <div className="space-y-3">
+                <div className="font-mono text-xs space-y-1 bg-background/50 rounded p-3">
+                  {isSecure ? (
+                    <div className="text-muted-foreground space-y-2">
+                      <div className="opacity-70">
+                        <span className="text-[hsl(var(--https-success))]">{t("wireView.destinationVisible")}:</span> {payload.domain}
+                      </div>
+                      <div className="border-t border-border/30 pt-2">
+                        <div className="text-[10px] opacity-50 mb-1">{t("wireView.tlsRecord")}:</div>
+                        <div className="opacity-50 text-[10px]">{generateTlsRecord(payload.body.username + payload.body.password)}</div>
+                      </div>
+                      <div className="border-t border-border/30 pt-2">
+                        <div className="text-[10px] opacity-50 mb-1">{t("wireView.encryptedPayload")}:</div>
+                        {generateHexDump(payload.body.username + payload.body.password + payload.domain, 4).map((line, i) => (
+                          <div key={i} className="opacity-40 text-[10px] whitespace-nowrap">{line}</div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="border-t border-border/30 pt-2">
-                      <div className="text-[10px] opacity-50 mb-1">{t("wireView.tlsRecord")}:</div>
-                      <div className="opacity-50 text-[10px]">{generateTlsRecord(payload.body.username + payload.body.password)}</div>
-                    </div>
-                    <div className="border-t border-border/30 pt-2">
-                      <div className="text-[10px] opacity-50 mb-1">{t("wireView.encryptedPayload")}:</div>
-                      {generateHexDump(payload.body.username + payload.body.password + payload.domain, 4).map((line, i) => (
-                        <div key={i} className="opacity-40 text-[10px] whitespace-nowrap">{line}</div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="text-muted-foreground">POST /login HTTP/1.1</div>
-                    <div className="text-muted-foreground">Host: {payload.domain}</div>
-                    <div className="text-muted-foreground">Content-Type: application/x-www-form-urlencoded</div>
-                    <div className="border-t border-border/30 mt-2 pt-2">
-                      <span className="text-muted-foreground">username=</span>
-                      <span className="text-foreground font-semibold">{payload.body.username}</span>
-                      <span className="text-muted-foreground">&amp;password=</span>
-                      <span className="text-[hsl(var(--http-danger))] font-semibold">{payload.body.password}</span>
-                    </div>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <div className="text-muted-foreground">POST /login HTTP/1.1</div>
+                      <div className="text-muted-foreground">Host: {payload.domain}</div>
+                      <div className="text-muted-foreground">Content-Type: application/x-www-form-urlencoded</div>
+                      <div className="border-t border-border/30 mt-2 pt-2">
+                        <span className="text-muted-foreground">username=</span>
+                        <span className="text-foreground font-semibold">{payload.body.username}</span>
+                        <span className="text-muted-foreground">&amp;password=</span>
+                        <span className="text-[hsl(var(--http-danger))] font-semibold">{payload.body.password}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                
+                <div className={`text-xs p-3 rounded-lg ${
+                  isSecure 
+                    ? "bg-[hsl(var(--https-success))]/5 text-muted-foreground" 
+                    : "bg-[hsl(var(--http-danger))]/5 text-muted-foreground"
+                }`}>
+                  <p className="font-medium mb-1">
+                    {isSecure ? t("wireView.explainSecure.title") : t("wireView.explainPlain.title")}
+                  </p>
+                  <p className="opacity-80 leading-relaxed">
+                    {isSecure ? t("wireView.explainSecure.body") : t("wireView.explainPlain.body")}
+                  </p>
+                </div>
               </div>
             )}
           </div>

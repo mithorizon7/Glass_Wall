@@ -62,7 +62,15 @@
     "whatObserverSeesPlain": "Ko redz novērotājs: jūsu īstie dati",
     "destinationVisible": "Galamērķis",
     "tlsRecord": "TLS ieraksta galvene",
-    "encryptedPayload": "Šifrēti dati (hex izgāztne)"
+    "encryptedPayload": "Šifrēti dati (hex izgāztne)",
+    "explainSecure": {
+      "title": "Kāpēc viņi to nevar izlasīt?",
+      "body": "HTTPS šifrē jūsu datus pirms nosūtīšanas. Iedomājieties, ka jūs ievietojat vēstuli aizsargātā slēgtā kastē. Augstāk redzamie hex kodi ir tas, ko uzbrucējs faktiski uztvertu—bezjēdzīgi skaitļi, kuru atšifrēšanai būtu nepieciešami miljardiem gadu. Viņi var redzēt, ka jūs sazināties ar šo vietni, bet ne to, ko jūs sakāt."
+    },
+    "explainPlain": {
+      "title": "Kāpēc tas ir bīstami?",
+      "body": "HTTP sūta jūsu datus kā vienkāršu tekstu—tāpat kā rakstīt paroli uz pastkartes. Ikviens tajā pašā tīklā (kafejnīcas Wi-Fi, viesnīca, lidosta) var pārtvert un izlasīt visu, ko sūtāt. Jūsu lietotājvārds un parole ir pilnībā atklāti."
+    }
   },
   
   "metadata": {
@@ -112,10 +120,10 @@
   },
   
   "summary": {
-    "protectedTitle": "Aizsargāta transakcija",
-    "exposedTitle": "Atklāta transakcija",
-    "protectedMessage": "Jūsu akreditācijas dati tika šifrēti. Tīkla novērotāji varēja redzēt, ka jūs pieslēdzāties, bet ne to, ko sūtījāt vai saņēmāt.",
-    "exposedMessage": "Jūsu akreditācijas dati tika nosūtīti vienkāršā tekstā. Ikviens tīklā varēja uztvert jūsu lietotājvārdu, paroli un sesijas marķieri."
+    "protectedTitle": "Jūsu dati ir aizsargāti",
+    "exposedTitle": "Jūsu dati tika atklāti",
+    "protectedMessage": "Pat publiskajā Wi-Fi šifrēšana pārvērta jūsu akreditācijas datus nelasāmā kodā. Uzbrucējs redzētu tikai augstāk redzamo jucekli. Vienmēr meklējiet piekaramās atslēgas ikonu un 'https://' pārlūkprogrammas adreses joslā pirms sensitīvas informācijas ievadīšanas.",
+    "exposedMessage": "Jūsu lietotājvārds un parole ceļoja pa tīklu kā lasāms teksts. Publiskajā Wi-Fi (kafejnīcās, lidostās, viesnīcās) ikviens ar vienkāršiem rīkiem varēja uztvert visu. Tāpēc mūsdienu vietnes vienmēr izmanto HTTPS."
   },
   
   "timeline": {

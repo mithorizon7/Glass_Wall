@@ -62,7 +62,15 @@
     "whatObserverSeesPlain": "What an observer sees: your actual data",
     "destinationVisible": "Destination",
     "tlsRecord": "TLS Record Header",
-    "encryptedPayload": "Encrypted Data (hex dump)"
+    "encryptedPayload": "Encrypted Data (hex dump)",
+    "explainSecure": {
+      "title": "Why can't they read this?",
+      "body": "HTTPS encrypts your data before sending it. Think of it like putting your letter in a tamper-proof lock box. The hex codes above are what an attacker would actually capture—meaningless numbers that would take billions of years to crack. They can see you're talking to this website, but not what you're saying."
+    },
+    "explainPlain": {
+      "title": "Why is this dangerous?",
+      "body": "HTTP sends your data as plain text—like writing your password on a postcard. Anyone on the same network (coffee shop Wi-Fi, hotel, airport) can intercept and read everything you send. Your username and password are completely exposed."
+    }
   },
   
   "metadata": {
@@ -112,10 +120,10 @@
   },
   
   "summary": {
-    "protectedTitle": "Protected Transaction",
-    "exposedTitle": "Exposed Transaction",
-    "protectedMessage": "Your credentials were encrypted. Network observers could see you connected, but not what you sent or received.",
-    "exposedMessage": "Your credentials were sent in plain text. Anyone on the network could have captured your username, password, and session token."
+    "protectedTitle": "Your data is protected",
+    "exposedTitle": "Your data was exposed",
+    "protectedMessage": "Even on public Wi-Fi, encryption scrambled your credentials into unreadable code. An attacker would only see the gibberish above. Always look for the padlock icon and 'https://' in your browser's address bar before entering sensitive information.",
+    "exposedMessage": "Your username and password traveled across the network as readable text. On public Wi-Fi (coffee shops, airports, hotels), anyone with simple tools could have captured everything. This is why modern websites always use HTTPS."
   },
   
   "timeline": {
