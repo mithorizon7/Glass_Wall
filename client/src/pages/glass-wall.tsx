@@ -73,8 +73,8 @@ export default function GlassWall() {
   const { t } = useTranslation("glassWall");
   const [protocolMode, setProtocolMode] = useState<ProtocolMode>("http");
   const [vpnMode, setVpnMode] = useState<VpnMode>("off");
-  const [autoPlay, setAutoPlay] = useState(false);
-  const [stepMode, setStepMode] = useState(false);
+  const autoPlay = true;
+  const stepMode = true;
   const [timelineStage, setTimelineStage] = useState<TimelineStage>("idle");
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
@@ -286,12 +286,8 @@ export default function GlassWall() {
         <ControlPanel
           protocolMode={protocolMode}
           vpnMode={vpnMode}
-          autoPlay={autoPlay}
-          stepMode={stepMode}
           onProtocolChange={(value: ProtocolMode) => handleModeChange("protocol", value)}
           onVpnChange={(value: VpnMode) => handleModeChange("vpn", value)}
-          onAutoPlayChange={setAutoPlay}
-          onStepModeChange={setStepMode}
           className="mb-8"
         />
 

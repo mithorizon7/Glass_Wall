@@ -1,44 +1,34 @@
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Lock, Unlock, Shield, ShieldOff, Repeat, ListOrdered, Info } from "lucide-react";
+import { Lock, Unlock, Shield, ShieldOff, Info } from "lucide-react";
 import type { ProtocolMode, VpnMode } from "@/pages/glass-wall";
 
 interface ControlPanelProps {
   protocolMode: ProtocolMode;
   vpnMode: VpnMode;
-  autoPlay: boolean;
-  stepMode: boolean;
   onProtocolChange: (value: ProtocolMode) => void;
   onVpnChange: (value: VpnMode) => void;
-  onAutoPlayChange: (value: boolean) => void;
-  onStepModeChange: (value: boolean) => void;
   className?: string;
 }
 
 export function ControlPanel({
   protocolMode,
   vpnMode,
-  autoPlay,
-  stepMode,
   onProtocolChange,
   onVpnChange,
-  onAutoPlayChange,
-  onStepModeChange,
   className = "",
 }: ControlPanelProps) {
   const { t } = useTranslation("glassWall");
   const { t: tc } = useTranslation("common");
   
   return (
-    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ${className}`}>
+    <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${className}`}>
       <Card className="p-4" data-onboarding="protocol-toggle">
         <div className="flex items-center justify-between mb-3">
           <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
@@ -120,66 +110,6 @@ export function ControlPanel({
             <Shield className="w-4 h-4" />
             <span className="font-medium">{tc("on")}</span>
           </button>
-        </div>
-      </Card>
-
-      <Card className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <Label htmlFor="auto-play" className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-            {t("controls.autoPlay")}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="w-3 h-3 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p>{t("controls.autoPlayTooltip")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </Label>
-        </div>
-        <div className="flex items-center justify-between gap-2 px-2 py-3">
-          <div className="flex items-center gap-2">
-            <Repeat className={`w-4 h-4 ${autoPlay ? "text-primary" : "text-muted-foreground"}`} />
-            <span className={`font-medium ${autoPlay ? "text-foreground" : "text-muted-foreground"}`}>
-              {autoPlay ? tc("enabled") : tc("disabled")}
-            </span>
-          </div>
-          <Switch
-            id="auto-play"
-            checked={autoPlay}
-            onCheckedChange={onAutoPlayChange}
-            data-testid="switch-auto-play"
-          />
-        </div>
-      </Card>
-
-      <Card className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <Label htmlFor="step-mode" className="text-xs font-medium uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-            {t("controls.stepMode")}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="w-3 h-3 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p>{t("controls.stepModeTooltip")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </Label>
-        </div>
-        <div className="flex items-center justify-between gap-2 px-2 py-3">
-          <div className="flex items-center gap-2">
-            <ListOrdered className={`w-4 h-4 ${stepMode ? "text-primary" : "text-muted-foreground"}`} />
-            <span className={`font-medium ${stepMode ? "text-foreground" : "text-muted-foreground"}`}>
-              {stepMode ? tc("enabled") : tc("disabled")}
-            </span>
-          </div>
-          <Switch
-            id="step-mode"
-            checked={stepMode}
-            onCheckedChange={onStepModeChange}
-            data-testid="switch-step-mode"
-          />
         </div>
       </Card>
     </div>
