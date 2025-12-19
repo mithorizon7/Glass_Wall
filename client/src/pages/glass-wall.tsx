@@ -244,18 +244,63 @@ export default function GlassWall() {
           className="mb-4"
         />
 
-        <InfoBanner 
-          type={currentScenario.riskLevel === "low" ? "info" : "warning"}
-          icon={<currentScenario.icon className="w-5 h-5" />}
-          title={`${t(`scenarioSelector.${currentScenario.id}.name`)} ${t("scenario")}`}
-          message={currentScenario.riskLevel === "high" 
-            ? `${t("highRiskEnvironment")}: ${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
-            : currentScenario.riskLevel === "medium"
-            ? `${t("mediumRisk")}: ${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t("considerVpn")}.`
-            : `${t("lowRiskEnvironment")}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
-          }
-          className="mb-4"
-        />
+        {/* Current Scenario Header */}
+        <Card className="mb-6 overflow-visible" data-testid="scenario-header">
+          <div className={`p-4 sm:p-6 ${
+            currentScenario.riskLevel === "high" 
+              ? "bg-gradient-to-r from-red-500/5 to-transparent" 
+              : currentScenario.riskLevel === "medium"
+              ? "bg-gradient-to-r from-amber-500/5 to-transparent"
+              : "bg-gradient-to-r from-green-500/5 to-transparent"
+          }`}>
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center shrink-0 ${
+                currentScenario.riskLevel === "high" 
+                  ? "bg-red-500/10" 
+                  : currentScenario.riskLevel === "medium"
+                  ? "bg-amber-500/10"
+                  : "bg-green-500/10"
+              }`}>
+                <currentScenario.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${
+                  currentScenario.riskLevel === "high" 
+                    ? "text-red-600 dark:text-red-400" 
+                    : currentScenario.riskLevel === "medium"
+                    ? "text-amber-600 dark:text-amber-400"
+                    : "text-green-600 dark:text-green-400"
+                }`} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h2 className="text-lg sm:text-xl font-semibold text-foreground">
+                    {t(`scenarioSelector.${currentScenario.id}.name`)}
+                  </h2>
+                  <Badge className={`text-xs ${
+                    currentScenario.riskLevel === "high" 
+                      ? "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20" 
+                      : currentScenario.riskLevel === "medium"
+                      ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                      : "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
+                  }`}>
+                    {currentScenario.riskLevel === "high" 
+                      ? t("highRiskEnvironment")
+                      : currentScenario.riskLevel === "medium"
+                      ? t("mediumRisk")
+                      : t("lowRiskEnvironment")
+                    }
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {currentScenario.riskLevel === "high" 
+                    ? `${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
+                    : currentScenario.riskLevel === "medium"
+                    ? `${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t("considerVpn")}.`
+                    : t(`scenarioSelector.${currentScenario.id}.rec1`)
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {vpnMode === "on" && (
           <InfoBanner 
