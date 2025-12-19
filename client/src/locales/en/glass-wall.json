@@ -17,6 +17,14 @@
     "message": "Public networks increase risk of deception (rogue hotspots, fake portals). Encryption reduces some risks, but judgment still matters. Don't enter sensitive credentials on untrusted networks or pages."
   },
   
+  "networkContext": {
+    "title": "What to know",
+    "home": "Your home network is typically secure—you control the router and who connects. Still, always check for HTTPS (the padlock icon) when entering passwords or payment info. Most modern sites do this automatically.",
+    "coffeeShop": "Coffee shop Wi-Fi is a prime target for attackers. Anyone nearby can set up a fake hotspot with the same name. Always use HTTPS, avoid entering sensitive data, and consider a VPN for extra protection.",
+    "airport": "Airport networks are high-risk environments. Thousands of travelers, many fake hotspots, and attackers know people are in a hurry. Treat any airport Wi-Fi as hostile—VPN is strongly recommended for any sensitive activity.",
+    "hotel": "Hotel Wi-Fi is shared with many guests and often has weak security. The network operator can see unencrypted traffic. Use HTTPS for everything and consider VPN if accessing sensitive accounts."
+  },
+  
   "vpnActive": {
     "title": "VPN Active",
     "message": "VPN shifts trust from the local network to the VPN provider. It doesn't make you invincible—choose a reputable provider and remember that the VPN can see your traffic."

@@ -17,6 +17,14 @@
     "message": "Publiskie tīkli palielina maldināšanas risku (viltoti piekļuves punkti, viltotas autorizācijas lapas). Šifrēšana samazina dažus riskus, taču svarīga arī apdomība. Neievadiet sensitīvus datus neuzticamos tīklos vai lapās."
   },
   
+  "networkContext": {
+    "title": "Ko jāzina",
+    "home": "Jūsu mājas tīkls parasti ir drošs — jūs kontrolējat maršrutētāju un to, kas pieslēdzas. Tomēr vienmēr pārbaudiet HTTPS (piekaramās atslēgas ikonu), ievadot paroles vai maksājumu informāciju. Lielākā daļa mūsdienu vietņu to dara automātiski.",
+    "coffeeShop": "Kafejnīcas Wi-Fi ir galvenais uzbrucēju mērķis. Ikviens tuvumā var izveidot viltotu piekļuves punktu ar tādu pašu nosaukumu. Vienmēr izmantojiet HTTPS, izvairieties no sensitīvu datu ievadīšanas un apsveriet VPN papildu aizsardzībai.",
+    "airport": "Lidostas tīkli ir augsta riska vide. Tūkstošiem ceļotāju, daudz viltotu piekļuves punktu, un uzbrucēji zina, ka cilvēki steidzas. Uzskatiet jebkuru lidostas Wi-Fi par naidīgu — VPN ir stingri ieteicams jebkurai sensitīvai darbībai.",
+    "hotel": "Viesnīcas Wi-Fi ir kopīgs ar daudziem viesiem un bieži ir ar vāju drošību. Tīkla operators var redzēt nešifrētu datplūsmu. Izmantojiet HTTPS visam un apsveriet VPN, piekļūstot sensitīviem kontiem."
+  },
+  
   "vpnActive": {
     "title": "VPN aktīvs",
     "message": "VPN pārnes uzticēšanos no vietējā tīkla uz VPN pakalpojuma sniedzēju. Tas nepadara jūs neievainojamu — izvēlieties uzticamu pakalpojuma sniedzēju un atcerieties, ka VPN var redzēt jūsu trafiku."
