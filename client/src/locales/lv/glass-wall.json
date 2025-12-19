@@ -73,7 +73,7 @@
     "encryptedPayload": "Šifrēti dati (hex izgāztne)",
     "explainSecure": {
       "title": "Kāpēc viņi to nevar izlasīt?",
-      "body": "HTTPS šifrē jūsu datus pirms nosūtīšanas. Iedomājieties, ka jūs ievietojat vēstuli aizsargātā slēgtā kastē. Augstāk redzamie hex kodi ir tas, ko uzbrucējs faktiski uztvertu—bezjēdzīgi skaitļi, kuru atšifrēšanai būtu nepieciešami miljardiem gadu. Viņi var redzēt, ka jūs sazināties ar šo vietni, bet ne to, ko jūs sakāt."
+      "body": "HTTPS šifrē jūsu datus pirms nosūtīšanas. Iedomājieties, ka jūs ievietojat vēstuli slēgtā kastē—tikai saņēmējam ir atslēga. Augstāk redzamie hex kodi ir tas, ko uzbrucējs uztvertu: bezjēdzīgi sajaukti dati, kurus mūsdienu datori nevar atšifrēt. Viņi var redzēt, kuru vietni jūs apmeklējat (adresi uz kastes), bet ne to, ko jūs sakāt iekšā."
     },
     "explainPlain": {
       "title": "Kāpēc tas ir bīstami?",
@@ -90,7 +90,7 @@
     "connectionDirect": "Tiešs",
     "connectionVpn": "VPN tunelis (šifrēts)",
     "encryptionNone": "Nav",
-    "metadataNote": "Pat ar šifrēšanu tīkls var redzēt, ka jūs pieslēdzāties šim galamērķim."
+    "metadataNote": "Pat ar HTTPS šifrēšanu tīkls var redzēt, kurai vietnei jūs pieslēdzāties—tikai ne to, ko jūs nosūtījāt vai saņēmāt."
   },
   
   "handshake": {
@@ -130,7 +130,7 @@
   "summary": {
     "protectedTitle": "Jūsu dati ir aizsargāti",
     "exposedTitle": "Jūsu dati tika atklāti",
-    "protectedMessage": "Pat publiskajā Wi-Fi šifrēšana pārvērta jūsu akreditācijas datus nelasāmā kodā. Uzbrucējs redzētu tikai augstāk redzamo jucekli. Vienmēr meklējiet piekaramās atslēgas ikonu un 'https://' pārlūkprogrammas adreses joslā pirms sensitīvas informācijas ievadīšanas.",
+    "protectedMessage": "Pat publiskajā Wi-Fi šifrēšana pārvērta jūsu akreditācijas datus nelasāmā kodā. Uzbrucējs redzētu tikai augstāk redzamo jucekli. Vienmēr meklējiet piekaramās atslēgas (slēdzenes) ikonu pārlūkprogrammas adreses joslā pirms paroļu vai maksājumu informācijas ievadīšanas.",
     "exposedMessage": "Jūsu lietotājvārds un parole ceļoja pa tīklu kā lasāms teksts. Publiskajā Wi-Fi (kafejnīcās, lidostās, viesnīcās) ikviens ar vienkāršiem rīkiem varēja uztvert visu. Tāpēc mūsdienu vietnes vienmēr izmanto HTTPS."
   },
   
@@ -386,10 +386,10 @@
     ],
     "httpsTitle": "HTTPS (Šifrēts)",
     "httpsPoints": [
-      "Dati tiek šifrēti pirms nosūtīšanas",
+      "Dati tiek šifrēti pirms nosūtīšanas—nelasāmi ikvienam, kas tos pārtver",
       "Paroles un personas dati novērotājiem izskatās kā sajaukta muļķība",
-      "Meklējiet: https:// un slēdzenes ikonu adreses joslā",
-      "Piezīme: Metadati (kuras vietnes apmeklējat) joprojām ir redzami jūsu tīklam"
+      "Meklējiet: slēdzenes (piekaramās atslēgas) ikonu pārlūkprogrammas adreses joslā",
+      "Piezīme: Kuru vietni jūs apmeklējat, joprojām ir redzams (adrese uz aploksnes), bet ne tas, kas ir iekšā"
     ],
     "vpnTitle": "VPN (Virtuālais privātais tīkls)",
     "vpnPoints": [

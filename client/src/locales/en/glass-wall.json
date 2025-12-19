@@ -73,7 +73,7 @@
     "encryptedPayload": "Encrypted Data (hex dump)",
     "explainSecure": {
       "title": "Why can't they read this?",
-      "body": "HTTPS encrypts your data before sending it. Think of it like putting your letter in a tamper-proof lock box. The hex codes above are what an attacker would actually capture—meaningless numbers that would take billions of years to crack. They can see you're talking to this website, but not what you're saying."
+      "body": "HTTPS encrypts your data before sending it. Think of putting your letter in a tamper-proof lock box—only the recipient has the key. The hex codes above are what an attacker would capture: meaningless scrambled data that modern computers cannot crack. They can see which website you're visiting (the address on the box), but not what you're saying inside."
     },
     "explainPlain": {
       "title": "Why is this dangerous?",
@@ -90,7 +90,7 @@
     "connectionDirect": "Direct",
     "connectionVpn": "VPN Tunnel (encrypted)",
     "encryptionNone": "None",
-    "metadataNote": "Even with encryption, the network can see you connected to this destination."
+    "metadataNote": "Even with HTTPS encryption, the network can see which website you connected to—just not what you sent or received."
   },
   
   "handshake": {
@@ -130,7 +130,7 @@
   "summary": {
     "protectedTitle": "Your data is protected",
     "exposedTitle": "Your data was exposed",
-    "protectedMessage": "Even on public Wi-Fi, encryption scrambled your credentials into unreadable code. An attacker would only see the gibberish above. Always look for the padlock icon and 'https://' in your browser's address bar before entering sensitive information.",
+    "protectedMessage": "Even on public Wi-Fi, encryption scrambled your credentials into unreadable code. An attacker would only see the gibberish above. Always look for the padlock (lock icon) in your browser's address bar before entering passwords or payment information.",
     "exposedMessage": "Your username and password traveled across the network as readable text. On public Wi-Fi (coffee shops, airports, hotels), anyone with simple tools could have captured everything. This is why modern websites always use HTTPS."
   },
   
@@ -386,10 +386,10 @@
     ],
     "httpsTitle": "HTTPS (Encrypted)",
     "httpsPoints": [
-      "Data is encrypted before sending",
+      "Data is encrypted before sending—unreadable to anyone intercepting it",
       "Passwords and personal data appear as scrambled gibberish to observers",
-      "Look for: https:// and a lock icon in the address bar",
-      "Note: Metadata (which sites you visit) is still visible to your network"
+      "Look for: the lock (padlock) icon in your browser's address bar",
+      "Note: Which website you visit is still visible (the address on the envelope), but not what's inside"
     ],
     "vpnTitle": "VPN (Virtual Private Network)",
     "vpnPoints": [

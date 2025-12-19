@@ -32,7 +32,7 @@ function generateHexDump(seed: string, lines: number = 3): string[] {
 
 function generateTlsRecord(payload: string): string {
   const recordType = "17"; // Application Data
-  const version = "03 03"; // TLS 1.2
+  const version = "03 03"; // TLS 1.3 (uses 0x0303 for backwards compatibility)
   const length = (payload.length * 2 + 32).toString(16).padStart(4, "0");
   const lengthFormatted = length.slice(0, 2) + " " + length.slice(2);
   return `${recordType} ${version} ${lengthFormatted}`;
