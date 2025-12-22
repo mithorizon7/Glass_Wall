@@ -144,17 +144,22 @@ Bad examples (avoid):
 - `Login button` - Text as ID (use stable keys)
 
 #### i18n Scripts
-- `node scripts/validate-i18n.js` - Validate translations (key parity, ICU syntax)
-- `node scripts/i18n-extract.js` - Extract keys from source and check coverage
-- `node scripts/i18n-render-sweep.js` - Check for [MISSING: markers and empty translations
-- `node scripts/i18n-check.js` - Run extract + validate + render-sweep (CI-ready)
+| Command | Purpose |
+|---------|---------|
+| `node scripts/i18n-check.js` | **Run this before every commit** - combined check (extract + validate + render-sweep) |
+| `node scripts/i18n-extract.js` | Extract keys from source, find missing translations |
+| `node scripts/validate-i18n.js` | Validate key parity, ICU syntax, placeholders |
+| `node scripts/i18n-render-sweep.js` | Check for [MISSING:] markers and empty translations |
 
-**To add npm scripts (recommended):** Add to package.json scripts section:
-```json
-"i18n:extract": "node scripts/i18n-extract.js",
-"i18n:validate": "node scripts/validate-i18n.js",
-"i18n:check": "node scripts/i18n-check.js"
-```
+#### Translation Workflow (REQUIRED)
+When changing any user-facing text:
+1. Update English translation in `client/src/locales/en/*.json`
+2. Update Latvian translation in `client/src/locales/lv/*.json`
+3. Update Russian translation in `client/src/locales/ru/*.json`
+4. **Run validation:** `node scripts/i18n-check.js`
+5. Fix any errors before committing
+
+The check will fail (exit code 1) if translations are out of sync, making it CI-ready.
 
 #### Pseudo-Locale Testing
 Use `pseudo` locale to test layout expansion and find missing translations:
