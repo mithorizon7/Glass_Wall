@@ -24,6 +24,14 @@ import {
   Shield,
   Eye,
 } from "lucide-react";
+import type { TimelineStage, ProtocolMode, VpnMode } from "@/pages/glass-wall";
+
+type QuizTimelineLink = {
+  stage: TimelineStage;
+  sectionId: "metadata" | "handshake" | "request" | "response";
+  protocolMode?: ProtocolMode;
+  vpnMode?: VpnMode;
+};
 
 interface Question {
   id: string;
@@ -44,10 +52,25 @@ const QUESTIONS: Question[] = [
 
 interface QuizModeProps {
   trigger?: React.ReactNode;
+  onShowInTimeline?: (link: QuizTimelineLink) => void;
 }
 
-export function QuizMode({ trigger }: QuizModeProps) {
+type QuestionId = typeof QUESTIONS[number]["id"];
+
+const QUIZ_TIMELINE_LINKS: Record<QuestionId, QuizTimelineLink> = {
+  q1: { stage: "request", sectionId: "request", protocolMode: "http" },
+  q2: { stage: "handshake", sectionId: "handshake", protocolMode: "https" },
+  q3: { stage: "connect", sectionId: "metadata", vpnMode: "on" },
+  q4: { stage: "request", sectionId: "request", protocolMode: "https" },
+  q5: { stage: "connect", sectionId: "metadata", protocolMode: "https" },
+  q6: { stage: "request", sectionId: "request", protocolMode: "http" },
+  q7: { stage: "connect", sectionId: "metadata", vpnMode: "on" },
+  q8: { stage: "connect", sectionId: "metadata", protocolMode: "https" },
+};
+
+export function QuizMode({ trigger, onShowInTimeline }: QuizModeProps) {
   const { t } = useTranslation("glassWall");
+  const [open, setOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -117,8 +140,10 @@ export function QuizMode({ trigger }: QuizModeProps) {
     }
   };
 
+  const timelineLink = QUIZ_TIMELINE_LINKS[currentQuestion.id as QuestionId];
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
           <Button variant="outline" data-testid="button-quiz-mode">
@@ -223,6 +248,20 @@ export function QuizMode({ trigger }: QuizModeProps) {
                     </p>
                   </div>
                 </div>
+                {onShowInTimeline && timelineLink && (
+                  <Button
+                    variant="outline"
+                    className="mt-3 w-full"
+                    onClick={() => {
+                      onShowInTimeline(timelineLink);
+                      setOpen(false);
+                    }}
+                    data-testid="button-show-in-timeline"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    {t("quiz.showInTimeline")}
+                  </Button>
+                )}
               </Card>
             )}
 

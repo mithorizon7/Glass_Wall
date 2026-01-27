@@ -44,6 +44,14 @@ export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
 export type TimelineStage = "idle" | "connect" | "handshake" | "request" | "response" | "complete";
 export type AttackerModel = "passive" | "rogueHotspot" | "compromisedEndpoint";
+type TimelineSection = "metadata" | "handshake" | "request" | "response";
+
+interface TimelineDeepLink {
+  stage: TimelineStage;
+  sectionId: TimelineSection;
+  protocolMode?: ProtocolMode;
+  vpnMode?: VpnMode;
+}
 
 export interface DemoPayload {
   action: string;
@@ -97,6 +105,7 @@ export default function GlassWall() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
   const [isVpnLimitsOpen, setIsVpnLimitsOpen] = useState(false);
+  const [stageAnnouncement, setStageAnnouncement] = useState("");
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[0]);
   const [username, setUsername] = useState("your_username");
@@ -107,6 +116,8 @@ export default function GlassWall() {
   const stepModeRef = useRef(stepMode);
   const autoPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoPlayPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+  const previousStageRef = useRef<TimelineStage>("idle");
 
   const payload: DemoPayload = {
     ...DEFAULT_PAYLOAD,
@@ -151,6 +162,23 @@ export default function GlassWall() {
     setTimelineStage("idle");
     setExpandedNodes(new Set());
   }, [cancelAnimation]);
+
+  const getExpandedNodesForStage = useCallback((stage: TimelineStage, protocol: ProtocolMode) => {
+    if (stage === "idle") return new Set<string>();
+    const order = protocol === "https"
+      ? (["connect", "handshake", "request", "response"] as const)
+      : (["connect", "request", "response"] as const);
+    const sectionMap: Record<typeof order[number], TimelineSection> = {
+      connect: "metadata",
+      handshake: "handshake",
+      request: "request",
+      response: "response",
+    };
+    const normalizedStage = stage === "complete" ? "response" : stage;
+    const index = order.indexOf(normalizedStage as typeof order[number]);
+    if (index < 0) return new Set<string>();
+    return new Set(order.slice(0, index + 1).map(item => sectionMap[item]));
+  }, []);
 
   const playTimeline = useCallback(async () => {
     if (isAnimatingRef.current) return;
@@ -220,22 +248,28 @@ export default function GlassWall() {
       const currentIndex = stageOrder.indexOf(currentStage);
       if (currentIndex < stageOrder.length - 1) {
         const nextStage = stageOrder[currentIndex + 1];
-        
-        if (nextStage === "connect") {
-          setExpandedNodes(new Set(["metadata"]));
-        } else if (nextStage === "handshake") {
-          setExpandedNodes(prev => new Set([...prev, "handshake"]));
-        } else if (nextStage === "request") {
-          setExpandedNodes(prev => new Set([...prev, "request"]));
-        } else if (nextStage === "response") {
-          setExpandedNodes(prev => new Set([...prev, "response"]));
-        }
-        
+        setExpandedNodes(getExpandedNodesForStage(nextStage, protocolMode));
         return nextStage;
       }
       return currentStage;
     });
-  }, [protocolMode]);
+  }, [getExpandedNodesForStage, protocolMode]);
+
+  const handlePrevStep = useCallback(() => {
+    const stageOrder: TimelineStage[] = protocolMode === "https"
+      ? ["idle", "connect", "handshake", "request", "response", "complete"]
+      : ["idle", "connect", "request", "response", "complete"];
+
+    setTimelineStage(currentStage => {
+      const currentIndex = stageOrder.indexOf(currentStage);
+      if (currentIndex > 0) {
+        const prevStage = stageOrder[currentIndex - 1];
+        setExpandedNodes(getExpandedNodesForStage(prevStage, protocolMode));
+        return prevStage;
+      }
+      return currentStage;
+    });
+  }, [getExpandedNodesForStage, protocolMode]);
 
   const handleModeChange = useCallback((type: "protocol" | "vpn", value: string) => {
     cancelAnimation();
@@ -281,6 +315,23 @@ export default function GlassWall() {
     setAttackerModel(value);
   }, []);
 
+  const handleQuizShowTimeline = useCallback((link: TimelineDeepLink) => {
+    cancelAnimation();
+    const nextProtocol = link.protocolMode ?? protocolModeRef.current;
+    if (nextProtocol !== protocolModeRef.current) {
+      protocolModeRef.current = nextProtocol;
+      setProtocolMode(nextProtocol);
+    }
+    if (link.vpnMode && link.vpnMode !== vpnMode) {
+      setVpnMode(link.vpnMode);
+    }
+    setTimelineStage(link.stage);
+    const expanded = getExpandedNodesForStage(link.stage, nextProtocol);
+    expanded.add(link.sectionId);
+    setExpandedNodes(expanded);
+    timelineRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [cancelAnimation, getExpandedNodesForStage, vpnMode]);
+
   useEffect(() => {
     if (showModeChangeBanner) {
       const timer = setTimeout(() => setShowModeChangeBanner(false), 3000);
@@ -304,11 +355,45 @@ export default function GlassWall() {
     return () => cancelAnimation();
   }, [cancelAnimation]);
 
+  useEffect(() => {
+    if (!stepMode) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isAnimatingRef.current) return;
+      if (document.querySelector("[data-state='open'][role='dialog']")) return;
+      const target = event.target as HTMLElement | null;
+      if (target && (target.closest("input, textarea, select, [contenteditable='true']"))) {
+        return;
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        handleNextStep();
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        handlePrevStep();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleNextStep, handlePrevStep, stepMode]);
+
+  useEffect(() => {
+    if (previousStageRef.current === timelineStage) return;
+    const stageLabel = t(`aria.stages.${timelineStage}`);
+    const protocolLabel = t(`aria.protocol.${protocolMode}`);
+    const vpnLabel = t(`aria.vpn.${vpnMode}`);
+    setStageAnnouncement(t("aria.stageChange", { stage: stageLabel, protocol: protocolLabel, vpn: vpnLabel }));
+    previousStageRef.current = timelineStage;
+  }, [protocolMode, timelineStage, t, vpnMode]);
+
   const vpnDoesNotBullets = t("vpnActive.doesNotBullets", { returnObjects: true }) as string[];
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          {stageAnnouncement}
+        </div>
         <header className="text-center mb-10 md:mb-12">
           <div className="flex justify-end mb-4">
             <LanguageSwitcher />
@@ -336,7 +421,7 @@ export default function GlassWall() {
             <div data-onboarding="learning-tools" className="flex items-center gap-3">
               <CheatSheetModal />
               <ComparisonView payload={payload} vpnMode={vpnMode} />
-              <QuizMode />
+              <QuizMode onShowInTimeline={handleQuizShowTimeline} />
             </div>
           </div>
         </header>
@@ -558,6 +643,7 @@ export default function GlassWall() {
               </Badge>
             </div>
             
+            <div ref={timelineRef}>
             <Timeline
               stage={timelineStage}
               protocolMode={protocolMode}
@@ -568,6 +654,7 @@ export default function GlassWall() {
               onToggleNode={toggleNodeExpansion}
               stepMode={stepMode}
             />
+            </div>
 
             <WireView
               stage={timelineStage}

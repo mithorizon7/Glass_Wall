@@ -67,6 +67,26 @@
     "nextStep": "Nākamais solis",
     "replayTimeline": "Atkārtot laika līniju"
   },
+
+  "aria": {
+    "stageChange": "Posms: {stage}. {protocol}. {vpn}.",
+    "stages": {
+      "idle": "Laika līnija atiestatīta",
+      "connect": "Savienojums un metadati",
+      "handshake": "TLS rokasspiediens",
+      "request": "Pieprasījums nosūtīts",
+      "response": "Atbilde saņemta",
+      "complete": "Laika līnija pabeigta"
+    },
+    "protocol": {
+      "http": "Protokols HTTP",
+      "https": "Protokols HTTPS"
+    },
+    "vpn": {
+      "off": "VPN izslēgts",
+      "on": "VPN ieslēgts"
+    }
+  },
   
   "userView": {
     "title": "Lietotāja skats",
@@ -322,6 +342,7 @@
     "correct": "Pareizi!",
     "incorrect": "Nepareizi",
     "explanation": "Paskaidrojums",
+    "showInTimeline": "Parādīt laika līnijā",
     "nextQuestion": "Nākamais jautājums",
     "seeResults": "Skatīt rezultātus",
     "tryAgain": "Mēģināt vēlreiz",

@@ -67,6 +67,26 @@
     "nextStep": "Next Step",
     "replayTimeline": "Replay Timeline"
   },
+
+  "aria": {
+    "stageChange": "Stage: {stage}. {protocol}. {vpn}.",
+    "stages": {
+      "idle": "Timeline reset",
+      "connect": "Connection and metadata",
+      "handshake": "TLS handshake",
+      "request": "Request sent",
+      "response": "Response received",
+      "complete": "Timeline complete"
+    },
+    "protocol": {
+      "http": "Protocol HTTP",
+      "https": "Protocol HTTPS"
+    },
+    "vpn": {
+      "off": "VPN off",
+      "on": "VPN on"
+    }
+  },
   
   "userView": {
     "title": "User View",
@@ -322,6 +342,7 @@
     "correct": "Correct!",
     "incorrect": "Incorrect",
     "explanation": "Explanation",
+    "showInTimeline": "Show me in the timeline",
     "nextQuestion": "Next Question",
     "seeResults": "See Results",
     "tryAgain": "Try Again",

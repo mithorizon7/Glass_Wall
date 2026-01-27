@@ -59,6 +59,26 @@
     "nextStep": "[Ñéxt Stép !!!]",
     "replayTimeline": "[Réplày Tïmélïñé !!!]"
   },
+
+  "aria": {
+    "stageChange": "[Stàgé: {stage}. {protocol}. {vpn}. !!!]",
+    "stages": {
+      "idle": "[Tïmélïñé rését !!!]",
+      "connect": "[Çöññéçtïöñ àñd métàdàtà !!!]",
+      "handshake": "[TLS Hàñdshàké !!!]",
+      "request": "[Réqüést séñt !!!]",
+      "response": "[Réspöñsé réçéïvéd !!!]",
+      "complete": "[Tïmélïñé çömplété !!!]"
+    },
+    "protocol": {
+      "http": "[Prötöçöl HTTP !!!]",
+      "https": "[Prötöçöl HTTPS !!!]"
+    },
+    "vpn": {
+      "off": "[VPN öff !!!]",
+      "on": "[VPN öñ !!!]"
+    }
+  },
   
   "userView": {
     "title": "[Üsér Vïéw !!!]",
@@ -252,6 +272,133 @@
     "noTelemetryTooltip": "[Thïs àpplïçàtïöñ döés ñöt çölléçt !!!]"
   },
   
+  "scenarioSelector": {
+    "practice": {
+      "title": "[Mïçrö-pràçtïçé !!!]",
+      "description": "[Màké qüïçk çhöïçés bàséd öñ thé scénario àñd àttàçkér mödél !!!]",
+      "stepLabel": "[Stép {current} öf {total} !!!]",
+      "attackerModelLabel": "[Àttàçkér Mödél !!!]",
+      "nextStep": "[Ñéxt stép !!!]",
+      "restart": "[Réstart pràçtïçé !!!]",
+      "feedback": {
+        "correct": "[Çörréçt. {rationale} !!!]",
+        "incorrect": "[Ñöt qüïtë. Béšt àñswér: {correctOption}. {rationale} !!!]"
+      },
+      "home": {
+        "step1": {
+          "prompt": "[Yöü'ré öñ ýöür hòmë Wi-Fï. Whàt shöüld ýöü prïörïtïzé fïrst? !!!]",
+          "options": [
+            "[Üsé HTTPS sïtés àñd kéép thé röütér üpdàtéd. !!!]",
+            "[Àssümé thé röütér ïs höstïlé àñd üsë à VPN för évérythïñg. !!!]",
+            "[Stöp àñd çléàñ thé dévïçé béföré lögïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[Wïth à {model} àttàçkér, HTTPS prötéçts çöntént àñd röütér üpdàtés rédüçé rïsk. !!!]",
+            "rogueHotspot": "[Évéñ wïth à {model} àttàçkér, HTTPS àñd röütér hygïéné stïll hélp. !!!]",
+            "compromisedEndpoint": "[Wïth à {model} àttàçkér, thé dévïçé ïs thé rïsk. Çléàñ ït fïrst. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[À fàmïly mémbér àsks för thé Wi-Fï pàsswörd. Whàt ïs sàfést? !!!]",
+          "options": [
+            "[Shàrë ït, büt kéép à ströñg WPA2/WPA3 pàsswörd àñd üpdàté ïf ñéédéd. !!!]",
+            "[Pöst ït püblïçly för çönvénïéñçé. !!!]",
+            "[Ïgnöré dévïçé séçürïty béçàüsé HTTPS ïs éñöügh. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À ströñg Wi-Fï pàsswörd lïmïts whö çàñ öbsérvé lökàl tràffïc. !!!]",
+            "rogueHotspot": "[Ströñg Wi-Fï séçürïty rédüçés üñàüthörïzéd àççéss ör spööfïñg. !!!]",
+            "compromisedEndpoint": "[Évéñ wïth dévïçé rïsk, çòñtröllïñg ñétwörk àççéss stïll màttérs. !!!]"
+          }
+        }
+      },
+      "coffeeShop": {
+        "step1": {
+          "prompt": "[Yöü'ré àt thé çöfféé shöp. Whàt ïs thé sàfést fïrst stép? !!!]",
+          "options": [
+            "[Üsé HTTPS öñly àñd àvöïd séñsïtïvé lögïñs. !!!]",
+            "[Vérïfy thé ñétwörk ñàmé wïth stàff àñd çòñsïdér à VPN. !!!]",
+            "[Àssümé thé dévïçé ïs çömpromïséd àñd stöp. !!!]"
+          ],
+          "rationale": {
+            "passive": "[Wïth à {model} àttàçkér, HTTPS àñd àvöïdïñg séñsïtïvé lögïñs rédüçé rïsk. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, vérïfyïñg thé hötspöt àñd üsïñg à VPN hélps. !!!]",
+            "compromisedEndpoint": "[Wïth à {model} àttàçkér, ñétwörk çhöïçés dö ñöt prötéçt ýöü. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[Yöü ñééd tö çhéçk é-màïl. Whàt ïs sàfést? !!!]",
+          "options": [
+            "[Pröçééd öñly ïf thé sïtë ïs HTTPS àñd ñö çért wàrñïñgs. !!!]",
+            "[Üsé HTTP béçàüsé ït löàds fàstér. !!!]",
+            "[Wàït üñtïl ýöü çàñ üsë à trüstéd dévïçé ör ñétwörk. !!!]"
+          ],
+          "rationale": {
+            "passive": "[HTTPS prévénţs à {model} àttàçkér fröm réàdïñg çöntént. !!!]",
+            "rogueHotspot": "[À {model} àttàçkér rëlïés öñ dèwñgràdés ör fàké çérts; önly pröçééd ïf HTTPS ïs ïñtàçt. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, wàït. !!!]"
+          }
+        }
+      },
+      "airport": {
+        "step1": {
+          "prompt": "[Àt àïrpört Wi-Fï, whàt ïs thé sàfést fïrst stép? !!!]",
+          "options": [
+            "[Üsé à VPN plüs HTTPS för séñsïtïvé tàsks. !!!]",
+            "[Skïp VPN béçàüsé HTTPS ïs àlwàys éñöügh. !!!]",
+            "[Stöp àñd çléàñ thé dévïçé béföré lögïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À {model} àttàçkér stïll sées métàdàtà; à VPN rédüçés lökàl vïsïbïlïty. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, VPN + HTTPS àdds prötéçtïöñ. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, ñétwörk prötéçtïöñs çàñ't hélp. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[À çàptïvé pörtàl àsks för çrédéñtïàls. Whàt shöüld ýöü dö? !!!]",
+          "options": [
+            "[Éñtér ýöür é-màïl pàsswörd tö üñlöçk Wi-Fï. !!!]",
+            "[Üsé thé pörtàl öñly för àççéss àñd àvöïd réàl pàsswörds. !!!]",
+            "[Àssümé thé dévïçé ïs çömpromïséd àñd stöp. !!!]"
+          ],
+          "rationale": {
+            "passive": "[Évéñ wïth à {model} àttàçkér, ñévér éñtér réàl çrédéñtïàls. !!!]",
+            "rogueHotspot": "[À {model} àttàçkér çàñ üsé fàké pörtàls; àvöïd réàl çrédéñtïàls. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, dö ñöt lög ïñ. !!!]"
+          }
+        }
+      },
+      "hotel": {
+        "step1": {
+          "prompt": "[Àt thé hötél ñétwörk, whàt ïs thé sàfést fïrst stép? !!!]",
+          "options": [
+            "[Çönfïrm thé ñétwörk wïth récéptïöñ àñd üsë HTTPS. !!!]",
+            "[Àssümé ït ïs sàfé lïké hòmë. !!!]",
+            "[Stöp àñd çléàñ thé dévïçé béföré lögïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À {model} àttàçkér çàñ stïll sée métàdàtà; vérïfyïñg thé ñétwörk hélps. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, vérïfyïñg thé ñétwörk rédüçés fàké hötspöts. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, çléàñ ït fïrst. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[Yöü ñééd tö àççéss bàñkïñg. Whàt ïs sàfést? !!!]",
+          "options": [
+            "[Üsé à VPN àñd vérïfy HTTPS béföré lögïñg ïñ. !!!]",
+            "[Üsé HTTP för spééd. !!!]",
+            "[Wàït üñtïl ýöü çàñ üsë à trüstéd dévïçé ör ñétwörk. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À {model} àttàçkér çàñ't réàd HTTPS çöntént; à VPN rédüçés lökàl éxpösüré. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, VPN + HTTPS rédüçés ïñtérçépt rïsk. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, dö ñöt lög ïñ. !!!]"
+          }
+        }
+      }
+    }
+  },
+  
   "progressTracker": {
     "title": "[Léàrñïñg Prögrés !!!]",
     "modesExplored": "[Mödés éxplöréd !!!]",
@@ -277,6 +424,7 @@
     "correct": "[Çörréçt! !!!]",
     "incorrect": "[Ïñçörréçt !!!]",
     "explanation": "[Éxplàñàtïöñ !!!]",
+    "showInTimeline": "[Shöw mé ïñ thé tïmélïñé !!!]",
     "nextQuestion": "[Ñéxt Qüéstïöñ !!!]",
     "seeResults": "[Sée Résülts !!!]",
     "tryAgain": "[Try Àgàïñ !!!]",

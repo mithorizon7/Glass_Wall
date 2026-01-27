@@ -67,6 +67,26 @@
     "nextStep": "Следующий шаг",
     "replayTimeline": "Повторить временную шкалу"
   },
+
+  "aria": {
+    "stageChange": "Этап: {stage}. {protocol}. {vpn}.",
+    "stages": {
+      "idle": "Временная шкала сброшена",
+      "connect": "Соединение и метаданные",
+      "handshake": "TLS-рукопожатие",
+      "request": "Запрос отправлен",
+      "response": "Ответ получен",
+      "complete": "Временная шкала завершена"
+    },
+    "protocol": {
+      "http": "Протокол HTTP",
+      "https": "Протокол HTTPS"
+    },
+    "vpn": {
+      "off": "VPN выключен",
+      "on": "VPN включён"
+    }
+  },
   
   "userView": {
     "title": "Вид пользователя",
@@ -322,6 +342,7 @@
     "correct": "Правильно!",
     "incorrect": "Неправильно",
     "explanation": "Объяснение",
+    "showInTimeline": "Показать на временной шкале",
     "nextQuestion": "Следующий вопрос",
     "seeResults": "Посмотреть результаты",
     "tryAgain": "Попробовать снова",
