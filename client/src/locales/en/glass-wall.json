@@ -27,7 +27,14 @@
   
   "vpnActive": {
     "title": "VPN Active",
-    "message": "VPN shifts trust from the local network to the VPN provider. It doesn't make you invincible—choose a reputable provider and remember that the VPN can see your traffic."
+    "message": "VPN shifts trust from the local network to the VPN provider. It doesn't make you invincible—choose a reputable provider and remember that the VPN can see your traffic.",
+    "dnsLeakNote": "Note: DNS requests can sometimes leak outside the VPN depending on settings.",
+    "doesNotTitle": "VPN does NOT do",
+    "doesNotBullets": [
+      "Protect you from phishing or malware.",
+      "Make you anonymous.",
+      "Prevent the VPN provider from seeing your traffic."
+    ]
   },
   
   "modeChanged": {
@@ -40,10 +47,19 @@
     "protocolTooltip": "HTTP sends data in plain text. HTTPS encrypts your data so observers can't read it.",
     "vpn": "VPN",
     "vpnTooltip": "A VPN creates an encrypted tunnel. It shifts trust to the VPN provider but doesn't make you invincible.",
+    "attackerModel": "Attacker model",
+    "attackerModelTooltip": "Choose who might be watching. It changes what is realistically at risk.",
+    "attackerModels": {
+      "passive": "Passive eavesdropper",
+      "rogueHotspot": "Rogue hotspot (MITM)",
+      "compromisedEndpoint": "Compromised endpoint"
+    },
     "autoPlay": "Auto-play",
     "autoPlayTooltip": "Automatically replay the timeline when you switch modes.",
     "stepMode": "Step Mode",
-    "stepModeTooltip": "Advance through the timeline one step at a time for detailed learning."
+    "stepModeTooltip": "Advance through the timeline one step at a time for detailed learning.",
+    "httpLabel": "HTTP",
+    "httpsLabel": "HTTPS"
   },
   
   "buttons": {
@@ -64,13 +80,50 @@
     "readyToObserveHint": "Click \"Send Request\" to see what network observers could see when you submit the login form.",
     "encrypted": "Encrypted",
     "plainText": "Plain text",
+    "userLabel": "user:",
+    "passLabel": "pass:",
     "browser": "Browser",
     "server": "Server",
+    "vpnLabel": "VPN",
+    "observerTitle": {
+      "passive": {
+        "secure": "What an observer sees: encrypted content, visible destination",
+        "plain": "What an observer sees: your actual data"
+      },
+      "rogueHotspot": {
+        "secure": "What an observer sees: encrypted content, visible destination",
+        "plain": "What an observer sees: your actual data (plus higher interception risk)"
+      },
+      "compromisedEndpoint": {
+        "secure": "What an observer sees: encrypted content, but the device is already compromised",
+        "plain": "What an observer sees: your actual data (device compromised)"
+      }
+    },
     "whatObserverSeesSecure": "What an observer sees: encrypted gibberish",
     "whatObserverSeesPlain": "What an observer sees: your actual data",
     "destinationVisible": "Destination",
     "tlsRecord": "TLS Record Header",
     "encryptedPayload": "Encrypted Data (hex dump)",
+    "requestLine": "{method} {path} HTTP/1.1",
+    "hostHeader": "Host:",
+    "contentTypeHeader": "Content-Type:",
+    "formFieldUsername": "username=",
+    "formFieldPassword": "&password=",
+    "whyItMattersTitle": "Why this matters",
+    "whyItMatters": {
+      "passive": {
+        "secure": "HTTPS protects the content from passive observers, but they still learn which site you visit.",
+        "plain": "With HTTP, anyone on the network can read your data directly."
+      },
+      "rogueHotspot": {
+        "secure": "HTTPS protects the content, but rogue hotspots can still trick you with fake portals or phishing pages.",
+        "plain": "On a rogue hotspot, plain-text HTTP data is easy to intercept."
+      },
+      "compromisedEndpoint": {
+        "secure": "If your device is infected, HTTPS can’t protect what malware reads before encryption.",
+        "plain": "A compromised device exposes your data regardless of HTTP or HTTPS."
+      }
+    },
     "explainSecure": {
       "title": "Why can't they read this?",
       "body": "HTTPS encrypts your data before sending it. Think of putting your letter in a tamper-proof lock box—only the recipient has the key. The hex codes above are what an attacker would capture: meaningless scrambled data that modern computers cannot crack. They can see which website you're visiting (the address on the box), but not what you're saying inside."
@@ -90,13 +143,22 @@
     "connectionDirect": "Direct",
     "connectionVpn": "VPN Tunnel (encrypted)",
     "encryptionNone": "None",
-    "metadataNote": "Even with HTTPS encryption, the network can see which website you connected to—just not what you sent or received."
+    "encryptionTls": "TLS",
+    "metadataNote": "Even with HTTPS encryption, the network can see which website you connected to—just not what you sent or received.",
+    "advancedPrompt": "Advanced: What metadata leaks?",
+    "advancedSkip": "If this is too much, feel free to skip it. The core lesson still stands.",
+    "advancedItems": [
+      "DNS lookups can reveal the domain you are trying to reach.",
+      "SNI can expose the site name during the TLS handshake; ECH can hide it, but it is not widely deployed yet.",
+      "DoH/DoT can reduce DNS visibility, but they are not universal and can be blocked or misconfigured."
+    ]
   },
   
   "handshake": {
     "title": "TLS Handshake",
     "encryptionEstablished": "Encryption established",
     "handshakeComplete": "TLS 1.3 Handshake Complete",
+    "tlsBadge": "TLS",
     "step1": "Client Hello: supported cipher suites, random bytes",
     "step2": "Server Hello: chosen cipher, server certificate",
     "step3": "Key Exchange: ephemeral keys generated",
@@ -151,13 +213,57 @@
     "responseDesc": "Server response received",
     "responseTooltipSecure": "The server's response is encrypted. Only you can decrypt and read it.",
     "responseTooltipInsecure": "The server's response is in plain text. Anyone on the network can read it.",
-    "vpnTunnel": "VPN Tunnel"
+    "vpnTunnel": "VPN Tunnel",
+    "toggleDetails": "Toggle details for {section}",
+    "attackerNoteTitle": "Attacker model impact",
+    "attackerNotes": {
+      "metadata": {
+        "passive": "Metadata (like destination and connection type) stays visible to passive observers.",
+        "rogueHotspot": "Rogue hotspots still see metadata and can attempt deception even when content is encrypted.",
+        "compromisedEndpoint": "If the device is compromised, metadata visibility is the least of the problem."
+      },
+      "handshake": {
+        "passive": "The handshake is visible, but the keys are not.",
+        "rogueHotspot": "If you see certificate warnings, stop—this may be a MITM attempt.",
+        "compromisedEndpoint": "A compromised device can be manipulated even if the handshake is valid."
+      },
+      "request": {
+        "passive": {
+          "secure": "Request content is encrypted; only metadata leaks.",
+          "plain": "Request content is readable to anyone on the network."
+        },
+        "rogueHotspot": {
+          "secure": "Content is encrypted, but you can still be tricked by fake login pages.",
+          "plain": "Plain-text requests are trivial to intercept on rogue hotspots."
+        },
+        "compromisedEndpoint": {
+          "secure": "Malware can read the request before encryption.",
+          "plain": "Compromise exposes content regardless of protocol."
+        }
+      },
+      "response": {
+        "passive": {
+          "secure": "Encrypted responses keep content hidden from passive observers.",
+          "plain": "Plain-text responses can expose session tokens."
+        },
+        "rogueHotspot": {
+          "secure": "Encrypted responses stay private, but phishing risk remains.",
+          "plain": "Plain-text responses are easy to capture on rogue hotspots."
+        },
+        "compromisedEndpoint": {
+          "secure": "Compromised devices can read responses after decryption.",
+          "plain": "Compromise exposes responses regardless of protocol."
+        }
+      }
+    }
   },
   
   "loginForm": {
     "title": "Sign In",
     "usernameLabel": "Username",
     "passwordLabel": "Password",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
     "signInButton": "Log In",
     "demoNote": "These are fictional credentials for demonstration only",
     "demoBadge": "Demo Site"
@@ -208,6 +314,7 @@
   
   "quiz": {
     "title": "Security Knowledge Quiz",
+    "description": "Test your understanding of network security concepts",
     "startQuiz": "Start Quiz",
     "question": "Question",
     "of": "of",
@@ -220,6 +327,12 @@
     "tryAgain": "Try Again",
     "quizComplete": "Quiz Complete!",
     "yourScore": "Your Score",
+    "categories": {
+      "http": "HTTP",
+      "https": "HTTPS",
+      "vpn": "VPN",
+      "general": "General"
+    },
     "questions": {
       "q1": {
         "question": "When you connect to a website using HTTP, who can see your password?",
@@ -274,6 +387,13 @@
     "runComparison": "Run Comparison",
     "reset": "Reset",
     "clickToRun": "Click \"Run Comparison\" to see the difference",
+    "httpLabel": "HTTP",
+    "httpsLabel": "HTTPS",
+    "withVpnLabel": "+ VPN",
+    "hostLabel": "Host:",
+    "usernameLabel": "username:",
+    "passwordLabel": "password:",
+    "plainTextResponseExample": "status: success, token: abc123...",
     "connection": "Connection",
     "protocol": "Protocol",
     "tlsEncrypted": "TLS 1.3 (encrypted)",
@@ -311,6 +431,141 @@
     "title": "Network Scenarios",
     "description": "Explore different network environments and their security implications",
     "risk": "risk",
+    "riskLevels": {
+      "low": "low",
+      "medium": "medium",
+      "high": "high"
+    },
+    "practice": {
+      "title": "Micro-practice",
+      "description": "Make quick choices based on the scenario and attacker model.",
+      "stepLabel": "Step {current} of {total}",
+      "attackerModelLabel": "Attacker model",
+      "nextStep": "Next step",
+      "restart": "Restart practice",
+      "feedback": {
+        "correct": "Correct. {rationale}",
+        "incorrect": "Not quite. Best answer: {correctOption}. {rationale}"
+      },
+      "home": {
+        "step1": {
+          "prompt": "You're on your home Wi-Fi. What should you prioritize first?",
+          "options": [
+            "Use HTTPS sites and keep the router updated.",
+            "Assume the router is hostile and use a VPN for everything.",
+            "Stop and clean the device before logging in."
+          ],
+          "rationale": {
+            "passive": "With a {model} attacker, HTTPS protects content while router updates reduce easy compromises.",
+            "rogueHotspot": "Even with a {model} attacker, HTTPS and router hygiene still reduce risk at home.",
+            "compromisedEndpoint": "With a {model} attacker, the device itself is the risk. Clean it before logging in."
+          }
+        },
+        "step2": {
+          "prompt": "A family member asks for the Wi-Fi password. What is the safest response?",
+          "options": [
+            "Share it, but keep a strong WPA2/WPA3 password and update it if needed.",
+            "Post it publicly for convenience.",
+            "Ignore device security because HTTPS is enough."
+          ],
+          "rationale": {
+            "passive": "A strong Wi-Fi password limits who can observe traffic on the local network.",
+            "rogueHotspot": "Strong Wi-Fi security reduces the chance of unauthorized access or spoofed access points.",
+            "compromisedEndpoint": "Even with device risks, controlling who joins the network still matters."
+          }
+        }
+      },
+      "coffeeShop": {
+        "step1": {
+          "prompt": "You're at a coffee shop. What is the safest first step?",
+          "options": [
+            "Use HTTPS only and avoid sensitive logins.",
+            "Verify the network name with staff and consider a VPN.",
+            "Assume the device is compromised and stop before logging in."
+          ],
+          "rationale": {
+            "passive": "With a {model} attacker, HTTPS and avoiding sensitive logins reduce exposure.",
+            "rogueHotspot": "With a {model} attacker, verifying the hotspot and using a VPN helps prevent interception.",
+            "compromisedEndpoint": "With a {model} attacker, network choices do not protect you; fix the device first."
+          }
+        },
+        "step2": {
+          "prompt": "You need to check email. What is the safest choice?",
+          "options": [
+            "Proceed only if the site is HTTPS and there are no certificate warnings.",
+            "Use HTTP because it loads faster.",
+            "Wait until you can use a trusted device or network."
+          ],
+          "rationale": {
+            "passive": "HTTPS prevents a {model} attacker from reading content.",
+            "rogueHotspot": "A {model} attacker relies on downgrades or fake certificates, so only proceed if HTTPS is intact.",
+            "compromisedEndpoint": "If the device is compromised, postpone until you can use a trusted device."
+          }
+        }
+      },
+      "airport": {
+        "step1": {
+          "prompt": "At airport Wi-Fi, what is the safest first step?",
+          "options": [
+            "Use a VPN plus HTTPS for sensitive tasks.",
+            "Skip VPN because HTTPS is always enough.",
+            "Stop and clean the device before logging in."
+          ],
+          "rationale": {
+            "passive": "A {model} attacker still sees metadata; a VPN reduces local visibility.",
+            "rogueHotspot": "With a {model} attacker, VPN plus HTTPS adds protection against interception.",
+            "compromisedEndpoint": "If the device is compromised, network protections cannot help."
+          }
+        },
+        "step2": {
+          "prompt": "A captive portal asks for credentials. What should you do?",
+          "options": [
+            "Enter your email password to unlock Wi-Fi.",
+            "Use the portal only for access and avoid real account passwords.",
+            "Assume the device is compromised and do not proceed."
+          ],
+          "rationale": {
+            "passive": "Even with a {model} attacker, never enter real credentials into a portal.",
+            "rogueHotspot": "A {model} attacker can use fake portals; avoid real credentials and verify the domain.",
+            "compromisedEndpoint": "If the device is compromised, avoid logging in at all."
+          }
+        }
+      },
+      "hotel": {
+        "step1": {
+          "prompt": "At the hotel network, what is the safest first step?",
+          "options": [
+            "Confirm the network with reception and use HTTPS.",
+            "Assume it is safe like home.",
+            "Stop and clean the device before logging in."
+          ],
+          "rationale": {
+            "passive": "A {model} attacker can still observe metadata; verifying the network and HTTPS are safer.",
+            "rogueHotspot": "With a {model} attacker, verifying the network reduces the chance of a fake hotspot.",
+            "compromisedEndpoint": "If the device is compromised, network choices are secondary to cleaning it."
+          }
+        },
+        "step2": {
+          "prompt": "You need to access banking. What is the safest choice?",
+          "options": [
+            "Use a VPN and verify HTTPS before logging in.",
+            "Use HTTP for speed.",
+            "Wait until you can use a trusted device or network."
+          ],
+          "rationale": {
+            "passive": "A {model} attacker cannot read HTTPS content, and a VPN reduces local exposure.",
+            "rogueHotspot": "With a {model} attacker, VPN plus HTTPS reduces interception risk.",
+            "compromisedEndpoint": "If the device is compromised, do not log in until it is cleaned."
+          }
+        }
+      }
+    },
+    "attackerModelTitle": "Attacker model lens",
+    "attackerModelNotes": {
+      "passive": "Assume someone is quietly observing traffic. HTTPS hides content but not the destination.",
+      "rogueHotspot": "Assume a fake hotspot could try to trick you even if HTTPS is used.",
+      "compromisedEndpoint": "Assume the device is infected. Network encryption won’t protect what malware can read."
+    },
     "whoCanSee": "Who Can See Your Traffic",
     "recommendations": "Recommendations",
     "httpsUsuallyEnough": "HTTPS is usually sufficient for this environment",
@@ -398,6 +653,12 @@
       "Traffic appears to come from VPN server, not your device",
       "Useful on untrusted networks (coffee shops, airports, hotels)",
       "Note: VPN provider can see your traffic - choose a trusted one"
+    ],
+    "attackerModelsTitle": "Attacker Models (Reality Check)",
+    "attackerModels": [
+      "Passive eavesdropper: can see destinations and timing, but HTTPS protects content.",
+      "Rogue hotspot: can try phishing or fake portals even when HTTPS is used.",
+      "Compromised endpoint: malware can read your data before encryption."
     ],
     "comparisonTableTitle": "Quick Comparison",
     "tableHeaders": ["What observers see", "HTTP", "HTTPS", "HTTPS + VPN"],

@@ -63,7 +63,7 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
               value={payload.body.username}
               onChange={(e) => onUsernameChange(e.target.value)}
               className="bg-background font-mono"
-              placeholder="Enter username"
+              placeholder={t("loginForm.usernamePlaceholder")}
               data-testid="input-demo-username"
             />
           </div>
@@ -78,7 +78,7 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
               value={payload.body.password}
               onChange={(e) => onPasswordChange(e.target.value)}
               className="bg-background font-mono"
-              placeholder="Enter password"
+              placeholder={t("loginForm.passwordPlaceholder")}
               data-testid="input-demo-password"
             />
           </div>

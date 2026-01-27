@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Trans } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,33 @@ import {
 } from "lucide-react";
 
 const STORAGE_KEY = "glass-wall-progress";
+
+function safeStorageGet(key: string): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key: string, value: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage errors (private mode, blocked storage)
+  }
+}
+
+function safeStorageRemove(key: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Ignore storage errors (private mode, blocked storage)
+  }
+}
 
 interface ProgressState {
   httpExplored: boolean;
@@ -64,7 +90,7 @@ export function ProgressTracker({
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = safeStorageGet(STORAGE_KEY);
     if (stored) {
       try {
         setProgress(JSON.parse(stored));
@@ -94,7 +120,7 @@ export function ProgressTracker({
         const comboKey = `${currentProtocol}Vpn${currentVpn === "off" ? "Off" : "On"}` as keyof ProgressState;
         updated[comboKey] = true;
         
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        safeStorageSet(STORAGE_KEY, JSON.stringify(updated));
         return updated;
       });
     }
@@ -102,7 +128,7 @@ export function ProgressTracker({
 
   const handleReset = useCallback(() => {
     setProgress(DEFAULT_PROGRESS);
-    localStorage.removeItem(STORAGE_KEY);
+    safeStorageRemove(STORAGE_KEY);
   }, []);
 
   const completedCount = [

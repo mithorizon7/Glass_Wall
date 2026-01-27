@@ -18,6 +18,10 @@
   "english": "[Éñglïsh !!!]",
   "latvian": "[Làtvïàñ !!!]",
   "russian": "[Rüssïàñ !!!]",
+  "notFound": {
+    "title": "[404 Pàgé Ñöt Föüñd !!!]",
+    "message": "[Dïd yöü förgét tö àdd thé pàgé tö thé röütér? !!!]"
+  },
   "aria": {
     "toggleSidebar": "[Tögglé Sïdébàr !!!]",
     "pagination": "[Pàgïñàtïöñ !!!]",

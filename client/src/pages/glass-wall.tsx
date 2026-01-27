@@ -1,9 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -11,9 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  AlertTriangle,
   Shield,
-  ShieldOff,
   Lock,
   Unlock,
   Play,
@@ -21,11 +17,15 @@ import {
   ChevronRight,
   Info,
   Wifi,
-  Server,
-  Globe,
   Eye,
   EyeOff,
+  AlertTriangle,
 } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { DemoLoginForm } from "@/components/demo-login-form";
 import { WireView } from "@/components/wire-view";
 import { Timeline } from "@/components/timeline";
@@ -43,6 +43,7 @@ import { GuidedLearningOverlay, RestartGuideButton } from "@/components/guided-l
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
 export type TimelineStage = "idle" | "connect" | "handshake" | "request" | "response" | "complete";
+export type AttackerModel = "passive" | "rogueHotspot" | "compromisedEndpoint";
 
 export interface DemoPayload {
   action: string;
@@ -62,57 +63,133 @@ const DEFAULT_PAYLOAD: Omit<DemoPayload, 'body'> = {
   path: "/login",
   domain: "example-login.test",
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "application/x-www-form-urlencoded",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
     "Accept": "application/json",
     "Host": "example-login.test",
   },
 };
 
+function sleep(ms: number, signal: AbortSignal) {
+  if (signal.aborted) return Promise.resolve();
+  return new Promise<void>((resolve) => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const onAbort = () => {
+      clearTimeout(timeoutId);
+      resolve();
+    };
+    timeoutId = setTimeout(() => {
+      signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    signal.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
 export default function GlassWall() {
   const { t } = useTranslation("glassWall");
   const [protocolMode, setProtocolMode] = useState<ProtocolMode>("http");
   const [vpnMode, setVpnMode] = useState<VpnMode>("off");
-  const autoPlay = true;
-  const stepMode = true;
+  const [attackerModel, setAttackerModel] = useState<AttackerModel>("passive");
+  const [autoPlay, setAutoPlay] = useState(true);
+  const [stepMode, setStepMode] = useState(true);
   const [timelineStage, setTimelineStage] = useState<TimelineStage>("idle");
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
+  const [isVpnLimitsOpen, setIsVpnLimitsOpen] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[0]);
   const [username, setUsername] = useState("your_username");
   const [password, setPassword] = useState("your_password");
+  const animationAbortRef = useRef<AbortController | null>(null);
+  const isAnimatingRef = useRef(false);
+  const protocolModeRef = useRef<ProtocolMode>(protocolMode);
+  const stepModeRef = useRef(stepMode);
+  const autoPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoPlayPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const payload: DemoPayload = {
     ...DEFAULT_PAYLOAD,
     body: { username, password },
   };
 
-  const resetTimeline = useCallback(() => {
-    setTimelineStage("idle");
-    setIsAnimating(false);
-    setExpandedNodes(new Set());
+  useEffect(() => {
+    isAnimatingRef.current = isAnimating;
+  }, [isAnimating]);
+
+  useEffect(() => {
+    protocolModeRef.current = protocolMode;
+  }, [protocolMode]);
+
+  useEffect(() => {
+    stepModeRef.current = stepMode;
+  }, [stepMode]);
+
+  const clearAutoPlayTimers = useCallback(() => {
+    if (autoPlayTimeoutRef.current) {
+      clearTimeout(autoPlayTimeoutRef.current);
+      autoPlayTimeoutRef.current = null;
+    }
+    if (autoPlayPlayTimeoutRef.current) {
+      clearTimeout(autoPlayPlayTimeoutRef.current);
+      autoPlayPlayTimeoutRef.current = null;
+    }
   }, []);
 
+  const cancelAnimation = useCallback(() => {
+    if (animationAbortRef.current) {
+      animationAbortRef.current.abort();
+      animationAbortRef.current = null;
+    }
+    clearAutoPlayTimers();
+    isAnimatingRef.current = false;
+    setIsAnimating(false);
+  }, [clearAutoPlayTimers]);
+
+  const resetTimeline = useCallback(() => {
+    cancelAnimation();
+    setTimelineStage("idle");
+    setExpandedNodes(new Set());
+  }, [cancelAnimation]);
+
   const playTimeline = useCallback(async () => {
-    if (isAnimating) return;
-    
+    if (isAnimatingRef.current) return;
+
+    if (animationAbortRef.current) {
+      animationAbortRef.current.abort();
+    }
+    const controller = new AbortController();
+    animationAbortRef.current = controller;
+    const { signal } = controller;
+
+    isAnimatingRef.current = true;
     setIsAnimating(true);
     setExpandedNodes(new Set());
     
-    if (stepMode) {
+    const currentStepMode = stepModeRef.current;
+    const currentProtocol = protocolModeRef.current;
+
+    if (currentStepMode) {
+      if (signal.aborted) {
+        cancelAnimation();
+        return;
+      }
       setTimelineStage("connect");
       setExpandedNodes(new Set(["metadata"]));
-      setIsAnimating(false);
+      cancelAnimation();
       return;
     }
     
-    const stages: TimelineStage[] = protocolMode === "https"
+    const stages: TimelineStage[] = currentProtocol === "https"
       ? ["connect", "handshake", "request", "response", "complete"]
       : ["connect", "request", "response", "complete"];
     const stageDuration = 1000;
     
     for (let i = 0; i < stages.length; i++) {
+      if (signal.aborted) {
+        cancelAnimation();
+        return;
+      }
       const stage = stages[i];
       setTimelineStage(stage);
       
@@ -127,12 +204,12 @@ export default function GlassWall() {
       }
       
       if (stage !== "complete") {
-        await new Promise(resolve => setTimeout(resolve, stageDuration));
+        await sleep(stageDuration, signal);
       }
     }
     
-    setIsAnimating(false);
-  }, [isAnimating, stepMode, protocolMode]);
+    cancelAnimation();
+  }, [cancelAnimation]);
 
   const handleNextStep = useCallback(() => {
     const stageOrder: TimelineStage[] = protocolMode === "https"
@@ -161,8 +238,11 @@ export default function GlassWall() {
   }, [protocolMode]);
 
   const handleModeChange = useCallback((type: "protocol" | "vpn", value: string) => {
+    cancelAnimation();
+
     if (type === "protocol") {
       const newProtocol = value as ProtocolMode;
+      protocolModeRef.current = newProtocol;
       setProtocolMode(newProtocol);
       
       if (timelineStage === "handshake" && newProtocol === "http") {
@@ -176,12 +256,30 @@ export default function GlassWall() {
     setShowModeChangeBanner(true);
     
     if (autoPlay && timelineStage !== "idle") {
-      setTimeout(() => {
+      clearAutoPlayTimers();
+      autoPlayTimeoutRef.current = setTimeout(() => {
         resetTimeline();
-        setTimeout(playTimeline, 300);
+        autoPlayPlayTimeoutRef.current = setTimeout(playTimeline, 300);
       }, 300);
     }
-  }, [autoPlay, timelineStage, resetTimeline, playTimeline]);
+  }, [autoPlay, timelineStage, resetTimeline, playTimeline, cancelAnimation, clearAutoPlayTimers]);
+
+  const handleAutoPlayChange = useCallback((value: boolean) => {
+    setAutoPlay(value);
+    if (!value) {
+      clearAutoPlayTimers();
+    }
+  }, [clearAutoPlayTimers]);
+
+  const handleStepModeChange = useCallback((value: boolean) => {
+    stepModeRef.current = value;
+    setStepMode(value);
+    resetTimeline();
+  }, [resetTimeline]);
+
+  const handleAttackerModelChange = useCallback((value: AttackerModel) => {
+    setAttackerModel(value);
+  }, []);
 
   useEffect(() => {
     if (showModeChangeBanner) {
@@ -201,6 +299,12 @@ export default function GlassWall() {
       return next;
     });
   }, []);
+
+  useEffect(() => {
+    return () => cancelAnimation();
+  }, [cancelAnimation]);
+
+  const vpnDoesNotBullets = t("vpnActive.doesNotBullets", { returnObjects: true }) as string[];
 
   return (
     <div className="min-h-screen bg-background">
@@ -225,7 +329,8 @@ export default function GlassWall() {
             <div data-onboarding="scenario-selector">
               <ScenarioSelector 
                 currentScenario={currentScenario} 
-                onScenarioChange={setCurrentScenario} 
+                onScenarioChange={setCurrentScenario}
+                attackerModel={attackerModel}
               />
             </div>
             <div data-onboarding="learning-tools" className="flex items-center gap-3">
@@ -291,13 +396,42 @@ export default function GlassWall() {
         />
 
         {vpnMode === "on" && (
-          <InfoBanner 
-            type="info"
-            icon={<Shield className="w-5 h-5" />}
-            title={t("vpnActive.title")}
-            message={t("vpnActive.message")}
-            className="mb-4"
-          />
+          <div className="mb-4 space-y-3">
+            <InfoBanner 
+              type="info"
+              icon={<Shield className="w-5 h-5" />}
+              title={t("vpnActive.title")}
+              message={t("vpnActive.message")}
+            />
+            <div className="rounded-lg border border-border/60 bg-muted/40 p-4">
+              <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5" />
+                <p>{t("vpnActive.dnsLeakNote")}</p>
+              </div>
+              <Collapsible open={isVpnLimitsOpen} onOpenChange={setIsVpnLimitsOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="mt-2 px-0 h-auto text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    <span className="flex items-center gap-2">
+                      <ChevronRight className={`w-3 h-3 transition-transform ${isVpnLimitsOpen ? "rotate-90" : ""}`} />
+                      {t("vpnActive.doesNotTitle")}
+                    </span>
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-2 text-xs text-muted-foreground">
+                  <ul className="list-disc pl-5 space-y-1">
+                    {Array.isArray(vpnDoesNotBullets) &&
+                      vpnDoesNotBullets.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                  </ul>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+          </div>
         )}
 
         {showModeChangeBanner && (
@@ -319,8 +453,14 @@ export default function GlassWall() {
         <ControlPanel
           protocolMode={protocolMode}
           vpnMode={vpnMode}
+          attackerModel={attackerModel}
+          autoPlay={autoPlay}
+          stepMode={stepMode}
           onProtocolChange={(value: ProtocolMode) => handleModeChange("protocol", value)}
           onVpnChange={(value: VpnMode) => handleModeChange("vpn", value)}
+          onAttackerModelChange={handleAttackerModelChange}
+          onAutoPlayChange={handleAutoPlayChange}
+          onStepModeChange={handleStepModeChange}
           className="mb-8"
         />
 
@@ -422,6 +562,7 @@ export default function GlassWall() {
               stage={timelineStage}
               protocolMode={protocolMode}
               vpnMode={vpnMode}
+              attackerModel={attackerModel}
               payload={payload}
               expandedNodes={expandedNodes}
               onToggleNode={toggleNodeExpansion}
@@ -432,6 +573,7 @@ export default function GlassWall() {
               stage={timelineStage}
               protocolMode={protocolMode}
               vpnMode={vpnMode}
+              attackerModel={attackerModel}
               payload={payload}
             />
           </Card>

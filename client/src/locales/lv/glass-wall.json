@@ -27,7 +27,14 @@
   
   "vpnActive": {
     "title": "VPN aktīvs",
-    "message": "VPN pārnes uzticēšanos no vietējā tīkla uz VPN pakalpojuma sniedzēju. Tas nepadara jūs neievainojamu — izvēlieties uzticamu pakalpojuma sniedzēju un atcerieties, ka VPN var redzēt jūsu trafiku."
+    "message": "VPN pārnes uzticēšanos no vietējā tīkla uz VPN pakalpojuma sniedzēju. Tas nepadara jūs neievainojamu — izvēlieties uzticamu pakalpojuma sniedzēju un atcerieties, ka VPN var redzēt jūsu trafiku.",
+    "dnsLeakNote": "Piezīme: DNS pieprasījumi dažkārt var izplūst ārpus VPN atkarībā no iestatījumiem.",
+    "doesNotTitle": "VPN NEDARA",
+    "doesNotBullets": [
+      "Neaizsargā no pikšķerēšanas vai ļaunprogrammatūras.",
+      "Nepadara jūs anonīmu.",
+      "Neaizliedz VPN pakalpojuma sniedzējam redzēt jūsu trafiku."
+    ]
   },
   
   "modeChanged": {
@@ -40,10 +47,19 @@
     "protocolTooltip": "HTTP sūta datus vienkāršā tekstā. HTTPS šifrē jūsu datus, lai novērotāji nevarētu tos izlasīt.",
     "vpn": "VPN",
     "vpnTooltip": "VPN izveido šifrētu tuneli. Tas pārceļ uzticēšanos uz VPN pakalpojuma sniedzēju, bet nepadara jūs neievainojamu.",
+    "attackerModel": "Uzbrucēja modelis",
+    "attackerModelTooltip": "Izvēlieties, kas varētu novērot. Tas maina reālos riskus.",
+    "attackerModels": {
+      "passive": "Pasīvs novērotājs",
+      "rogueHotspot": "Viltots piekļuves punkts (MITM)",
+      "compromisedEndpoint": "Kompromitēta ierīce"
+    },
     "autoPlay": "Automātiskā atskaņošana",
     "autoPlayTooltip": "Automātiski atkārtot laika līniju, mainot režīmus.",
     "stepMode": "Soļu režīms",
-    "stepModeTooltip": "Virzieties pa laika līniju soli pa solim detalizētai mācīšanās pieredzei."
+    "stepModeTooltip": "Virzieties pa laika līniju soli pa solim detalizētai mācīšanās pieredzei.",
+    "httpLabel": "HTTP",
+    "httpsLabel": "HTTPS"
   },
   
   "buttons": {
@@ -64,13 +80,50 @@
     "readyToObserveHint": "Noklikšķiniet uz \"Sūtīt pieprasījumu\", lai redzētu, ko tīkla novērotāji varētu redzēt, kad iesniedzat pieteikšanās veidlapu.",
     "encrypted": "Šifrēts",
     "plainText": "Vienkāršs teksts",
+    "userLabel": "lietotājs:",
+    "passLabel": "parole:",
     "browser": "Pārlūks",
     "server": "Serveris",
+    "vpnLabel": "VPN",
+    "observerTitle": {
+      "passive": {
+        "secure": "Ko novērotājs redz: šifrēts saturs, redzams galamērķis",
+        "plain": "Ko novērotājs redz: jūsu faktiskie dati"
+      },
+      "rogueHotspot": {
+        "secure": "Ko novērotājs redz: šifrēts saturs, redzams galamērķis",
+        "plain": "Ko novērotājs redz: jūsu faktiskie dati (paaugstināts pārtveršanas risks)"
+      },
+      "compromisedEndpoint": {
+        "secure": "Ko novērotājs redz: šifrēts saturs, bet ierīce jau ir kompromitēta",
+        "plain": "Ko novērotājs redz: jūsu faktiskie dati (ierīce kompromitēta)"
+      }
+    },
     "whatObserverSeesSecure": "Ko redz novērotājs: šifrēts juceklis",
     "whatObserverSeesPlain": "Ko redz novērotājs: jūsu īstie dati",
     "destinationVisible": "Galamērķis",
     "tlsRecord": "TLS ieraksta galvene",
     "encryptedPayload": "Šifrēti dati (hex izgāztne)",
+    "requestLine": "{method} {path} HTTP/1.1",
+    "hostHeader": "Host:",
+    "contentTypeHeader": "Content-Type:",
+    "formFieldUsername": "username=",
+    "formFieldPassword": "&password=",
+    "whyItMattersTitle": "Kāpēc tas ir svarīgi",
+    "whyItMatters": {
+      "passive": {
+        "secure": "HTTPS pasargā saturu no pasīviem novērotājiem, bet viņi joprojām redz, kuru vietni apmeklējat.",
+        "plain": "Ar HTTP ikviens tīklā var tieši nolasīt jūsu datus."
+      },
+      "rogueHotspot": {
+        "secure": "HTTPS pasargā saturu, bet viltoti piekļuves punkti var jūs apmānīt ar viltotām lapām.",
+        "plain": "Viltotā Wi‑Fi vienkāršs teksts ir viegli pārtverams."
+      },
+      "compromisedEndpoint": {
+        "secure": "Ja ierīce ir inficēta, HTTPS nepasargā to, ko ļaunprogramma nolasīja pirms šifrēšanas.",
+        "plain": "Kompromitēta ierīce atklāj datus neatkarīgi no HTTP vai HTTPS."
+      }
+    },
     "explainSecure": {
       "title": "Kāpēc viņi to nevar izlasīt?",
       "body": "HTTPS šifrē jūsu datus pirms nosūtīšanas. Iedomājieties, ka jūs ievietojat vēstuli slēgtā kastē—tikai saņēmējam ir atslēga. Augstāk redzamie hex kodi ir tas, ko uzbrucējs uztvertu: bezjēdzīgi sajaukti dati, kurus mūsdienu datori nevar atšifrēt. Viņi var redzēt, kuru vietni jūs apmeklējat (adresi uz kastes), bet ne to, ko jūs sakāt iekšā."
@@ -90,13 +143,22 @@
     "connectionDirect": "Tiešs",
     "connectionVpn": "VPN tunelis (šifrēts)",
     "encryptionNone": "Nav",
-    "metadataNote": "Pat ar HTTPS šifrēšanu tīkls var redzēt, kurai vietnei jūs pieslēdzāties—tikai ne to, ko jūs nosūtījāt vai saņēmāt."
+    "encryptionTls": "TLS",
+    "metadataNote": "Pat ar HTTPS šifrēšanu tīkls var redzēt, kurai vietnei jūs pieslēdzāties—tikai ne to, ko jūs nosūtījāt vai saņēmāt.",
+    "advancedPrompt": "Papildus: kādi metadati noplūst?",
+    "advancedSkip": "Ja tas ir par daudz, droši izlaidiet - pamata ideja paliek.",
+    "advancedItems": [
+      "DNS vaicājumi var atklāt domēnu, kuru mēģināt sasniegt.",
+      "SNI var atklāt vietnes nosaukumu TLS rokasspiediena laikā; ECH to var paslēpt, bet vēl nav plaši ieviests.",
+      "DoH/DoT var mazināt DNS redzamību, bet tie nav universāli un var tikt bloķēti vai nepareizi konfigurēti."
+    ]
   },
   
   "handshake": {
     "title": "TLS rokasspiediena",
     "encryptionEstablished": "Šifrēšana izveidota",
     "handshakeComplete": "TLS 1.3 rokasspiediena pabeigta",
+    "tlsBadge": "TLS",
     "step1": "Client Hello: atbalstītās šifra komplekti, nejauši baiti",
     "step2": "Server Hello: izvēlētais šifrs, servera sertifikāts",
     "step3": "Atslēgu apmaiņa: ģenerētas pagaidu atslēgas",
@@ -151,13 +213,57 @@
     "responseDesc": "Servera atbilde saņemta",
     "responseTooltipSecure": "Servera atbilde ir šifrēta. Tikai jūs varat to atšifrēt un lasīt.",
     "responseTooltipInsecure": "Servera atbilde ir vienkāršā tekstā. Ikviens tīklā to var lasīt.",
-    "vpnTunnel": "VPN tunelis"
+    "vpnTunnel": "VPN tunelis",
+    "toggleDetails": "Pārslēgt detaļas par {section}",
+    "attackerNoteTitle": "Uzbrucēja modeļa ietekme",
+    "attackerNotes": {
+      "metadata": {
+        "passive": "Metadati (piem., galamērķis un savienojums) paliek redzami pasīviem novērotājiem.",
+        "rogueHotspot": "Viltoti piekļuves punkti joprojām redz metadatus un var mēģināt maldināt pat ar šifrētu saturu.",
+        "compromisedEndpoint": "Ja ierīce ir kompromitēta, metadatu redzamība nav galvenā problēma."
+      },
+      "handshake": {
+        "passive": "Rokasspiediens ir redzams, bet atslēgas nav.",
+        "rogueHotspot": "Ja redzat sertifikāta brīdinājumus, apstājieties — iespējams MITM mēģinājums.",
+        "compromisedEndpoint": "Kompromitēta ierīce var tikt manipulēta pat ar derīgu rokasspiedienu."
+      },
+      "request": {
+        "passive": {
+          "secure": "Pieprasījuma saturs ir šifrēts; noplūst tikai metadati.",
+          "plain": "Pieprasījuma saturs ir salasāms ikvienam tīklā."
+        },
+        "rogueHotspot": {
+          "secure": "Saturs ir šifrēts, bet jūs joprojām var apmānīt ar viltotām pieteikšanās lapām.",
+          "plain": "Viltotajos piekļuves punktos vienkāršs teksts ir viegli pārtverams."
+        },
+        "compromisedEndpoint": {
+          "secure": "Ļaunprogramma var nolasīt pieprasījumu pirms šifrēšanas.",
+          "plain": "Kompromitēta ierīce atklāj saturu neatkarīgi no protokola."
+        }
+      },
+      "response": {
+        "passive": {
+          "secure": "Šifrētās atbildes paslēpj saturu no pasīviem novērotājiem.",
+          "plain": "Vienkāršas atbildes var atklāt sesijas marķierus."
+        },
+        "rogueHotspot": {
+          "secure": "Šifrētās atbildes paliek privātas, bet pikšķerēšanas risks saglabājas.",
+          "plain": "Vienkāršas atbildes ir viegli uztveramas viltotos punktos."
+        },
+        "compromisedEndpoint": {
+          "secure": "Kompromitētas ierīces var nolasīt atbildes pēc atšifrēšanas.",
+          "plain": "Kompromitēšana atklāj atbildes neatkarīgi no protokola."
+        }
+      }
+    }
   },
   
   "loginForm": {
     "title": "Pierakstīties",
     "usernameLabel": "Lietotājvārds",
     "passwordLabel": "Parole",
+    "usernamePlaceholder": "Ievadiet lietotājvārdu",
+    "passwordPlaceholder": "Ievadiet paroli",
     "signInButton": "Ienākt",
     "demoNote": "Tie ir izdomāti akreditācijas dati tikai demonstrācijai",
     "demoBadge": "Demo vietne"
@@ -208,6 +314,7 @@
   
   "quiz": {
     "title": "Drošības zināšanu tests",
+    "description": "Pārbaudiet savu izpratni par tīkla drošību",
     "startQuiz": "Sākt testu",
     "question": "Jautājums",
     "of": "no",
@@ -220,6 +327,12 @@
     "tryAgain": "Mēģināt vēlreiz",
     "quizComplete": "Tests pabeigts!",
     "yourScore": "Jūsu rezultāts",
+    "categories": {
+      "http": "HTTP",
+      "https": "HTTPS",
+      "vpn": "VPN",
+      "general": "Vispārīgi"
+    },
     "questions": {
       "q1": {
         "question": "Kad jūs pieslēdzaties vietnei, izmantojot HTTP, kas var redzēt jūsu paroli?",
@@ -274,6 +387,13 @@
     "runComparison": "Palaist salīdzinājumu",
     "reset": "Atiestatīt",
     "clickToRun": "Noklikšķiniet uz \"Palaist salīdzinājumu\", lai redzētu atšķirību",
+    "httpLabel": "HTTP",
+    "httpsLabel": "HTTPS",
+    "withVpnLabel": "+ VPN",
+    "hostLabel": "Host:",
+    "usernameLabel": "lietotājvārds:",
+    "passwordLabel": "parole:",
+    "plainTextResponseExample": "status: success, token: abc123...",
     "connection": "Savienojums",
     "protocol": "Protokols",
     "tlsEncrypted": "TLS 1.3 (šifrēts)",
@@ -311,6 +431,141 @@
     "title": "Tīkla scenāriji",
     "description": "Izpētiet dažādas tīkla vides un to drošības ietekmi",
     "risk": "risks",
+    "riskLevels": {
+      "low": "zems",
+      "medium": "vidējs",
+      "high": "augsts"
+    },
+    "practice": {
+      "title": "Mikro-prakse",
+      "description": "Ātri lēmumi pēc scenārija un uzbrucēja modeļa.",
+      "stepLabel": "Solis {current} no {total}",
+      "attackerModelLabel": "Uzbrucēja modelis",
+      "nextStep": "Nākamais solis",
+      "restart": "Sākt no jauna",
+      "feedback": {
+        "correct": "Pareizi. {rationale}",
+        "incorrect": "Ne gluži. Labākā atbilde: {correctOption}. {rationale}"
+      },
+      "home": {
+        "step1": {
+          "prompt": "Jūs esat mājas Wi-Fi. Ko vispirms vajadzētu prioritizēt?",
+          "options": [
+            "Izmantot vietnes ar HTTPS un atjaunināt maršrutētāju.",
+            "Uzskatīt maršrutētāju par naidīgu un visur lietot VPN.",
+            "Apstāties un attīrīt ierīci pirms pieteikšanās."
+          ],
+          "rationale": {
+            "passive": "Ar {model} uzbrucēju HTTPS aizsargā saturu, bet maršrutētāja atjauninājumi samazina vienkāršus kompromisus.",
+            "rogueHotspot": "Pat ar {model} uzbrucēju mājās HTTPS un maršrutētāja higiēna joprojām samazina risku.",
+            "compromisedEndpoint": "Ar {model} uzbrucēju risks ir ierīcē - vispirms attīrīt."
+          }
+        },
+        "step2": {
+          "prompt": "Ģimenes loceklis prasa Wi-Fi paroli. Kā drošāk rīkoties?",
+          "options": [
+            "Dalīties, bet izmantot stipru WPA2/WPA3 paroli un to mainīt, ja vajag.",
+            "Publicēt paroli ērtības labad.",
+            "Ignorēt ierīču drošību, jo HTTPS ir pietiekami."
+          ],
+          "rationale": {
+            "passive": "Stipra Wi-Fi parole ierobežo, kas var novērot trafiku lokālajā tīklā.",
+            "rogueHotspot": "Stipra Wi-Fi drošība samazina neatļautas piekļuves vai viltotu punktu risku.",
+            "compromisedEndpoint": "Pat ar ierīces risku piekļuves kontrole tīklam joprojām ir svarīga."
+          }
+        }
+      },
+      "coffeeShop": {
+        "step1": {
+          "prompt": "Jūs esat kafejnīcā. Kāds ir drošākais pirmais solis?",
+          "options": [
+            "Izmantot tikai HTTPS un izvairīties no sensitīvām pieteikšanām.",
+            "Pārbaudīt tīkla nosaukumu pie personāla un apsvērt VPN.",
+            "Pieņemt, ka ierīce ir kompromitēta, un neieiet sistēmā."
+          ],
+          "rationale": {
+            "passive": "Ar {model} uzbrucēju HTTPS un izvairīšanās no sensitīvām pieteikšanām samazina risku.",
+            "rogueHotspot": "Ar {model} uzbrucēju tīkla pārbaude un VPN palīdz pret pārtveršanu.",
+            "compromisedEndpoint": "Ar {model} uzbrucēju tīkla pasākumi nepalīdz - vispirms attīrīt ierīci."
+          }
+        },
+        "step2": {
+          "prompt": "Jums jāapskata e-pasts. Kas ir drošākais?",
+          "options": [
+            "Turpināt tikai, ja vietne ir HTTPS un nav sertifikāta brīdinājumu.",
+            "Lietot HTTP, jo tas ir ātrāk.",
+            "Pagaidīt, līdz ir uzticama ierīce vai tīkls."
+          ],
+          "rationale": {
+            "passive": "HTTPS neļauj {model} uzbrucējam lasīt saturu.",
+            "rogueHotspot": "Ar {model} uzbrucēju bīstamas ir viltošanas un viltoti sertifikāti - turpināt tikai ar pareizu HTTPS.",
+            "compromisedEndpoint": "Ja ierīce ir kompromitēta, labāk pagaidīt."
+          }
+        }
+      },
+      "airport": {
+        "step1": {
+          "prompt": "Lidostas Wi-Fi: kāds ir drošākais pirmais solis?",
+          "options": [
+            "Lietot VPN kopā ar HTTPS sensitīvām darbībām.",
+            "Nelaist VPN, jo HTTPS vienmēr pietiek.",
+            "Apstāties un attīrīt ierīci pirms pieteikšanās."
+          ],
+          "rationale": {
+            "passive": "Ar {model} uzbrucēju VPN samazina metadatu redzamību lokālajā tīklā.",
+            "rogueHotspot": "Ar {model} uzbrucēju VPN + HTTPS dod papildu aizsardzību pret pārtveršanu.",
+            "compromisedEndpoint": "Ja ierīce ir kompromitēta, tīkla aizsardzība nepalīdz."
+          }
+        },
+        "step2": {
+          "prompt": "Piekļuves portāls prasa pieteikšanās datus. Ko darīt?",
+          "options": [
+            "Ievadīt e-pasta paroli, lai iegūtu Wi-Fi.",
+            "Portālu izmantot tikai piekļuvei un neievadīt īstās paroles.",
+            "Pieņemt, ka ierīce ir kompromitēta, un neturpināt."
+          ],
+          "rationale": {
+            "passive": "Pat ar {model} uzbrucēju neievadiet īstās paroles portālā.",
+            "rogueHotspot": "Ar {model} uzbrucēju iespējami viltoti portāli; neievadiet īstos datus un pārbaudiet domēnu.",
+            "compromisedEndpoint": "Ja ierīce ir kompromitēta, nepiesakieties vispār."
+          }
+        }
+      },
+      "hotel": {
+        "step1": {
+          "prompt": "Viesnīcas tīklā, kāds ir drošākais pirmais solis?",
+          "options": [
+            "Apstiprināt tīklu pie reģistratūras un lietot HTTPS.",
+            "Pieņemt, ka tas ir drošs kā mājās.",
+            "Apstāties un attīrīt ierīci pirms pieteikšanās."
+          ],
+          "rationale": {
+            "passive": "Ar {model} uzbrucēju metadati joprojām ir redzami; tīkla pārbaude un HTTPS ir drošāki.",
+            "rogueHotspot": "Ar {model} uzbrucēju tīkla pārbaude samazina viltota piekļuves punkta risku.",
+            "compromisedEndpoint": "Ja ierīce ir kompromitēta, vispirms attīrīt."
+          }
+        },
+        "step2": {
+          "prompt": "Jums jāienāk internetbankā. Kas ir drošākais?",
+          "options": [
+            "Lietot VPN un pārbaudīt HTTPS pirms pieteikšanās.",
+            "Lietot HTTP ātruma dēļ.",
+            "Pagaidīt, līdz ir uzticama ierīce vai tīkls."
+          ],
+          "rationale": {
+            "passive": "Ar {model} uzbrucēju HTTPS aizsargā saturu, un VPN samazina lokālo redzamību.",
+            "rogueHotspot": "Ar {model} uzbrucēju VPN + HTTPS samazina pārtveršanas risku.",
+            "compromisedEndpoint": "Ja ierīce ir kompromitēta, nepiesakieties līdz tā ir attīrīta."
+          }
+        }
+      }
+    },
+    "attackerModelTitle": "Uzbrucēja modeļa prizma",
+    "attackerModelNotes": {
+      "passive": "Pieņemiet, ka kāds klusi novēro trafiku. HTTPS slēpj saturu, bet ne galamērķi.",
+      "rogueHotspot": "Pieņemiet, ka viltots tīkls var mēģināt jūs apmānīt pat ar HTTPS.",
+      "compromisedEndpoint": "Pieņemiet, ka ierīce ir inficēta. Tīkla šifrēšana nepasargās no ļaunprogrammas."
+    },
     "whoCanSee": "Kas var redzēt jūsu trafiku",
     "recommendations": "Ieteikumi",
     "httpsUsuallyEnough": "HTTPS parasti ir pietiekams šai videi",
@@ -398,6 +653,12 @@
       "Trafika izskatās tā, it kā nāktu no VPN servera, nevis jūsu ierīces",
       "Noderīgs neuzticamos tīklos (kafejnīcās, lidostās, viesnīcās)",
       "Piezīme: VPN pakalpojuma sniedzējs var redzēt jūsu trafiku — izvēlieties uzticamu"
+    ],
+    "attackerModelsTitle": "Uzbrucēju modeļi (realitātes pārbaude)",
+    "attackerModels": [
+      "Pasīvs novērotājs: redz galamērķus un laiku, bet HTTPS aizsargā saturu.",
+      "Viltots piekļuves punkts: var mēģināt pikšķerēt vai izmantot viltotas lapas pat ar HTTPS.",
+      "Kompromitēta ierīce: ļaunprogramma nolasa datus pirms šifrēšanas."
     ],
     "comparisonTableTitle": "Ātrais salīdzinājums",
     "tableHeaders": ["Ko novērotāji redz", "HTTP", "HTTPS", "HTTPS + VPN"],

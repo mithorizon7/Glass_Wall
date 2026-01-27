@@ -1,18 +1,20 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
-import { Lock, Unlock, Eye, EyeOff, AlertTriangle, ShieldCheck, Monitor, Server, Wifi } from "lucide-react";
+import { Lock, Eye, EyeOff, AlertTriangle, ShieldCheck, Monitor, Server, Wifi } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { TimelineStage, ProtocolMode, VpnMode, DemoPayload } from "@/pages/glass-wall";
+import type { TimelineStage, ProtocolMode, VpnMode, DemoPayload, AttackerModel } from "@/pages/glass-wall";
 
 interface WireViewProps {
   stage: TimelineStage;
   protocolMode: ProtocolMode;
   vpnMode: VpnMode;
+  attackerModel: AttackerModel;
   payload: DemoPayload;
 }
 
 function generateHexDump(seed: string, lines: number = 3): string[] {
+  const safeSeed = seed.length > 0 ? seed : "0";
   const hexChars = "0123456789abcdef";
   const result: string[] = [];
   let offset = 0;
@@ -20,7 +22,7 @@ function generateHexDump(seed: string, lines: number = 3): string[] {
   for (let line = 0; line < lines; line++) {
     let hex = "";
     for (let i = 0; i < 16; i++) {
-      const charCode = (seed.charCodeAt(i % seed.length) + line * 7 + i * 13) % 256;
+      const charCode = (safeSeed.charCodeAt(i % safeSeed.length) + line * 7 + i * 13) % 256;
       hex += hexChars[Math.floor(charCode / 16)] + hexChars[charCode % 16] + " ";
     }
     const offsetStr = offset.toString(16).padStart(4, "0");
@@ -88,11 +90,11 @@ function DataPacket({
             <span className="text-[10px] font-medium">{t("wireView.plainText")}</span>
           </div>
           <div className="flex gap-1">
-            <span className="text-muted-foreground">user:</span>
+            <span className="text-muted-foreground">{t("wireView.userLabel")}</span>
             <span className="text-foreground font-semibold" data-testid="text-wire-username">{username}</span>
           </div>
           <div className="flex gap-1">
-            <span className="text-muted-foreground">pass:</span>
+            <span className="text-muted-foreground">{t("wireView.passLabel")}</span>
             <span className="text-[hsl(var(--http-danger))] font-semibold" data-testid="text-wire-password">{password}</span>
           </div>
         </div>
@@ -101,13 +103,15 @@ function DataPacket({
   );
 }
 
-export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProps) {
+export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload }: WireViewProps) {
   const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
   const isActive = stage !== "idle";
   const showRequest = stage === "request" || stage === "response" || stage === "complete";
   const showResponse = stage === "response" || stage === "complete";
   const showHandshake = isSecure && (stage === "handshake" || showRequest);
+  const observerTitle = t(`wireView.observerTitle.${attackerModel}.${isSecure ? "secure" : "plain"}`);
+  const whyItMatters = t(`wireView.whyItMatters.${attackerModel}.${isSecure ? "secure" : "plain"}`);
 
   const getPacketPosition = () => {
     if (stage === "connect" || stage === "handshake") return 0;
@@ -172,7 +176,9 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
 
             {vpnMode === "on" && (
               <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 h-8 border-2 border-dashed border-[hsl(var(--vpn-tunnel))]/40 rounded-full flex items-center justify-center">
-                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-background px-2">VPN</span>
+                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-background px-2">
+                  {t("wireView.vpnLabel")}
+                </span>
               </div>
             )}
 
@@ -213,7 +219,7 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                     className="text-[10px] border-[hsl(var(--https-success))]/50 text-[hsl(var(--https-success))] bg-background"
                   >
                     <ShieldCheck className="w-3 h-3 mr-1" />
-                    TLS
+                    {t("handshake.tlsBadge")}
                   </Badge>
                 </motion.div>
               )}
@@ -226,7 +232,7 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                 <div className="w-10 h-10 rounded-lg bg-[hsl(var(--vpn-tunnel))]/10 flex items-center justify-center">
                   <Wifi className="w-5 h-5 text-[hsl(var(--vpn-tunnel))]" />
                 </div>
-                <span className="text-[10px] text-muted-foreground">VPN</span>
+                <span className="text-[10px] text-muted-foreground">{t("wireView.vpnLabel")}</span>
               </div>
             )}
             <div className="flex flex-col items-center gap-1">
@@ -260,7 +266,7 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
             <p className={`text-sm font-medium mb-2 ${
               isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
             }`}>
-              {isSecure ? t("wireView.whatObserverSeesSecure") : t("wireView.whatObserverSeesPlain")}
+              {observerTitle}
             </p>
             
             {showRequest && (
@@ -284,13 +290,19 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                     </div>
                   ) : (
                     <>
-                      <div className="text-muted-foreground">POST /login HTTP/1.1</div>
-                      <div className="text-muted-foreground">Host: {payload.domain}</div>
-                      <div className="text-muted-foreground">Content-Type: application/x-www-form-urlencoded</div>
+                      <div className="text-muted-foreground">
+                        {t("wireView.requestLine", { method: payload.method, path: payload.path })}
+                      </div>
+                      <div className="text-muted-foreground">
+                        {t("wireView.hostHeader")} {payload.domain}
+                      </div>
+                      <div className="text-muted-foreground">
+                        {t("wireView.contentTypeHeader")} {payload.headers["Content-Type"]}
+                      </div>
                       <div className="border-t border-border/30 mt-2 pt-2">
-                        <span className="text-muted-foreground">username=</span>
+                        <span className="text-muted-foreground">{t("wireView.formFieldUsername")}</span>
                         <span className="text-foreground font-semibold">{payload.body.username}</span>
-                        <span className="text-muted-foreground">&amp;password=</span>
+                        <span className="text-muted-foreground">{t("wireView.formFieldPassword")}</span>
                         <span className="text-[hsl(var(--http-danger))] font-semibold">{payload.body.password}</span>
                       </div>
                     </>
@@ -307,6 +319,15 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                   </p>
                   <p className="opacity-80 leading-relaxed">
                     {isSecure ? t("wireView.explainSecure.body") : t("wireView.explainPlain.body")}
+                  </p>
+                </div>
+
+                <div className="text-xs p-3 rounded-lg bg-muted/50 text-muted-foreground">
+                  <p className="font-medium mb-1 text-foreground">
+                    {t("wireView.whyItMattersTitle")}
+                  </p>
+                  <p className="opacity-80 leading-relaxed">
+                    {whyItMatters}
                   </p>
                 </div>
               </div>

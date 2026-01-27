@@ -1,34 +1,47 @@
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Lock, Unlock, Shield, ShieldOff, Info } from "lucide-react";
-import type { ProtocolMode, VpnMode } from "@/pages/glass-wall";
+import type { ProtocolMode, VpnMode, AttackerModel } from "@/pages/glass-wall";
 
 interface ControlPanelProps {
   protocolMode: ProtocolMode;
   vpnMode: VpnMode;
+  attackerModel: AttackerModel;
+  autoPlay: boolean;
+  stepMode: boolean;
   onProtocolChange: (value: ProtocolMode) => void;
   onVpnChange: (value: VpnMode) => void;
+  onAttackerModelChange: (value: AttackerModel) => void;
+  onAutoPlayChange: (value: boolean) => void;
+  onStepModeChange: (value: boolean) => void;
   className?: string;
 }
 
 export function ControlPanel({
   protocolMode,
   vpnMode,
+  attackerModel,
+  autoPlay,
+  stepMode,
   onProtocolChange,
   onVpnChange,
+  onAttackerModelChange,
+  onAutoPlayChange,
+  onStepModeChange,
   className = "",
 }: ControlPanelProps) {
   const { t } = useTranslation("glassWall");
   const { t: tc } = useTranslation("common");
   
   return (
-    <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${className}`}>
+    <div className={`grid grid-cols-1 lg:grid-cols-4 gap-4 ${className}`}>
       <Card className="p-4" data-onboarding="protocol-toggle">
         <div className="flex items-center justify-between mb-3">
           <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
@@ -54,7 +67,7 @@ export function ControlPanel({
             data-testid="button-protocol-http"
           >
             <Unlock className="w-4 h-4" />
-            <span className="font-medium">HTTP</span>
+            <span className="font-medium">{t("controls.httpLabel")}</span>
           </button>
           <button
             onClick={() => onProtocolChange("https")}
@@ -66,7 +79,7 @@ export function ControlPanel({
             data-testid="button-protocol-https"
           >
             <Lock className="w-4 h-4" />
-            <span className="font-medium">HTTPS</span>
+            <span className="font-medium">{t("controls.httpsLabel")}</span>
           </button>
         </div>
       </Card>
@@ -110,6 +123,105 @@ export function ControlPanel({
             <Shield className="w-4 h-4" />
             <span className="font-medium">{tc("on")}</span>
           </button>
+        </div>
+      </Card>
+
+      <Card className="p-4" data-onboarding="attacker-model-toggle">
+        <div className="flex items-center justify-between mb-3">
+          <Label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+            {t("controls.attackerModel")}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="w-3 h-3 cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs">
+                <p>{t("controls.attackerModelTooltip")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </Label>
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          <button
+            onClick={() => onAttackerModelChange("passive")}
+            className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border transition-all text-left ${
+              attackerModel === "passive"
+                ? "bg-primary/10 border-primary text-primary"
+                : "border-border text-muted-foreground hover-elevate"
+            }`}
+            data-testid="button-attacker-passive"
+          >
+            <span className="font-medium">{t("controls.attackerModels.passive")}</span>
+          </button>
+          <button
+            onClick={() => onAttackerModelChange("rogueHotspot")}
+            className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border transition-all text-left ${
+              attackerModel === "rogueHotspot"
+                ? "bg-primary/10 border-primary text-primary"
+                : "border-border text-muted-foreground hover-elevate"
+            }`}
+            data-testid="button-attacker-rogue"
+          >
+            <span className="font-medium">{t("controls.attackerModels.rogueHotspot")}</span>
+          </button>
+          <button
+            onClick={() => onAttackerModelChange("compromisedEndpoint")}
+            className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border transition-all text-left ${
+              attackerModel === "compromisedEndpoint"
+                ? "bg-primary/10 border-primary text-primary"
+                : "border-border text-muted-foreground hover-elevate"
+            }`}
+            data-testid="button-attacker-compromised"
+          >
+            <span className="font-medium">{t("controls.attackerModels.compromisedEndpoint")}</span>
+          </button>
+        </div>
+      </Card>
+
+      <Card className="p-4" data-onboarding="playback-toggle">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1">
+              <Label htmlFor="toggle-auto-play" className="text-xs font-medium text-muted-foreground">
+                {t("controls.autoPlay")}
+              </Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="w-3 h-3 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{t("controls.autoPlayTooltip")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <Switch
+              id="toggle-auto-play"
+              checked={autoPlay}
+              onCheckedChange={onAutoPlayChange}
+              data-testid="switch-auto-play"
+            />
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1">
+              <Label htmlFor="toggle-step-mode" className="text-xs font-medium text-muted-foreground">
+                {t("controls.stepMode")}
+              </Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="w-3 h-3 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{t("controls.stepModeTooltip")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <Switch
+              id="toggle-step-mode"
+              checked={stepMode}
+              onCheckedChange={onStepModeChange}
+              data-testid="switch-step-mode"
+            />
+          </div>
         </div>
       </Card>
     </div>

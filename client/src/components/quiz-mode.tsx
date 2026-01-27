@@ -60,6 +60,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
   const questionText = t(`quiz.questions.${currentQuestion.id}.question`);
   const optionsArray = t(`quiz.questions.${currentQuestion.id}.options`, { returnObjects: true }) as string[];
   const explanationText = t(`quiz.questions.${currentQuestion.id}.explanation`);
+  const categoryLabel = t(`quiz.categories.${currentQuestion.category}`);
 
   const score = useMemo(() => {
     return answers.reduce<number>((acc, answer, index) => {
@@ -133,7 +134,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
             {t("quiz.title")}
           </DialogTitle>
           <DialogDescription>
-            Test your understanding of network security concepts
+            {t("quiz.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -155,7 +156,7 @@ export function QuizMode({ trigger }: QuizModeProps) {
               <div className="flex items-start gap-2">
                 <Badge className={`text-xs ${getCategoryColor(currentQuestion.category)}`}>
                   {getCategoryIcon(currentQuestion.category)}
-                  <span className="ml-1 capitalize">{currentQuestion.category}</span>
+                  <span className="ml-1">{categoryLabel}</span>
                 </Badge>
               </div>
 

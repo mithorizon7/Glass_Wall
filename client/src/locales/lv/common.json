@@ -18,6 +18,10 @@
   "english": "Angļu",
   "latvian": "Latviešu",
   "russian": "Krievu",
+  "notFound": {
+    "title": "404 lapa nav atrasta",
+    "message": "Vai aizmirsāt pievienot lapu maršrutētājam?"
+  },
   "aria": {
     "toggleSidebar": "Pārslēgt sānjoslu",
     "pagination": "Lapošana",

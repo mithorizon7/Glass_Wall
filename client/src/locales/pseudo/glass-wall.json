@@ -19,7 +19,14 @@
   
   "vpnActive": {
     "title": "[VPN Àçtïvé !!!]",
-    "message": "[VPN shïfts trüst fröm thé löçàl ñétwörk !!!]"
+    "message": "[VPN shïfts trüst fröm thé löçàl ñétwörk !!!]",
+    "dnsLeakNote": "[Ñöté: DNS réqüésts çàñ sòmétïmés léàk öütsïdé thé VPN !!!]",
+    "doesNotTitle": "[VPN döés NÖT dö !!!]",
+    "doesNotBullets": [
+      "[Döés ñöt prötéçt ýöü fröm phïshïñg ör màlwàré !!!]",
+      "[Döés ñöt màké ýöü àñöñymöüs !!!]",
+      "[Döés ñöt prévéñt thé VPN prövïdér fröm séeïñg ýöür tràffïc !!!]"
+    ]
   },
   
   "modeChanged": {
@@ -32,10 +39,19 @@
     "protocolTooltip": "[HTTP séñds dàtà ïñ plàïñ téxt !!!]",
     "vpn": "[VPN !!!]",
     "vpnTooltip": "[À VPN çréàtés àñ éñçryptéd tüññél !!!]",
+    "attackerModel": "[Àttàçkér Mödél !!!]",
+    "attackerModelTooltip": "[Çhöösé whö mïght bé wàtçhïñg !!!]",
+    "attackerModels": {
+      "passive": "[Pàssïvé Éàvésdröpper !!!]",
+      "rogueHotspot": "[Rögüé Hötspòt (MITM) !!!]",
+      "compromisedEndpoint": "[Çömpromïséd Éñdpöïñt !!!]"
+    },
     "autoPlay": "[Àütö-plày !!!]",
     "autoPlayTooltip": "[Àütömàtïçàlly réplày thé tïmélïñé !!!]",
     "stepMode": "[Stép Mödé !!!]",
-    "stepModeTooltip": "[Àdvàñçé thröügh thé tïmélïñé öñé stép !!!]"
+    "stepModeTooltip": "[Àdvàñçé thröügh thé tïmélïñé öñé stép !!!]",
+    "httpLabel": "[HTTP !!!]",
+    "httpsLabel": "[HTTPS !!!]"
   },
   
   "buttons": {
@@ -53,7 +69,44 @@
     "title": "[Wïré Vïéw !!!]",
     "subtitle": "[Whàt thé ñétwörk çàñ öbsérvé !!!]",
     "readyToObserve": "[Réàdy tö öbsérvé !!!]",
-    "readyToObserveHint": "[Çlïçk Séñd Réqüést tö sée whàt ñétwörk öbsérvérs çöüld sée !!!]"
+    "readyToObserveHint": "[Çlïçk Séñd Réqüést tö sée whàt ñétwörk öbsérvérs çöüld sée !!!]",
+    "userLabel": "[üsér: !!!]",
+    "passLabel": "[pàss: !!!]",
+    "vpnLabel": "[VPN !!!]",
+    "observerTitle": {
+      "passive": {
+        "secure": "[Whàt àñ öbsérvér sées: éñçryptéd çöntént, vïsïblé déstïñàtïöñ !!!]",
+        "plain": "[Whàt àñ öbsérvér sées: ýöür àçtüàl dàtà !!!]"
+      },
+      "rogueHotspot": {
+        "secure": "[Whàt àñ öbsérvér sées: éñçryptéd çöntént, vïsïblé déstïñàtïöñ !!!]",
+        "plain": "[Whàt àñ öbsérvér sées: ýöür àçtüàl dàtà (hïghér ïñtérçépt rïsk) !!!]"
+      },
+      "compromisedEndpoint": {
+        "secure": "[Whàt àñ öbsérvér sées: éñçryptéd çöntént, büt dévïçé ïs çömpromïséd !!!]",
+        "plain": "[Whàt àñ öbsérvér sées: ýöür àçtüàl dàtà (çömpromïséd dévïçé) !!!]"
+      }
+    },
+    "requestLine": "[{method} {path} HTTP/1.1 !!!]",
+    "hostHeader": "[Höst: !!!]",
+    "contentTypeHeader": "[Çöntént-Typé: !!!]",
+    "formFieldUsername": "[üsérñàmé= !!!]",
+    "formFieldPassword": "[&pàsswörd= !!!]",
+    "whyItMattersTitle": "[Whÿ thïs màttérs !!!]",
+    "whyItMatters": {
+      "passive": {
+        "secure": "[HTTPS prötéçts çöntént fröm pàssïvé öbsérvérs !!!]",
+        "plain": "[Wïth HTTP, ànyöñé çàñ réàd yöür dàtà !!!]"
+      },
+      "rogueHotspot": {
+        "secure": "[HTTPS prötéçts çöntént, büt rögüé hötspöts çàñ trïçk ýöü !!!]",
+        "plain": "[Plàïñ téxt ïs éàsy tö ïñtérçépt öñ rögüé hötspöts !!!]"
+      },
+      "compromisedEndpoint": {
+        "secure": "[Ïf dévïçé ïs ïñféçtéd, HTTPS çàñ't prötéçt béföre éñçryptïöñ !!!]",
+        "plain": "[Çömpromïséd dévïçé éxpösés dàtà àlwàys !!!]"
+      }
+    }
   },
   
   "metadata": {
@@ -65,13 +118,22 @@
     "connectionDirect": "[Dïréçt !!!]",
     "connectionVpn": "[VPN Tüññél (éñçryptéd) !!!]",
     "encryptionNone": "[Ñöñé !!!]",
-    "metadataNote": "[Évéñ wïth éñçryptïöñ, thé ñétwörk çàñ sée yöü çöññéçtéd !!!]"
+    "encryptionTls": "[TLS !!!]",
+    "metadataNote": "[Évéñ wïth éñçryptïöñ, thé ñétwörk çàñ sée yöü çöññéçtéd !!!]",
+    "advancedPrompt": "[Àdvàñçéd: Whàt métàdàtà léàks? !!!]",
+    "advancedSkip": "[Ïf thïs ïs töö müçh, féél frée tö skïp ït !!!]",
+    "advancedItems": [
+      "[DNS lööküps çàñ révéàl thé dömàïñ ýöü àré tryïñg tö réàçh !!!]",
+      "[SNI çàñ éxpösé thé sïtè ñàmé; ECH çàñ hïde ït, büt ñöt wïdély déplöyéd !!!]",
+      "[DoH/DoT çàñ rédüçé DNS vïsïbïlïty, büt ñöt ünïvérsàl !!!]"
+    ]
   },
   
   "handshake": {
     "title": "[TLS Hàñdshàké !!!]",
     "encryptionEstablished": "[Éñçryptïöñ éstàblïshéd !!!]",
     "handshakeComplete": "[TLS 1.3 Hàñdshàké Çömplété !!!]",
+    "tlsBadge": "[TLS !!!]",
     "step1": "[Çlïéñt Héllö: süppörtéd çïphér süïtés !!!]",
     "step2": "[Sérvér Héllö: çhöséñ çïphér !!!]",
     "step3": "[Kéy Éxçhàñgé: éphéméràl kéys !!!]",
@@ -126,13 +188,57 @@
     "responseDesc": "[Sérvér réspöñsé réçéïvéd !!!]",
     "responseTooltipSecure": "[Thé sérvér's réspöñsé ïs éñçryptéd !!!]",
     "responseTooltipInsecure": "[Thé sérvér's réspöñsé ïs ïñ plàïñ téxt !!!]",
-    "vpnTunnel": "[VPN Tüññél !!!]"
+    "vpnTunnel": "[VPN Tüññél !!!]",
+    "toggleDetails": "[Tögglé détàïls för {section} !!!]",
+    "attackerNoteTitle": "[Àttàçkér Mödél Ïmpàçt !!!]",
+    "attackerNotes": {
+      "metadata": {
+        "passive": "[Métàdàtà stàys vïsïblé tö pàssïvé öbsérvérs !!!]",
+        "rogueHotspot": "[Rögüé hötspöts stïll sée métàdàtà àñd çàñ déçéïvé !!!]",
+        "compromisedEndpoint": "[Çömpromïséd dévïçé méàñs métàdàtà ïs ñöt thé bïggést ïssüé !!!]"
+      },
+      "handshake": {
+        "passive": "[Hàñdshàké ïs vïsïblé, kéys àré ñöt !!!]",
+        "rogueHotspot": "[Ïf ýöü sée çért wàrñïñgs, stöp — mïght bé MITM !!!]",
+        "compromisedEndpoint": "[Çömpromïséd dévïçé çàñ bé màñïpülàtéd !!!]"
+      },
+      "request": {
+        "passive": {
+          "secure": "[Réqüést çöntént ïs éñçryptéd; métàdàtà lëàks !!!]",
+          "plain": "[Réqüést çöntént ïs réàdàblé tö ànyöñé !!!]"
+        },
+        "rogueHotspot": {
+          "secure": "[Çöntént éñçryptéd, büt fàké lögïñs çàñ trïçk ýöü !!!]",
+          "plain": "[Plàïñ téxt réqüésts àré tràvïàl tö ïñtérçépt !!!]"
+        },
+        "compromisedEndpoint": {
+          "secure": "[Màlwàré çàñ réàd béföre éñçryptïöñ !!!]",
+          "plain": "[Çömpromïsé éxpösés çöntént àlwàys !!!]"
+        }
+      },
+      "response": {
+        "passive": {
+          "secure": "[Éñçryptéd réspöñsés hïdé çöntént fröm pàssïvé öbsérvérs !!!]",
+          "plain": "[Plàïñ réspöñsés çàñ léàk séssïöñ tökéñs !!!]"
+        },
+        "rogueHotspot": {
+          "secure": "[Éñçryptéd réspöñsés stày prïvàté, phïshïñg rïsk rémàïñs !!!]",
+          "plain": "[Plàïñ réspöñsés àré éàsy tö çàptüré !!!]"
+        },
+        "compromisedEndpoint": {
+          "secure": "[Çömpromïséd dévïçés çàñ réàd àftér déçryptïöñ !!!]",
+          "plain": "[Çömpromïsé éxpösés réspöñsés àlwàys !!!]"
+        }
+      }
+    }
   },
   
   "loginForm": {
     "title": "[Sïgñ Ïñ !!!]",
     "usernameLabel": "[Üsérnàmé !!!]",
     "passwordLabel": "[Pàsswörd !!!]",
+    "usernamePlaceholder": "[Éñtér üsérñàmé !!!]",
+    "passwordPlaceholder": "[Éñtér pàsswörd !!!]",
     "signInButton": "[Lög Ïñ !!!]",
     "demoNote": "[Théåé àré fïçtïöñàl çrédéñtïàls !!!]",
     "demoBadge": "[Démö Sïté !!!]"
@@ -163,6 +269,7 @@
   
   "quiz": {
     "title": "[Séçürïty Kñöwlédgé Qüïz !!!]",
+    "description": "[Tést ýöür üñdérstàñdïñg öf ñétwörk séçürïty çöñçépts !!!]",
     "startQuiz": "[Stàrt Qüïz !!!]",
     "question": "[Qüéstïöñ !!!]",
     "of": "[öf !!!]",
@@ -174,6 +281,12 @@
     "seeResults": "[Sée Résülts !!!]",
     "tryAgain": "[Try Àgàïñ !!!]",
     "quizComplete": "[Qüïz Çömplété! !!!]",
-    "yourScore": "[Yöür Sçöré !!!]"
+    "yourScore": "[Yöür Sçöré !!!]",
+    "categories": {
+      "http": "[HTTP !!!]",
+      "https": "[HTTPS !!!]",
+      "vpn": "[VPN !!!]",
+      "general": "[Géñéràl !!!]"
+    }
   }
 }

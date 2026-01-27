@@ -48,16 +48,16 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
         {isHttps ? (
           <>
             <Lock className="w-4 h-4 text-green-500" />
-            <span className="font-semibold text-green-600 dark:text-green-400">HTTPS</span>
+            <span className="font-semibold text-green-600 dark:text-green-400">{t("comparison.httpsLabel")}</span>
           </>
         ) : (
           <>
             <Unlock className="w-4 h-4 text-red-500" />
-            <span className="font-semibold text-red-600 dark:text-red-400">HTTP</span>
+            <span className="font-semibold text-red-600 dark:text-red-400">{t("comparison.httpLabel")}</span>
           </>
         )}
         {vpnMode === "on" && (
-          <Badge className="bg-purple-500/10 text-purple-600 text-xs">+ VPN</Badge>
+          <Badge className="bg-purple-500/10 text-purple-600 text-xs">{t("comparison.withVpnLabel")}</Badge>
         )}
       </div>
 
@@ -72,7 +72,7 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
           <div className="text-xs text-muted-foreground font-medium">{t("comparison.connection")}</div>
           <div className="font-mono text-xs space-y-1 bg-muted/50 p-2 rounded">
             <div>
-              <span className="text-muted-foreground">Host: </span>
+              <span className="text-muted-foreground">{t("comparison.hostLabel")} </span>
               <span className="text-foreground">{payload.domain}</span>
             </div>
             <div>
@@ -109,11 +109,11 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
                   {t("comparison.plainTextVisible")}
                 </div>
                 <div>
-                  <span className="text-muted-foreground">username: </span>
+                  <span className="text-muted-foreground">{t("comparison.usernameLabel")} </span>
                   <span className="text-red-600">{payload.body.username}</span>
                 </div>
                 <div>
-                  <span className="text-muted-foreground">password: </span>
+                  <span className="text-muted-foreground">{t("comparison.passwordLabel")} </span>
                   <span className="text-red-600">{payload.body.password}</span>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
@@ -139,7 +139,7 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
               </div>
             ) : (
               <div className="text-red-600">
-                {`{"status": "success", "token": "abc123..."}`}
+                {t("comparison.plainTextResponseExample")}
               </div>
             )}
           </div>
@@ -264,11 +264,11 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <Unlock className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-foreground">HTTP:</strong> {t("comparison.httpExplained")}</span>
+                <span><strong className="text-foreground">{t("comparison.httpLabel")}:</strong> {t("comparison.httpExplained")}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Lock className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-foreground">HTTPS:</strong> {t("comparison.httpsExplained")}</span>
+                <span><strong className="text-foreground">{t("comparison.httpsLabel")}:</strong> {t("comparison.httpsExplained")}</span>
               </li>
             </ul>
           </div>

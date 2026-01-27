@@ -40,6 +40,20 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
   const tableHeaders = t("cheatSheet.tableHeaders", { returnObjects: true }) as string[];
   const safetyTips = t("cheatSheet.safetyTips", { returnObjects: true }) as string[];
   const tableRows = t("cheatSheet.tableRows", { returnObjects: true }) as Record<string, string[]>;
+  const attackerModels = t("cheatSheet.attackerModels", { returnObjects: true }) as string[];
+
+  const tableStatusMap: Record<string, Array<"good" | "bad">> = {
+    passwords: ["bad", "good", "good"],
+    formData: ["bad", "good", "good"],
+    websites: ["bad", "bad", "good"],
+    ipAddress: ["bad", "bad", "good"],
+  };
+
+  const getCellStatus = (rowKey: string, columnIndex: number) => {
+    const statuses = tableStatusMap[rowKey];
+    if (!statuses) return "good";
+    return statuses[columnIndex] ?? "good";
+  };
 
   const handlePrint = useCallback(() => {
     const printWindow = window.open('', '', 'width=800,height=600');
@@ -129,14 +143,24 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
             </ul>
           </div>
 
+          <div class="section">
+            <h2>${t("cheatSheet.attackerModelsTitle")}</h2>
+            <ul>
+              ${Array.isArray(attackerModels) ? attackerModels.map(point => `<li>${point}</li>`).join('') : ''}
+            </ul>
+          </div>
+
           <h2>${t("cheatSheet.comparisonTableTitle")}</h2>
           <table class="comparison-table">
             <tr>
               ${Array.isArray(tableHeaders) ? tableHeaders.map(h => `<th>${h}</th>`).join('') : ''}
             </tr>
-            ${tableRows && typeof tableRows === 'object' ? Object.values(tableRows).map(row => `
+            ${tableRows && typeof tableRows === 'object' ? Object.entries(tableRows).map(([key, row]) => `
               <tr>
-                ${Array.isArray(row) ? row.map((cell, i) => `<td class="${i > 0 ? (cell.toLowerCase().includes('visible') || cell.toLowerCase().includes('рездам') || cell.toLowerCase().includes('виден') ? 'bad' : 'good') : ''}">${cell}</td>`).join('') : ''}
+                ${Array.isArray(row) ? row.map((cell, i) => {
+                  const status = i > 0 ? getCellStatus(key, i - 1) : '';
+                  return `<td class="${status}">${cell}</td>`;
+                }).join('') : ''}
               </tr>
             `).join('') : ''}
           </table>
@@ -158,7 +182,7 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
     printWindow.focus();
     printWindow.print();
     printWindow.close();
-  }, [t, httpPoints, httpsPoints, vpnPoints, tableHeaders, tableRows, safetyTips]);
+  }, [t, httpPoints, httpsPoints, vpnPoints, tableHeaders, tableRows, safetyTips, attackerModels]);
 
   return (
     <Dialog>
@@ -261,11 +285,11 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
                       <td key={i} className={`p-3 ${i === 0 ? 'text-muted-foreground' : 'text-center'}`}>
                         {i === 0 ? cell : (
                           <Badge 
-                            variant={cell.toLowerCase().includes('visible') || cell.toLowerCase().includes('виден') || cell.toLowerCase().includes('redzam') ? "destructive" : "default"}
+                            variant={getCellStatus(key, i - 1) === "bad" ? "destructive" : "default"}
                             className={`text-xs ${
-                              cell.toLowerCase().includes('visible') || cell.toLowerCase().includes('виден') || cell.toLowerCase().includes('redzam')
-                                ? '' 
-                                : 'bg-green-500/10 text-green-600'
+                              getCellStatus(key, i - 1) === "bad"
+                                ? "" 
+                                : "bg-green-500/10 text-green-600"
                             }`}
                           >
                             {cell}
@@ -289,6 +313,21 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
                 <li key={i} className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
                   <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <Card className="p-4 border-dashed">
+            <div className="flex items-center gap-2 mb-3">
+              <AlertTriangle className="w-5 h-5 text-amber-600" />
+              <h3 className="font-semibold text-foreground">{t("cheatSheet.attackerModelsTitle")}</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {Array.isArray(attackerModels) && attackerModels.map((model, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <span>{model}</span>
                 </li>
               ))}
             </ul>
