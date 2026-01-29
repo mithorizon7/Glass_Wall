@@ -2,11 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Lock, Unlock, Shield, ShieldOff, Info } from "lucide-react";
 import type { ProtocolMode, VpnMode, AttackerModel } from "@/pages/glass-wall";
 
@@ -39,7 +35,7 @@ export function ControlPanel({
 }: ControlPanelProps) {
   const { t } = useTranslation("glassWall");
   const { t: tc } = useTranslation("common");
-  
+
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-4 gap-4 ${className}`}>
       <Card className="p-4" data-onboarding="protocol-toggle">
@@ -181,7 +177,10 @@ export function ControlPanel({
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-1">
-              <Label htmlFor="toggle-auto-play" className="text-xs font-medium text-muted-foreground">
+              <Label
+                htmlFor="toggle-auto-play"
+                className="text-xs font-medium text-muted-foreground"
+              >
                 {t("controls.autoPlay")}
               </Label>
               <Tooltip>
@@ -203,7 +202,10 @@ export function ControlPanel({
 
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-1">
-              <Label htmlFor="toggle-step-mode" className="text-xs font-medium text-muted-foreground">
+              <Label
+                htmlFor="toggle-step-mode"
+                className="text-xs font-medium text-muted-foreground"
+              >
                 {t("controls.stepMode")}
               </Label>
               <Tooltip>
@@ -222,6 +224,9 @@ export function ControlPanel({
               data-testid="switch-step-mode"
             />
           </div>
+          {stepMode && (
+            <p className="text-xs text-muted-foreground">{t("controls.stepModeHint")}</p>
+          )}
         </div>
       </Card>
     </div>

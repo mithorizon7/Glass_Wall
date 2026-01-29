@@ -14,9 +14,7 @@ export default function NotFound() {
             <h1 className="text-2xl font-bold text-gray-900">{t("notFound.title")}</h1>
           </div>
 
-          <p className="mt-4 text-sm text-gray-600">
-            {t("notFound.message")}
-          </p>
+          <p className="mt-4 text-sm text-gray-600">{t("notFound.message")}</p>
         </CardContent>
       </Card>
     </div>

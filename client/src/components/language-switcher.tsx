@@ -8,16 +8,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Globe } from "lucide-react";
 
-const languages = [
-  { code: "en", name: "English", nativeName: "English" },
-  { code: "lv", name: "Latvian", nativeName: "Latviešu" },
-  { code: "ru", name: "Russian", nativeName: "Русский" },
-];
-
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation("common");
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const languages = [
+    { code: "en", name: t("english"), nativeName: t("languageNative.en") },
+    { code: "lv", name: t("latvian"), nativeName: t("languageNative.lv") },
+    { code: "ru", name: t("russian"), nativeName: t("languageNative.ru") },
+  ];
+
+  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
 
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
@@ -40,9 +40,7 @@ export function LanguageSwitcher() {
             className={i18n.language === language.code ? "bg-accent" : ""}
           >
             <span className="font-medium">{language.nativeName}</span>
-            <span className="ml-2 text-muted-foreground text-xs">
-              ({language.name})
-            </span>
+            <span className="ml-2 text-muted-foreground text-xs">({language.name})</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

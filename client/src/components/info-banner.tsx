@@ -21,9 +21,11 @@ export function InfoBanner({
   className = "",
 }: InfoBannerProps) {
   const typeStyles = {
-    warning: "bg-[hsl(var(--warning-bg))]/10 border-[hsl(var(--warning-bg))]/30 text-[hsl(var(--warning-bg))]",
+    warning:
+      "bg-[hsl(var(--warning-bg))]/10 border-[hsl(var(--warning-bg))]/30 text-[hsl(var(--warning-bg))]",
     info: "bg-primary/10 border-primary/30 text-primary",
-    success: "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/30 text-[hsl(var(--https-success))]",
+    success:
+      "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/30 text-[hsl(var(--https-success))]",
   };
 
   const iconBgStyles = {
@@ -33,16 +35,21 @@ export function InfoBanner({
   };
 
   return (
-    <div 
+    <div
       className={`flex items-start gap-4 px-5 py-4 rounded-lg border ${typeStyles[type]} ${className}`}
       role="alert"
       data-testid={`banner-${type}`}
     >
-      <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${iconBgStyles[type]}`}>
+      <div
+        className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${iconBgStyles[type]}`}
+      >
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-foreground mb-1" data-testid={`text-banner-title-${type}`}>
+        <h3
+          className="font-semibold text-foreground mb-1"
+          data-testid={`text-banner-title-${type}`}
+        >
           {title}
         </h3>
         <p className="text-sm text-muted-foreground" data-testid={`text-banner-message-${type}`}>

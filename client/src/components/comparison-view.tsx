@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,16 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
-  Columns,
-  Lock,
-  Unlock,
-  Eye,
-  EyeOff,
-  Play,
-  RotateCcw,
-  ArrowRight,
-} from "lucide-react";
+import { Columns, Lock, Unlock, Eye, EyeOff, Play, RotateCcw, ArrowRight } from "lucide-react";
 import { type DemoPayload, type TimelineStage, type VpnMode } from "@/pages/glass-wall";
 
 interface ComparisonWireViewProps {
@@ -48,16 +40,22 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
         {isHttps ? (
           <>
             <Lock className="w-4 h-4 text-green-500" />
-            <span className="font-semibold text-green-600 dark:text-green-400">{t("comparison.httpsLabel")}</span>
+            <span className="font-semibold text-green-600 dark:text-green-400">
+              {t("comparison.httpsLabel")}
+            </span>
           </>
         ) : (
           <>
             <Unlock className="w-4 h-4 text-red-500" />
-            <span className="font-semibold text-red-600 dark:text-red-400">{t("comparison.httpLabel")}</span>
+            <span className="font-semibold text-red-600 dark:text-red-400">
+              {t("comparison.httpLabel")}
+            </span>
           </>
         )}
         {vpnMode === "on" && (
-          <Badge className="bg-purple-500/10 text-purple-600 text-xs">{t("comparison.withVpnLabel")}</Badge>
+          <Badge className="bg-purple-500/10 text-purple-600 text-xs">
+            {t("comparison.withVpnLabel")}
+          </Badge>
         )}
       </div>
 
@@ -69,7 +67,9 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 
       {stage === "connect" && (
         <div className="space-y-2 animate-fade-in">
-          <div className="text-xs text-muted-foreground font-medium">{t("comparison.connection")}</div>
+          <div className="text-xs text-muted-foreground font-medium">
+            {t("comparison.connection")}
+          </div>
           <div className="font-mono text-xs space-y-1 bg-muted/50 p-2 rounded">
             <div>
               <span className="text-muted-foreground">{t("comparison.hostLabel")} </span>
@@ -87,7 +87,9 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 
       {showRequest && (
         <div className="space-y-2 animate-fade-in">
-          <div className="text-xs text-muted-foreground font-medium">{t("comparison.requestBody")}</div>
+          <div className="text-xs text-muted-foreground font-medium">
+            {t("comparison.requestBody")}
+          </div>
           <div className="font-mono text-xs space-y-1 bg-muted/50 p-2 rounded">
             {isHttps ? (
               <div className="space-y-1">
@@ -100,7 +102,9 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   <EyeOff className="w-3 h-3 text-green-500" />
-                  <span className="text-[10px] text-green-600">{t("comparison.contentHidden")}</span>
+                  <span className="text-[10px] text-green-600">
+                    {t("comparison.contentHidden")}
+                  </span>
                 </div>
               </div>
             ) : (
@@ -128,7 +132,9 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 
       {showResponse && (
         <div className="space-y-2 animate-fade-in">
-          <div className="text-xs text-muted-foreground font-medium">{t("comparison.serverResponse")}</div>
+          <div className="text-xs text-muted-foreground font-medium">
+            {t("comparison.serverResponse")}
+          </div>
           <div className="font-mono text-xs bg-muted/50 p-2 rounded">
             {isHttps ? (
               <div className="flex items-center gap-1">
@@ -138,24 +144,21 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
                 {encryptedBlock("response data")}
               </div>
             ) : (
-              <div className="text-red-600">
-                {t("comparison.plainTextResponseExample")}
-              </div>
+              <div className="text-red-600">{t("comparison.plainTextResponseExample")}</div>
             )}
           </div>
         </div>
       )}
 
       {stage === "complete" && (
-        <div className={`p-2 rounded text-xs text-center ${
-          isHttps 
-            ? "bg-green-500/10 text-green-600 dark:text-green-400" 
-            : "bg-red-500/10 text-red-600 dark:text-red-400"
-        }`}>
-          {isHttps 
-            ? t("comparison.secureConnection")
-            : t("comparison.dataExposed")
-          }
+        <div
+          className={`p-2 rounded text-xs text-center ${
+            isHttps
+              ? "bg-green-500/10 text-green-600 dark:text-green-400"
+              : "bg-red-500/10 text-red-600 dark:text-red-400"
+          }`}
+        >
+          {isHttps ? t("comparison.secureConnection") : t("comparison.dataExposed")}
         </div>
       )}
     </div>
@@ -165,37 +168,15 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
 interface ComparisonViewProps {
   payload: DemoPayload;
   vpnMode: VpnMode;
-  trigger?: React.ReactNode;
+  trigger?: ReactNode;
 }
 
 export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProps) {
   const { t } = useTranslation("glassWall");
-  const [stage, setStage] = useState<TimelineStage>("idle");
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const runComparison = useCallback(async () => {
-    if (isAnimating) return;
-    
-    setIsAnimating(true);
-    setStage("idle");
-    
-    const stages: TimelineStage[] = ["connect", "request", "response", "complete"];
-    
-    for (const s of stages) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setStage(s);
-    }
-    
-    setIsAnimating(false);
-  }, [isAnimating]);
-
-  const reset = useCallback(() => {
-    setStage("idle");
-    setIsAnimating(false);
-  }, []);
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
           <Button variant="outline" data-testid="button-comparison-view">
@@ -210,70 +191,175 @@ export function ComparisonView({ payload, vpnMode, trigger }: ComparisonViewProp
             <Columns className="w-5 h-5" />
             {t("comparison.title")}
           </DialogTitle>
-          <DialogDescription>
-            {t("comparison.description")}
-          </DialogDescription>
+          <DialogDescription>{t("comparison.description")}</DialogDescription>
         </DialogHeader>
-
-        <div className="flex items-center justify-center gap-4 my-4">
-          <Button 
-            onClick={runComparison} 
-            disabled={isAnimating}
-            data-testid="button-run-comparison"
-          >
-            <Play className="w-4 h-4 mr-2" />
-            {t("comparison.runComparison")}
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={reset}
-            disabled={stage === "idle"}
-            data-testid="button-reset-comparison"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            {t("comparison.reset")}
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="p-4 pl-6 bg-gradient-to-r from-red-500/10 to-transparent">
-            <ComparisonWireView
-              protocolMode="http"
-              vpnMode={vpnMode}
-              stage={stage}
-              payload={payload}
-            />
-          </Card>
-
-          <Card className="p-4 pl-6 bg-gradient-to-r from-green-500/10 to-transparent">
-            <ComparisonWireView
-              protocolMode="https"
-              vpnMode={vpnMode}
-              stage={stage}
-              payload={payload}
-            />
-          </Card>
-        </div>
-
-        {stage === "complete" && (
-          <div className="mt-4 p-4 bg-muted rounded-lg animate-fade-in">
-            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-              <ArrowRight className="w-4 h-4" />
-              {t("comparison.keyTakeaways")}
-            </h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <Unlock className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-foreground">{t("comparison.httpLabel")}:</strong> {t("comparison.httpExplained")}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Lock className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-foreground">{t("comparison.httpsLabel")}:</strong> {t("comparison.httpsExplained")}</span>
-              </li>
-            </ul>
-          </div>
-        )}
+        <ComparisonContent payload={payload} vpnMode={vpnMode} isActive={open} />
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface ComparisonContentProps {
+  payload: DemoPayload;
+  vpnMode: VpnMode;
+  isActive?: boolean;
+  showHeader?: boolean;
+}
+
+function sleep(ms: number, signal: AbortSignal) {
+  if (signal.aborted) return Promise.resolve();
+  return new Promise<void>((resolve) => {
+    const onAbort = () => {
+      clearTimeout(timeoutId);
+      resolve();
+    };
+    const timeoutId = setTimeout(() => {
+      signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    signal.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
+export function ComparisonContent({
+  payload,
+  vpnMode,
+  isActive = true,
+  showHeader = false,
+}: ComparisonContentProps) {
+  const { t } = useTranslation("glassWall");
+  const [stage, setStage] = useState<TimelineStage>("idle");
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animationAbortRef = useRef<AbortController | null>(null);
+
+  const cancelAnimation = useCallback(() => {
+    if (animationAbortRef.current) {
+      animationAbortRef.current.abort();
+      animationAbortRef.current = null;
+    }
+    setIsAnimating(false);
+  }, []);
+
+  const reset = useCallback(() => {
+    cancelAnimation();
+    setStage("idle");
+  }, [cancelAnimation]);
+
+  const runComparison = useCallback(async () => {
+    if (isAnimating) return;
+    if (animationAbortRef.current) {
+      animationAbortRef.current.abort();
+    }
+    const controller = new AbortController();
+    animationAbortRef.current = controller;
+    const { signal } = controller;
+
+    setIsAnimating(true);
+    setStage("idle");
+
+    const stages: TimelineStage[] = ["connect", "request", "response", "complete"];
+
+    for (const s of stages) {
+      if (signal.aborted) break;
+      await sleep(1000, signal);
+      if (signal.aborted) break;
+      setStage(s);
+    }
+
+    setIsAnimating(false);
+  }, [isAnimating]);
+
+  useEffect(() => {
+    if (!isActive) {
+      reset();
+    }
+  }, [isActive, reset]);
+
+  useEffect(() => {
+    return () => {
+      cancelAnimation();
+    };
+  }, [cancelAnimation]);
+
+  return (
+    <div>
+      {showHeader && (
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-foreground">{t("comparison.title")}</h3>
+          <p className="text-sm text-muted-foreground">{t("comparison.description")}</p>
+        </div>
+      )}
+
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+        <span>{t("labels.legendTitle")}</span>
+        <Badge className="bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+          {t("labels.metadata")}
+        </Badge>
+        <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
+          {t("labels.content")}
+        </Badge>
+      </div>
+
+      <div className="flex items-center justify-center gap-4 my-4">
+        <Button onClick={runComparison} disabled={isAnimating} data-testid="button-run-comparison">
+          <Play className="w-4 h-4 mr-2" />
+          {t("comparison.runComparison")}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={reset}
+          disabled={stage === "idle"}
+          data-testid="button-reset-comparison"
+        >
+          <RotateCcw className="w-4 h-4 mr-2" />
+          {t("comparison.reset")}
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="p-4 pl-6 bg-gradient-to-r from-red-500/10 to-transparent">
+          <ComparisonWireView
+            protocolMode="http"
+            vpnMode={vpnMode}
+            stage={stage}
+            payload={payload}
+          />
+        </Card>
+
+        <Card className="p-4 pl-6 bg-gradient-to-r from-green-500/10 to-transparent">
+          <ComparisonWireView
+            protocolMode="https"
+            vpnMode={vpnMode}
+            stage={stage}
+            payload={payload}
+          />
+        </Card>
+      </div>
+
+      {stage === "complete" && (
+        <div className="mt-4 p-4 bg-muted rounded-lg animate-fade-in">
+          <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+            <ArrowRight className="w-4 h-4" />
+            {t("comparison.keyTakeaways")}
+          </h4>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <Unlock className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+              <span>
+                <strong className="text-foreground">{t("comparison.httpLabel")}:</strong>{" "}
+                {t("comparison.httpExplained")}
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <Lock className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>
+                <strong className="text-foreground">{t("comparison.httpsLabel")}:</strong>{" "}
+                {t("comparison.httpsExplained")}
+              </span>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }

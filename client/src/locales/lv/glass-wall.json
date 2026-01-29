@@ -1,7 +1,6 @@
 {
   "title": "Stikla siena",
-  "subtitle": "Uzziniet, kas notiek, kad sūtāt datus tīklā. Pārslēdzieties starp HTTP un HTTPS, lai saprastu šifrēšanu — nekādi reāli dati neatstāj jūsu pārlūkprogrammu.",
-  
+  "subtitle": "Skatieties, kā HTTP, HTTPS un VPN maina to, ko var redzēt tīkla novērotāji. Izmantojiet vadīklas režīmu salīdzināšanai; reāli dati nepamet jūsu pārlūkprogrammu.",
   "scenarios": "Scenāriji",
   "scenario": "Scenārijs",
   "cheatSheetButton": "Īsā pamācība",
@@ -11,12 +10,10 @@
   "mediumRisk": "Vidējs risks",
   "lowRiskEnvironment": "Zema riska vide",
   "considerVpn": "Apsveriet VPN izmantošanu sensitīvām darbībām",
-  
   "publicNetworkWarning": {
     "title": "Publiskā tīkla brīdinājums",
     "message": "Publiskie tīkli palielina maldināšanas risku (viltoti piekļuves punkti, viltotas autorizācijas lapas). Šifrēšana samazina dažus riskus, taču svarīga arī apdomība. Neievadiet sensitīvus datus neuzticamos tīklos vai lapās."
   },
-  
   "networkContext": {
     "title": "Ko jāzina",
     "home": "Jūsu mājas tīkls parasti ir drošs — jūs kontrolējat maršrutētāju un to, kas pieslēdzas. Tomēr vienmēr pārbaudiet HTTPS (piekaramās atslēgas ikonu), ievadot paroles vai maksājumu informāciju. Lielākā daļa mūsdienu vietņu to dara automātiski.",
@@ -24,10 +21,9 @@
     "airport": "Lidostas tīkli ir augsta riska vide. Tūkstošiem ceļotāju, daudz viltotu piekļuves punktu, un uzbrucēji zina, ka cilvēki steidzas. Uzskatiet jebkuru lidostas Wi-Fi par naidīgu — VPN ir stingri ieteicams jebkurai sensitīvai darbībai.",
     "hotel": "Viesnīcas Wi-Fi ir kopīgs ar daudziem viesiem un bieži ir ar vāju drošību. Tīkla operators var redzēt nešifrētu datplūsmu. Izmantojiet HTTPS visam un apsveriet VPN, piekļūstot sensitīviem kontiem."
   },
-  
   "vpnActive": {
     "title": "VPN aktīvs",
-    "message": "VPN pārnes uzticēšanos no vietējā tīkla uz VPN pakalpojuma sniedzēju. Tas nepadara jūs neievainojamu — izvēlieties uzticamu pakalpojuma sniedzēju un atcerieties, ka VPN var redzēt jūsu trafiku.",
+    "message": "VPN pārvieto uzticību no lokālā tīkla uz VPN pakalpojumu sniedzēju. Tas slēpj trafiku no lokālajiem novērotājiem, taču pakalpojumu sniedzējs to joprojām redz.",
     "dnsLeakNote": "Piezīme: DNS pieprasījumi dažkārt var izplūst ārpus VPN atkarībā no iestatījumiem.",
     "doesNotTitle": "VPN NEDARA",
     "doesNotBullets": [
@@ -36,19 +32,17 @@
       "Neaizliedz VPN pakalpojuma sniedzējam redzēt jūsu trafiku."
     ]
   },
-  
   "modeChanged": {
     "title": "Režīms mainīts",
     "message": "Noklikšķiniet uz 'Sūtīt pieprasījumu', lai redzētu atšķirību tīkla trafikā."
   },
-  
   "controls": {
     "protocol": "Protokols",
-    "protocolTooltip": "HTTP sūta datus vienkāršā tekstā. HTTPS šifrē jūsu datus, lai novērotāji nevarētu tos izlasīt.",
+    "protocolTooltip": "HTTP pārsūta datus atklātā tekstā. HTTPS izmanto TLS, lai šifrētu datus pārsūtē.",
     "vpn": "VPN",
-    "vpnTooltip": "VPN izveido šifrētu tuneli. Tas pārceļ uzticēšanos uz VPN pakalpojuma sniedzēju, bet nepadara jūs neievainojamu.",
+    "vpnTooltip": "VPN šifrē trafiku līdz VPN serverim un paslēpj to no lokālā tīkla.",
     "attackerModel": "Uzbrucēja modelis",
-    "attackerModelTooltip": "Izvēlieties, kas varētu novērot. Tas maina reālos riskus.",
+    "attackerModelTooltip": "Izvēlieties novērotāja modeli; no tā atkarīgs, kas reāli ir atklājams.",
     "attackerModels": {
       "passive": "Pasīvs novērotājs",
       "rogueHotspot": "Viltots piekļuves punkts (MITM)",
@@ -58,16 +52,81 @@
     "autoPlayTooltip": "Automātiski atkārtot laika līniju, mainot režīmus.",
     "stepMode": "Soļu režīms",
     "stepModeTooltip": "Virzieties pa laika līniju soli pa solim detalizētai mācīšanās pieredzei.",
+    "stepModeHint": "Padoms: izmantojiet ←/→, lai pārietu soļos.",
     "httpLabel": "HTTP",
     "httpsLabel": "HTTPS"
   },
-  
   "buttons": {
     "sendRequest": "Sūtīt pieprasījumu",
     "nextStep": "Nākamais solis",
     "replayTimeline": "Atkārtot laika līniju"
   },
-
+  "learningTools": {
+    "button": "Mācību rīki",
+    "title": "Mācību rīki",
+    "description": "Špikeris, salīdzinājums un viktorīna vienuviet.",
+    "tabs": {
+      "cheatSheet": "Špikeris",
+      "comparison": "Salīdzinājums",
+      "quiz": "Tests"
+    }
+  },
+  "nextPrompt": {
+    "idle": "Izvēlieties protokolu un nospiediet “Sūtīt pieprasījumu”, lai sāktu.",
+    "modeChanged": "Režīms mainīts — palaidiet laika līniju vēlreiz.",
+    "stepMode": "Izmantojiet “Nākamais solis” vai ←/→, lai virzītos.",
+    "complete": "Izmēģiniet citu režīmu vai pārbaudiet izpratni."
+  },
+  "labels": {
+    "legendTitle": "Leģenda",
+    "metadata": "Metadati",
+    "content": "Saturs",
+    "visible": "Redzams",
+    "encrypted": "Šifrēts"
+  },
+  "flow": {
+    "title": "Ieteiktā secība",
+    "subtitle": "Īsa secība pirmajai iziešanai.",
+    "badge": "Sāciet šeit",
+    "stepLabel": "Solis {step}",
+    "current": "Tagad",
+    "complete": "Pabeigts",
+    "step1": {
+      "title": "Izvēlieties scenāriju un uzbrucēja modeli",
+      "body": "Nosakiet vidi un iespējamo novērotāju.",
+      "hint": "Izmantojiet pogu «Scenāriji» un uzbrucēja modeli."
+    },
+    "step2": {
+      "title": "Palaidiet laika līniju",
+      "body": "Nosūtiet pieprasījumu un vērojiet izmaiņas.",
+      "hint": "Salīdziniet HTTP/HTTPS un VPN ieslēgts/izslēgts."
+    },
+    "step3": {
+      "title": "Pārbaudiet izpratni",
+      "body": "Izmantojiet viktorīnu vai špikeri, lai nostiprinātu galvenās atšķirības.",
+      "hint": "Meklējiet pogu «Parādīt laika līnijā»."
+    }
+  },
+  "objectives": {
+    "title": "Līdz beigām jūs varēsiet…",
+    "items": [
+      "Izskaidrot, kas ir metadati un kāpēc HTTPS tos neslēpj.",
+      "Salīdzināt, ko atklāj HTTP un HTTPS koplietotā tīklā.",
+      "Zināt, kad VPN palīdz — un ko tas neaizsargā.",
+      "Izvēlēties drošākas darbības publiskajā Wi-Fi."
+    ]
+  },
+  "selfCheck": {
+    "title": "Ātrā pašpārbaude",
+    "subtitle": "Atzīmējiet punktus, kurus varat skaidri izskaidrot.",
+    "items": [
+      "Es varu nosaukt metadatus, kas redzami arī ar HTTPS.",
+      "Es saprotu atšķirību starp HTTP un HTTPS novērotājam.",
+      "Es saprotu VPN ierobežojumus un ko tas nedara.",
+      "Es varu izvēlēties drošākas darbības publiskajā Wi-Fi."
+    ],
+    "helper": "Tas ir tikai jums — netiek vērtēts."
+  },
   "aria": {
     "stageChange": "Posms: {stage}. {protocol}. {vpn}.",
     "stages": {
@@ -87,17 +146,15 @@
       "on": "VPN ieslēgts"
     }
   },
-  
   "userView": {
     "title": "Lietotāja skats",
     "subtitle": "Ko jūs redzat, piesakoties"
   },
-  
   "wireView": {
     "title": "Tīkla skats",
     "subtitle": "Ko tīkls var novērot",
     "readyToObserve": "Gatavs novērošanai",
-    "readyToObserveHint": "Noklikšķiniet uz \"Sūtīt pieprasījumu\", lai redzētu, ko tīkla novērotāji varētu redzēt, kad iesniedzat pieteikšanās veidlapu.",
+    "readyToObserveHint": "Noklikšķiniet “Nosūtīt pieprasījumu”, lai redzētu, ko tīkla novērotājs varētu uztvert, nosūtot pieteikšanās formu.",
     "encrypted": "Šifrēts",
     "plainText": "Vienkāršs teksts",
     "userLabel": "lietotājs:",
@@ -119,8 +176,8 @@
         "plain": "Ko novērotājs redz: jūsu faktiskie dati (ierīce kompromitēta)"
       }
     },
-    "whatObserverSeesSecure": "Ko redz novērotājs: šifrēts juceklis",
-    "whatObserverSeesPlain": "Ko redz novērotājs: jūsu īstie dati",
+    "whatObserverSeesSecure": "Novērotāja skats: tikai šifrats un metadati",
+    "whatObserverSeesPlain": "Novērotāja skats: lasāmi pieteikšanās dati un saturs",
     "destinationVisible": "Galamērķis",
     "tlsRecord": "TLS ieraksta galvene",
     "encryptedPayload": "Šifrēti dati (hex izgāztne)",
@@ -145,15 +202,14 @@
       }
     },
     "explainSecure": {
-      "title": "Kāpēc viņi to nevar izlasīt?",
-      "body": "HTTPS šifrē jūsu datus pirms nosūtīšanas. Iedomājieties, ka jūs ievietojat vēstuli slēgtā kastē—tikai saņēmējam ir atslēga. Augstāk redzamie hex kodi ir tas, ko uzbrucējs uztvertu: bezjēdzīgi sajaukti dati, kurus mūsdienu datori nevar atšifrēt. Viņi var redzēt, kuru vietni jūs apmeklējat (adresi uz kastes), bet ne to, ko jūs sakāt iekšā."
+      "title": "Kāpēc to nevar nolasīt",
+      "body": "HTTPS šifrē pieprasījuma saturu ar TLS pirms tas pamet ierīci. Novērotāji iegūst šifrētu tekstu un mērķa adresi, bet bez sesijas atslēgām saturu atjaunot nav iespējams."
     },
     "explainPlain": {
-      "title": "Kāpēc tas ir bīstami?",
-      "body": "HTTP sūta jūsu datus kā vienkāršu tekstu—tāpat kā rakstīt paroli uz pastkartes. Ikviens tajā pašā tīklā (kafejnīcas Wi-Fi, viesnīca, lidosta) var pārtvert un izlasīt visu, ko sūtāt. Jūsu lietotājvārds un parole ir pilnībā atklāti."
+      "title": "Kāpēc atklāts teksts ir bīstams",
+      "body": "HTTP pārsūta pieprasījuma saturu bez šifrēšanas. Ikviens tajā pašā tīklā var nolasīt pieteikšanās datus un sesijas informāciju no pārtvertā trafika."
     }
   },
-  
   "metadata": {
     "title": "Metadati",
     "alwaysVisible": "Vienmēr redzami tīkla novērotājiem",
@@ -164,16 +220,15 @@
     "connectionVpn": "VPN tunelis (šifrēts)",
     "encryptionNone": "Nav",
     "encryptionTls": "TLS",
-    "metadataNote": "Pat ar HTTPS šifrēšanu tīkls var redzēt, kurai vietnei jūs pieslēdzāties—tikai ne to, ko jūs nosūtījāt vai saņēmāt.",
-    "advancedPrompt": "Papildus: kādi metadati noplūst?",
-    "advancedSkip": "Ja tas ir par daudz, droši izlaidiet - pamata ideja paliek.",
+    "metadataNote": "HTTPS šifrē saturu, taču novērotāji joprojām redz domēnu un savienojuma metadatus.",
+    "advancedPrompt": "Papildus: kuri metadati joprojām ir redzami",
+    "advancedSkip": "Ja esat iesācējs, šo sadaļu var izlaist, nezaudējot galveno ideju.",
     "advancedItems": [
       "DNS vaicājumi var atklāt domēnu, kuru mēģināt sasniegt.",
       "SNI var atklāt vietnes nosaukumu TLS rokasspiediena laikā; ECH to var paslēpt, bet vēl nav plaši ieviests.",
       "DoH/DoT var mazināt DNS redzamību, bet tie nav universāli un var tikt bloķēti vai nepareizi konfigurēti."
     ]
   },
-  
   "handshake": {
     "title": "TLS rokasspiediena",
     "encryptionEstablished": "Šifrēšana izveidota",
@@ -184,38 +239,34 @@
     "step3": "Atslēgu apmaiņa: ģenerētas pagaidu atslēgas",
     "step4": "Pabeigts: sākas šifrētā sesija",
     "observersNote": "Novērotāji var redzēt, ka šī rokasspiediena notika, bet nevar iegūt sesijas atslēgas.",
-    "tooltip": "Rokasspiedienas process ir redzams novērotājiem — viņi var redzēt, ka tiek izveidots drošs savienojums — bet šifrēšanas atslēgas paliek slepenas."
+    "tooltip": "Novērotāji redz TLS rokasspiedienu, bet nevar iegūt sesijas atslēgas."
   },
-  
   "request": {
     "title": "Pieprasījums",
     "encryptedPayload": "Šifrēta lietderīgā slodze",
     "plainTextVisible": "Vienkāršs teksts - REDZAMS",
     "encryptedNote": "Tīkla novērotāji redz šifrētus datus, nevis faktisko saturu.",
     "ciphertextDisclaimer": "Piezīme: parādītais šifrētais teksts ir ilustratīvs, nevis faktisks TLS izgāztne.",
-    "plainTextWarning": "Ikviens tīklā var lasīt jūsu akreditācijas datus!",
+    "plainTextWarning": "Ikviens tīklā var nolasīt jūsu pieteikšanās datus.",
     "tooltip": "HTTP pieprasījums satur datus, ko jūsu pārlūkprogramma sūta serverim, tostarp galvenes un pamattekstu.",
     "tooltipEncrypted": "Lietderīgā slodze (pieprasījuma pamatteksts) ir šifrēta un tīkla novērotājiem nelasāma.",
     "tooltipPlainText": "Lietderīgā slodze tiek sūtīta kā vienkāršs teksts — ikviens tīklā to var lasīt."
   },
-  
   "response": {
     "title": "Atbilde",
     "encryptedResponse": "Šifrēta atbilde",
     "plainTextResponse": "Vienkārša teksta atbilde",
-    "sessionWarning": "Arī sesijas marķieri ir redzami! Uzbrucējs varētu nolaupīt jūsu sesiju.",
+    "sessionWarning": "Sesijas tokeni ir redzami; uzbrucējs var tos izmantot atkārtoti.",
     "tooltip": "HTTP atbilde satur datus, ko serveris nosūta atpakaļ, tostarp galvenes (piemēram, sīkdatnes) un pamattekstu.",
     "tooltipEncrypted": "Atbilde ir šifrēta — tikai jūsu pārlūkprogramma to var atšifrēt.",
     "tooltipPlainText": "Atbilde ir vienkāršā tekstā — ikviens tīklā to var lasīt, ieskaitot sesijas marķierus."
   },
-  
   "summary": {
     "protectedTitle": "Jūsu dati ir aizsargāti",
     "exposedTitle": "Jūsu dati tika atklāti",
-    "protectedMessage": "Pat publiskajā Wi-Fi šifrēšana pārvērta jūsu akreditācijas datus nelasāmā kodā. Uzbrucējs redzētu tikai augstāk redzamo jucekli. Vienmēr meklējiet piekaramās atslēgas (slēdzenes) ikonu pārlūkprogrammas adreses joslā pirms paroļu vai maksājumu informācijas ievadīšanas.",
-    "exposedMessage": "Jūsu lietotājvārds un parole ceļoja pa tīklu kā lasāms teksts. Publiskajā Wi-Fi (kafejnīcās, lidostās, viesnīcās) ikviens ar vienkāršiem rīkiem varēja uztvert visu. Tāpēc mūsdienu vietnes vienmēr izmanto HTTPS."
+    "protectedMessage": "Šifrēšana aizsargāja pieteikšanās datus pārsūtē. Novērotājs redzētu šifrētu tekstu un mērķa metadatus, nevis lietotājvārdu un paroli. Pārbaudiet HTTPS pirms ievadāt sensitīvus datus.",
+    "exposedMessage": "Pieteikšanās dati tika pārsūtīti atklātā tekstā. Publiskā Wi‑Fi lokāls novērotājs tos varētu pārtvert un nolasīt ar vienkāršiem rīkiem. Izmantojiet HTTPS jebkurai pieteikšanai vai maksājumam."
   },
-  
   "timeline": {
     "connect": "Pieslēgties",
     "connectDescVpn": "Izveidot VPN tuneli",
@@ -224,7 +275,7 @@
     "connectTooltipDirect": "DNS pārvērš domēna vārdu IP adresē, pēc tam TCP izveido savienojumu ar serveri.",
     "handshake": "TLS rokasspiediena",
     "handshakeDesc": "Vienoties par šifrēšanu",
-    "handshakeTooltip": "Klients un serveris apmainās ar sertifikātiem un vienojas par šifrēšanas atslēgām. Tas notiek pirms jebkādu datu nosūtīšanas. Novērotājs redz, ka šī rokasspiediena notiek, bet nevar lasīt šifrēto saturu.",
+    "handshakeTooltip": "Klients un serveris apmainās ar sertifikātiem un vienojas par atslēgām pirms datu sūtīšanas. Novērotāji redz rokasspiedienu, bet nevar nolasīt šifrēto saturu.",
     "request": "Pieprasījums",
     "requestDesc": "POST /login ar akreditācijas datiem",
     "requestTooltipSecure": "Jūsu pieteikšanās akreditācijas dati tiek šifrēti pirms nosūtīšanas. Novērotāji redz šifrētus datus.",
@@ -277,7 +328,6 @@
       }
     }
   },
-  
   "loginForm": {
     "title": "Pierakstīties",
     "usernameLabel": "Lietotājvārds",
@@ -288,7 +338,6 @@
     "demoNote": "Tie ir izdomāti akreditācijas dati tikai demonstrācijai",
     "demoBadge": "Demo vietne"
   },
-  
   "footer": {
     "simulationNote": "Šī ir simulācija. Netiek ģenerēta reāla tīkla trafika.",
     "zeroRiskLearning": "Mācīšanās bez riska",
@@ -296,7 +345,6 @@
     "noTelemetry": "Nav telemetrijas",
     "noTelemetryTooltip": "Šī lietojumprogramma nevāc nekādus datus par jūsu lietošanu un nesūta informāciju uz ārējiem serveriem."
   },
-  
   "cheatSheetModal": {
     "title": "HTTP vs HTTPS vs VPN - Īsā uzziņa",
     "downloadPdf": "Lejupielādēt kā PDF",
@@ -322,7 +370,6 @@
       "point4": "Pārnes uzticēšanos, nenovērš to"
     }
   },
-  
   "progress": {
     "title": "Mācību progress",
     "explored": "Izpētīts",
@@ -331,7 +378,6 @@
     "httpVpn": "HTTP + VPN",
     "httpsVpn": "HTTPS + VPN"
   },
-  
   "quiz": {
     "title": "Drošības zināšanu tests",
     "description": "Pārbaudiet savu izpratni par tīkla drošību",
@@ -357,51 +403,89 @@
     "questions": {
       "q1": {
         "question": "Kad jūs pieslēdzaties vietnei, izmantojot HTTP, kas var redzēt jūsu paroli?",
-        "options": ["Tikai vietne, kurai pieslēdzaties", "Ikviens tajā pašā tīklā", "Tikai jūsu interneta pakalpojumu sniedzējs", "Neviens to nevar redzēt"],
+        "options": [
+          "Tikai vietne, kurai pieslēdzaties",
+          "Ikviens tajā pašā tīklā",
+          "Tikai jūsu interneta pakalpojumu sniedzējs",
+          "Neviens to nevar redzēt"
+        ],
         "explanation": "Ar HTTP dati tiek pārraidīti vienkāršā tekstā. Ikviens tajā pašā tīklā (piemēram, kafejnīcas Wi-Fi) var pārtvert un lasīt jūsu paroli, izmantojot vienkāršus rīkus."
       },
       "q2": {
         "question": "Ko nozīmē 'S' HTTPS saīsinājumā?",
-        "options": ["Ātrums (Speed)", "Drošs (Secure)", "Serveris (Server)", "Standarts (Standard)"],
+        "options": [
+          "Ātrums (Speed)",
+          "Drošs (Secure)",
+          "Serveris (Server)",
+          "Standarts (Standard)"
+        ],
         "explanation": "HTTPS apzīmē HyperText Transfer Protocol Secure. 'S' norāda, ka savienojums izmanto šifrēšanu (TLS), lai aizsargātu datus pārraidē."
       },
       "q3": {
         "question": "Ko VPN var paslēpt no jūsu vietējā tīkla?",
-        "options": ["Tikai jūsu paroles", "Tikai vietnes, ko apmeklējat", "Gan paroles, gan vietnes, ko apmeklējat", "Neko — VPN neko neslēpj"],
+        "options": [
+          "Tikai jūsu paroles",
+          "Tikai vietnes, ko apmeklējat",
+          "Gan paroles, gan vietnes, ko apmeklējat",
+          "Neko — VPN neko neslēpj"
+        ],
         "explanation": "VPN izveido šifrētu tuneli VISAI jūsu trafikei. Tas slēpj gan saturu (paroles, datus), gan metadatus (kuras vietnes apmeklējat) no vietējiem novērotājiem."
       },
       "q4": {
         "question": "Jūs esat kafejnīcā un jums jāpārbauda bankas konts. Ko jums vajadzētu darīt?",
-        "options": ["Pieslēgties bezmaksas Wi-Fi un pierakstīties kā parasti", "Pārliecināties, ka bankas vietne izmanto HTTPS, vai lietot mobilos datus", "Vispirms pajautāt baristam Wi-Fi paroli", "Izmantot inkognito/privāto pārlūka logu"],
+        "options": [
+          "Pieslēgties bezmaksas Wi-Fi un pierakstīties kā parasti",
+          "Pārliecināties, ka bankas vietne izmanto HTTPS, vai lietot mobilos datus",
+          "Vispirms pajautāt baristam Wi-Fi paroli",
+          "Izmantot inkognito/privāto pārlūka logu"
+        ],
         "explanation": "Sensitīvām darbībām, piemēram, bankas operācijām, pārliecinieties, ka vietne izmanto HTTPS (meklējiet slēdzenes ikonu). Vēl labāk — izmantojiet tālruņa mobilos datus, nevis publisko Wi-Fi. Inkognito režīms neaizsargā tīkla trafiku."
       },
       "q5": {
         "question": "Lietojot HTTPS, ko jūsu interneta pakalpojumu sniedzējs joprojām var redzēt?",
-        "options": ["Jūsu paroles un veidlapu datus", "Jūsu nosūtīto e-pastu saturu", "Kuras vietnes apmeklējat (bet ne konkrētās lapas vai saturu)", "Visu, ko darāt tiešsaistē"],
+        "options": [
+          "Jūsu paroles un veidlapu datus",
+          "Jūsu nosūtīto e-pastu saturu",
+          "Kuras vietnes apmeklējat (bet ne konkrētās lapas vai saturu)",
+          "Visu, ko darāt tiešsaistē"
+        ],
         "explanation": "HTTPS šifrē jūsu saziņas saturu, bet jūsu interneta pakalpojumu sniedzējs joprojām var redzēt, kuriem domēniem (vietnēm) pieslēdzaties. To sauc par 'metadatiem'. Lai to paslēptu, jums būtu nepieciešams VPN."
       },
       "q6": {
         "question": "Kāds ir galvenais 'viltota piekļuves punkta' uzbrukuma risks?",
-        "options": ["Lēns interneta ātrums", "Uzbrucējs var redzēt visu jūsu nešifrēto trafiku", "Jūsu tālruņa baterija iztukšojas ātrāk", "Jums tiek pieprasīta maksa par Wi-Fi lietošanu"],
+        "options": [
+          "Lēns interneta ātrums",
+          "Uzbrucējs var redzēt visu jūsu nešifrēto trafiku",
+          "Jūsu tālruņa baterija iztukšojas ātrāk",
+          "Jums tiek pieprasīta maksa par Wi-Fi lietošanu"
+        ],
         "explanation": "Viltota piekļuves punkta (ļaunā dvīņa) uzbrukumā uzbrucējs izveido tīklu, kas atdarina likumīgu. Visa jūsu trafika iet caur viņa aprīkojumu, ļaujot pārtvert nešifrētus datus."
       },
       "q7": {
         "question": "Kurš apgalvojums par VPN ir PATIESS?",
-        "options": ["VPN padara jūs pilnīgi anonīmu tiešsaistē", "VPN palēnina internetu, bet slēpj trafiku no vietējiem novērotājiem", "VPN darbojas tikai ar HTTPS vietnēm", "VPN novērš visus kiberuzbrukumu veidus"],
+        "options": [
+          "VPN padara jūs pilnīgi anonīmu tiešsaistē",
+          "VPN palēnina internetu, bet slēpj trafiku no vietējiem novērotājiem",
+          "VPN darbojas tikai ar HTTPS vietnēm",
+          "VPN novērš visus kiberuzbrukumu veidus"
+        ],
         "explanation": "VPN pievieno šifrēšanas slāni, kas var nedaudz palēnināt savienojumu, bet efektīvi slēpj jūsu trafiku no vietējā tīkla un interneta pakalpojumu sniedzēja. Tomēr VPN pakalpojuma sniedzējs joprojām var redzēt jūsu trafiku, un VPN nenovērš pikšķerēšanu vai ļaunprogrammatūru."
       },
       "q8": {
         "question": "Kāda informācija vienmēr ir redzama pat lietojot HTTPS?",
-        "options": ["Jūsu lietotājvārds un parole", "Domēna vārds, kuram pieslēdzaties", "Jūsu kredītkartes numurs", "Jūsu ziņojumu saturs"],
+        "options": [
+          "Jūsu lietotājvārds un parole",
+          "Domēna vārds, kuram pieslēdzaties",
+          "Jūsu kredītkartes numurs",
+          "Jūsu ziņojumu saturs"
+        ],
         "explanation": "Pat ar HTTPS domēna vārds (piemēram, 'example.com') ir redzams, jo DNS pieprasījumi parasti nav šifrēti, un TLS rokasspiediena atklāj servera nosaukumu. Tāpēc VPN ir noderīgs, lai slēptu, kuras vietnes apmeklējat."
       }
     }
   },
-
   "vpnTunnelOverlay": {
     "active": "VPN tunelis aktīvs"
   },
-
   "comparison": {
     "title": "Salīdzinājums blakus",
     "description": "Skatiet to pašu pieprasījumu HTTP un HTTPS vienlaikus",
@@ -432,7 +516,6 @@
     "httpExplained": "Visi dati ceļo vienkāršā tekstā. Ikviens jūsu tīklā var redzēt lietotājvārdu, paroli un sesijas marķierus.",
     "httpsExplained": "Dati tiek šifrēti pirms pārraidīšanas. Novērotāji redz sajauktu informāciju, nevis jūsu faktiskos akreditācijas datus."
   },
-
   "progressTracker": {
     "title": "Mācību progress",
     "modesExplored": "Izpētītie režīmi",
@@ -447,7 +530,6 @@
     "maximumProtection": "Maksimāla aizsardzība",
     "resetProgress": "Atiestatīt progresu"
   },
-
   "scenarioSelector": {
     "title": "Tīkla scenāriji",
     "description": "Izpētiet dažādas tīkla vides un to drošības ietekmi",
@@ -581,6 +663,11 @@
         }
       }
     },
+    "practiceCta": {
+      "title": "Izmēģiniet 2 īsus prakses soļus",
+      "body": "Īss uzdevums palīdz nostiprināt scenāriju.",
+      "button": "Sākt praksi"
+    },
     "attackerModelTitle": "Uzbrucēja modeļa prizma",
     "attackerModelNotes": {
       "passive": "Pieņemiet, ka kāds klusi novēro trafiku. HTTPS slēpj saturu, bet ne galamērķi.",
@@ -643,10 +730,9 @@
       "rec4": "Izmantojiet tālruņa hotspot svarīgam darbam"
     }
   },
-
   "cheatSheet": {
     "modalTitle": "Tīkla drošības īsā pamācība",
-    "modalDescription": "Ātrās uzziņas ceļvedis HTTP, HTTPS un VPN drošības konceptiem",
+    "modalDescription": "Īsa atsauce par to, kā HTTP, HTTPS un VPN maina novērojamību.",
     "printButton": "Drukāt / Saglabāt kā PDF",
     "printTitle": "HTTP vs HTTPS vs VPN — Īsā uzziņa",
     "printFooter": "Stikla siena — Tīkla drošības apmācība",
@@ -655,31 +741,31 @@
     "httpsBadge": "Droši",
     "vpnBadge": "Papildu aizsardzība",
     "httpPoints": [
-      "Dati ceļo vienkāršā tekstā — ikviens tīklā tos var lasīt",
-      "Paroles, lietotājvārdi un personas dati ir redzami",
-      "Nav aizsardzības pret noklausīšanos publiskajā Wi-Fi",
-      "Meklējiet: http:// adreses joslā (nav slēdzenes ikonas)"
+      "HTTP pārsūta pieprasījumus un atbildes atklātā tekstā.",
+      "Lokālā tīkla novērotāji var nolasīt pieteikšanās datus un sesijas informāciju.",
+      "Saturam nav konfidencialitātes; pietiek ar piekļuvi tīklam.",
+      "Pazīme: http:// adreses joslā un nav slēdzenes ikonas."
     ],
     "httpsTitle": "HTTPS (Šifrēts)",
     "httpsPoints": [
-      "Dati tiek šifrēti pirms nosūtīšanas—nelasāmi ikvienam, kas tos pārtver",
-      "Paroles un personas dati novērotājiem izskatās kā sajaukta muļķība",
-      "Meklējiet: slēdzenes (piekaramās atslēgas) ikonu pārlūkprogrammas adreses joslā",
-      "Piezīme: Kuru vietni jūs apmeklējat, joprojām ir redzams (adrese uz aploksnes), bet ne tas, kas ir iekšā"
+      "TLS šifrē pieprasījumu un atbilžu saturu pārsūtē.",
+      "Novērotāji redz šifrētu tekstu, nevis nosūtīto saturu.",
+      "Mērķa domēns joprojām ir redzams.",
+      "Pazīme: https:// un slēdzenes ikona."
     ],
     "vpnTitle": "VPN (Virtuālais privātais tīkls)",
     "vpnPoints": [
-      "Izveido šifrētu tuneli VISAI jūsu trafikei",
-      "Slēpj, kuras vietnes apmeklējat, no vietējiem novērotājiem",
-      "Trafika izskatās tā, it kā nāktu no VPN servera, nevis jūsu ierīces",
-      "Noderīgs neuzticamos tīklos (kafejnīcās, lidostās, viesnīcās)",
-      "Piezīme: VPN pakalpojuma sniedzējs var redzēt jūsu trafiku — izvēlieties uzticamu"
+      "Šifrē trafiku no ierīces līdz VPN serverim.",
+      "Slēpj mērķa metadatus no lokālā tīkla.",
+      "Lokālie novērotāji redz tikai tuneļa galapunktu.",
+      "Noder nedrošos tīklos (kafejnīcās, lidostās, viesnīcās).",
+      "VPN pakalpojumu sniedzējs joprojām redz jūsu trafiku; izvēlieties uzticamu."
     ],
     "attackerModelsTitle": "Uzbrucēju modeļi (realitātes pārbaude)",
     "attackerModels": [
-      "Pasīvs novērotājs: redz galamērķus un laiku, bet HTTPS aizsargā saturu.",
-      "Viltots piekļuves punkts: var mēģināt pikšķerēt vai izmantot viltotas lapas pat ar HTTPS.",
-      "Kompromitēta ierīce: ļaunprogramma nolasa datus pirms šifrēšanas."
+      "Pasīvs novērotājs: redz mērķus un laiku; HTTPS aizsargā saturu.",
+      "Viltus piekļuves punkts: var mēģināt pikšķerēšanu vai viltus portālus pat ar HTTPS.",
+      "Kompromitēta ierīce: ļaunprogrammatūra nolasa datus pirms šifrēšanas."
     ],
     "comparisonTableTitle": "Ātrais salīdzinājums",
     "tableHeaders": ["Ko novērotāji redz", "HTTP", "HTTPS", "HTTPS + VPN"],
@@ -698,7 +784,6 @@
       "Izslēdziet automātisko pieslēgšanos Wi-Fi tīkliem"
     ]
   },
-
   "guidedLearning": {
     "stepIndicator": "Solis {current} no {total}",
     "next": "Tālāk",
@@ -706,90 +791,80 @@
     "skip": "Izlaist",
     "startExploring": "Sākt izpēti",
     "restartGuide": "Sākt no jauna",
-
     "introduction": {
       "title": "Laipni lūgti Stikla sienā",
       "content": [
-        "Jūs droši vien esat dzirdējuši \"lietojiet HTTPS\" — bet vai tiešām zināt, kāpēc?",
-        "Lielākā daļa cilvēku nezina. Un tas ir normāli. Nākamo dažu minūšu laikā jūs redzēsiet, kas notiek, kad jūsu dati ceļo pa tīklu — un kāpēc šifrēšana ir svarīga.",
-        "Mēs to saucam par \"Stikla sienu\", jo bez aizsardzības barjera starp jūsu privātajiem datiem un ikvienu, kas vēro, ir tikpat plāna kā stikls. Jūs to vienkārši neredzat."
+        "Šis modulis rāda, kā HTTP, HTTPS un VPN maina redzamību tīklā.",
+        "Jūs nosūtīsiet vienu un to pašu pieteikšanās pieprasījumu un redzēsiet to no pārlūka un tīkla puses.",
+        "Nosaukums “Glass Wall” atspoguļo, cik plāna ir privātuma robeža bez šifrēšanas."
       ]
     },
-
     "userView": {
       "title": "Ko jūs redzat",
       "content": [
-        "Šis ir pazīstams skats — pieteikšanās lapa. Jūs ievadāt savus datus, nospiežat pogu un uzticaties, ka tas strādā.",
-        "Bet lūk, ko lielākā daļa cilvēku neapdomā: jūsu dati neteleportējas uz serveri. Tie ceļo caur vadiem, maršrutētājiem un bezvadu signāliem. Un šajā ceļojumā kāds var vērot."
+        "Sadaļa “Lietotāja skats” ir standarta pieteikšanās forma ar lietotājvārdu un paroli.",
+        "Pēc nosūtīšanas pieprasījums šķērso lokālos tīklus pirms sasniedz serveri."
       ]
     },
-
     "wireView": {
       "title": "Ko redz tīkls",
       "content": [
-        "Šī ir stikla otra puse — tas, kas ir redzams ikvienam, kas novēro jūsu tīkla trafiku.",
-        "Neaizsargātā tīklā tas varētu būt cilvēks pie blakus galdiņa kafejnīcā vai programmatūra, kas klusi uzrauga tīklu.",
-        "Iedomājieties to kā vienpusēju spoguli: jūs neredzat, kas vēro, bet viņi var redzēt visu, ko jūs sūtāt."
+        "“Tīkla skats” rāda trafiku tā, kā to uztvertu tīkla novērotājs.",
+        "Nedrošā Wi‑Fi tīklā novērotājs var būt tuvumā esoša ierīce vai hotspota operators.",
+        "Mainiet protokolu un uzbrucēja modeli, lai redzētu, kā mainās redzamība."
       ]
     },
-
     "protocolToggle": {
-      "title": "Kritiskā izvēle",
+      "title": "Protokola izvēle",
       "content": [
-        "HTTP sūta jūsu datus kā vienkāršu tekstu — lasāmu ikvienam, kas novēro tīklu.",
-        "HTTPS šifrē jūsu datus pirms tie atstāj jūsu ierīci. Novērotājiem jūsu paroles un personīgā informācija kļūst par nelasāmām sajauktām rakstzīmēm.",
-        "Pārslēdzieties starp šiem režīmiem un skatieties, kas parādās Tīkla skatā."
+        "HTTP pārsūta pieprasījuma saturu atklātā tekstā.",
+        "HTTPS ar TLS šifrē pieprasījuma saturu pirms tas pamet ierīci.",
+        "Pārslēdzieties starp tiem un salīdziniet “Tīkla skatu”."
       ]
     },
-
     "vpnToggle": {
-      "title": "Papildu aizsardzība",
+      "title": "VPN pārklājums",
       "content": [
-        "VPN izveido šifrētu tuneli VISAI jūsu datplūsmai — ne tikai vienai vietnei.",
-        "Tas slēpj, kuras vietnes jūs apmeklējat, no jebkura lokālajā tīklā. Noderīgi kafejnīcās, lidostās un viesnīcās.",
-        "Bet šeit ir nianse: VPN pārnes uzticību uz VPN pakalpojuma sniedzēju. Tas nepadara jūs neredzamu. Izvēlieties gudri."
+        "VPN šifrē trafiku no jūsu ierīces līdz VPN serverim.",
+        "Lokālie novērotāji redz tuneli, bet ne mērķi un ne saturu.",
+        "VPN pakalpojumu sniedzējs kļūst par jauno novērotāju, tāpēc uzticība tam ir būtiska."
       ]
     },
-
     "actionArea": {
       "title": "Skatieties, kā ceļo jūsu dati",
       "content": [
-        "Kad nospiežat \"Sūtīt pieprasījumu\", jūs redzēsiet, kā jūsu dati ceļo no pārlūka uz serveri — soli pa solim.",
-        "Pievērsiet uzmanību tam, kas parādās Tīkla skatā. Ar HTTP jūs redzēsiet savu paroli vienkāršā tekstā. Ar HTTPS jūs redzēsiet šifrētu jucekli."
+        "Poga “Nosūtīt pieprasījumu” palaiž laika līniju un parāda katru apmaiņas posmu.",
+        "Salīdziniet “Tīkla skatu” pie HTTP un HTTPS, lai redzētu atšķirības datu atklāšanā."
       ]
     },
-
     "scenarioSelector": {
       "title": "Konteksts ir svarīgs",
       "content": [
-        "Ne visi tīkli ir vienādi pēc riska.",
-        "Jūsu mājas Wi-Fi atšķiras no lidostas Wi-Fi. Korporatīvajam tīklam ir citādāka aizsardzība nekā kafejnīcai.",
-        "Izmēģiniet dažādus scenārijus, lai saprastu, kā jūsu vide ietekmē riska līmeni. Apzināšanās ir pirmais solis uz drošu uzvedību."
+        "Tīkla konteksts maina reālos riskus.",
+        "Izmantojiet scenārijus, lai modelētu tipiskas vides un redzētu, kā mainās ieteikumi.",
+        "Koncentrējieties uz uzbrucēja modeli un to, kas ir novērojams."
       ]
     },
-
     "learningTools": {
       "title": "Padziļiniet savu izpratni",
       "content": [
-        "Izmantojiet šos rīkus, lai nostiprinātu apgūto:",
-        "Īsā pamācība — Drukājama uzziņu rokasgrāmata. Salīdzināt — Skatiet HTTP un HTTPS blakus. Tests — Pārbaudiet savas zināšanas.",
-        "Atgriezieties pie šiem pēc eksperimentēšanas ar galveno vizualizāciju."
+        "Šie rīki nostiprina galvenās atšķirības.",
+        "Špikeris: drukājama atsauce. Salīdzinājums: skats blakus. Viktorīna: pārbaude ar skaidrojumiem.",
+        "Atgriezieties pie tiem pēc tam, kad vismaz vienreiz izpildījāt laika līniju."
       ]
     },
-
     "progressTracker": {
       "title": "Sekojiet savai izpētei",
       "content": [
-        "Šeit tiek uzskaitīts, kuras kombinācijas esat izmēģinājuši — HTTP, HTTPS, ar un bez VPN.",
-        "Izmēģiniet visas četras kombinācijas, lai pilnībā saprastu, kā katrs aizsardzības slānis maina to, kas ir redzams tīklā."
+        "Šeit tiek atzīmētas protokola un VPN kombinācijas, ko esat izmēģinājis.",
+        "Izpildiet visas četras kombinācijas, lai redzētu, kā katrs slānis maina redzamību."
       ]
     },
-
     "ready": {
       "title": "Jūs esat gatavi",
       "content": [
-        "Pamēģiniet: Pārliecinieties, ka ir izvēlēts HTTP (bez šifrēšanas), tad nospiediet \"Sūtīt pieprasījumu\" un skatieties, kas parādās Tīkla skatā — ievērojiet, ka jūsu parole ir redzama.",
-        "Tad pārslēdzieties uz HTTPS un sūtiet vēlreiz. Redziet atšķirību."
+        "Sāciet ar HTTP un nosūtiet pieprasījumu. “Tīkla skats” parādīs pieteikšanās datus atklātā tekstā.",
+        "Pārslēdzieties uz HTTPS un palaidiet vēlreiz; pieteikšanās dati pazudīs, bet metadati paliks."
       ]
     }
   }

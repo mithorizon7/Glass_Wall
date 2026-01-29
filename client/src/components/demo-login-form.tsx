@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -14,16 +13,21 @@ interface DemoLoginFormProps {
   onPasswordChange: (value: string) => void;
 }
 
-export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPasswordChange }: DemoLoginFormProps) {
+export function DemoLoginForm({
+  payload,
+  protocolMode,
+  onUsernameChange,
+  onPasswordChange,
+}: DemoLoginFormProps) {
   const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
-  
+
   return (
     <div className="space-y-6">
-      <div 
+      <div
         className={`flex items-center gap-2 px-4 py-3 rounded-lg border ${
-          isSecure 
-            ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20" 
+          isSecure
+            ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20"
             : "bg-[hsl(var(--http-danger))]/5 border-[hsl(var(--http-danger))]/20"
         }`}
         data-testid="container-url-bar"
@@ -34,10 +38,17 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
           <Unlock className="w-4 h-4 text-[hsl(var(--http-danger))] shrink-0" />
         )}
         <span className="font-mono text-sm truncate">
-          <span className={isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"}>
+          <span
+            className={
+              isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
+            }
+          >
             {protocolMode}://
           </span>
-          <span className="text-foreground">{payload.domain}/login</span>
+          <span className="text-foreground">
+            {payload.domain}
+            {payload.path}
+          </span>
         </span>
       </div>
 
@@ -51,7 +62,7 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
             {t("loginForm.demoBadge")}
           </Badge>
         </div>
-        
+
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="demo-username" className="text-sm font-medium">
@@ -67,7 +78,7 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
               data-testid="input-demo-username"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="demo-password" className="text-sm font-medium">
               {t("loginForm.passwordLabel")}
@@ -82,9 +93,9 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
               data-testid="input-demo-password"
             />
           </div>
-          
-          <Button 
-            className="w-full mt-4" 
+
+          <Button
+            className="w-full mt-4"
             variant="secondary"
             disabled
             data-testid="button-demo-login"
@@ -92,7 +103,7 @@ export function DemoLoginForm({ payload, protocolMode, onUsernameChange, onPassw
             {t("loginForm.signInButton")}
           </Button>
         </div>
-        
+
         <p className="text-xs text-muted-foreground text-center mt-4 italic">
           {t("loginForm.demoNote")}
         </p>

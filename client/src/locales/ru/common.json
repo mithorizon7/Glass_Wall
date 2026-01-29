@@ -28,12 +28,26 @@
     "breadcrumb": "Навигационная цепочка",
     "goToPreviousPage": "Перейти на предыдущую страницу",
     "goToNextPage": "Перейти на следующую страницу",
-    "morePages": "Больше страниц"
+    "morePages": "Больше страниц",
+    "previousSlide": "Предыдущий слайд",
+    "nextSlide": "Следующий слайд",
+    "more": "Ещё",
+    "carousel": "Карусель",
+    "slide": "Слайд"
   },
   "plurals": {
     "modesExplored": "{count, plural, =0 {Режимы не изучены} =1 {Изучен 1 режим} one {Изучен # режим} few {Изучено # режима} many {Изучено # режимов} other {Изучено # режимов}}",
     "questionsAnswered": "{count, plural, =0 {Нет ответов} =1 {Дан 1 ответ} one {Дан # ответ} few {Дано # ответа} many {Дано # ответов} other {Дано # ответов}}",
     "correctAnswers": "{count, plural, =0 {Нет правильных ответов} =1 {1 правильный ответ} one {# правильный ответ} few {# правильных ответа} many {# правильных ответов} other {# правильных ответов}}",
     "ofTotal": "{count} из {total}"
+  },
+  "sidebar": {
+    "title": "Боковая панель",
+    "description": "Отображает мобильную боковую панель."
+  },
+  "languageNative": {
+    "en": "English",
+    "lv": "Latviešu",
+    "ru": "Русский"
   }
 }

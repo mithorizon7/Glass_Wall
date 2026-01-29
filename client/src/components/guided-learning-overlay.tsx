@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  X, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  X,
   Sparkles,
   Eye,
   Radio,
@@ -15,7 +15,7 @@ import {
   MapPin,
   BookOpen,
   Trophy,
-  Rocket
+  Rocket,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -63,15 +63,60 @@ interface GuidedLearningStep {
 }
 
 const STEPS: GuidedLearningStep[] = [
-  { id: "introduction", targetSelector: null, icon: <Sparkles className="w-6 h-6" />, position: "center" },
-  { id: "userView", targetSelector: '[data-onboarding="user-view-card"]', icon: <Eye className="w-6 h-6" />, position: "auto" },
-  { id: "wireView", targetSelector: '[data-onboarding="wire-view-card"]', icon: <Radio className="w-6 h-6" />, position: "auto" },
-  { id: "protocolToggle", targetSelector: '[data-onboarding="protocol-toggle"]', icon: <Lock className="w-6 h-6" />, position: "auto" },
-  { id: "vpnToggle", targetSelector: '[data-onboarding="vpn-toggle"]', icon: <Shield className="w-6 h-6" />, position: "auto" },
-  { id: "actionArea", targetSelector: '[data-onboarding="action-area"]', icon: <Play className="w-6 h-6" />, position: "auto" },
-  { id: "scenarioSelector", targetSelector: '[data-onboarding="scenario-selector"]', icon: <MapPin className="w-6 h-6" />, position: "auto" },
-  { id: "learningTools", targetSelector: '[data-onboarding="learning-tools"]', icon: <BookOpen className="w-6 h-6" />, position: "auto" },
-  { id: "progressTracker", targetSelector: '[data-onboarding="progress-tracker"]', icon: <Trophy className="w-6 h-6" />, position: "auto" },
+  {
+    id: "introduction",
+    targetSelector: null,
+    icon: <Sparkles className="w-6 h-6" />,
+    position: "center",
+  },
+  {
+    id: "userView",
+    targetSelector: '[data-onboarding="user-view-card"]',
+    icon: <Eye className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "wireView",
+    targetSelector: '[data-onboarding="wire-view-card"]',
+    icon: <Radio className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "protocolToggle",
+    targetSelector: '[data-onboarding="protocol-toggle"]',
+    icon: <Lock className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "vpnToggle",
+    targetSelector: '[data-onboarding="vpn-toggle"]',
+    icon: <Shield className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "actionArea",
+    targetSelector: '[data-onboarding="action-area"]',
+    icon: <Play className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "scenarioSelector",
+    targetSelector: '[data-onboarding="scenario-selector"]',
+    icon: <MapPin className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "learningTools",
+    targetSelector: '[data-onboarding="learning-tools"]',
+    icon: <BookOpen className="w-6 h-6" />,
+    position: "auto",
+  },
+  {
+    id: "progressTracker",
+    targetSelector: '[data-onboarding="progress-tracker"]',
+    icon: <Trophy className="w-6 h-6" />,
+    position: "auto",
+  },
   { id: "ready", targetSelector: null, icon: <Rocket className="w-6 h-6" />, position: "center" },
 ];
 
@@ -80,7 +125,7 @@ function computeCardPosition(
   cardWidth: number,
   cardHeight: number,
   viewportWidth: number,
-  viewportHeight: number
+  viewportHeight: number,
 ): CardPosition | null {
   if (!spotlightRect || viewportWidth === 0 || viewportHeight === 0) return null;
 
@@ -100,19 +145,31 @@ function computeCardPosition(
   if (spaceBelow >= cardHeight + CARD_MARGIN) {
     placement = "bottom";
     top = spotlightRect.top + spotlightRect.height + CARD_MARGIN;
-    left = Math.max(CARD_MARGIN, Math.min(spotlightCenterX - cardWidth / 2, viewportWidth - cardWidth - CARD_MARGIN));
+    left = Math.max(
+      CARD_MARGIN,
+      Math.min(spotlightCenterX - cardWidth / 2, viewportWidth - cardWidth - CARD_MARGIN),
+    );
   } else if (spaceAbove >= cardHeight + CARD_MARGIN) {
     placement = "top";
     top = spotlightRect.top - cardHeight - CARD_MARGIN;
-    left = Math.max(CARD_MARGIN, Math.min(spotlightCenterX - cardWidth / 2, viewportWidth - cardWidth - CARD_MARGIN));
+    left = Math.max(
+      CARD_MARGIN,
+      Math.min(spotlightCenterX - cardWidth / 2, viewportWidth - cardWidth - CARD_MARGIN),
+    );
   } else if (spaceRight >= cardWidth + CARD_MARGIN) {
     placement = "right";
     left = spotlightRect.left + spotlightRect.width + CARD_MARGIN;
-    top = Math.max(CARD_MARGIN, Math.min(spotlightCenterY - cardHeight / 2, viewportHeight - cardHeight - CARD_MARGIN));
+    top = Math.max(
+      CARD_MARGIN,
+      Math.min(spotlightCenterY - cardHeight / 2, viewportHeight - cardHeight - CARD_MARGIN),
+    );
   } else if (spaceLeft >= cardWidth + CARD_MARGIN) {
     placement = "left";
     left = spotlightRect.left - cardWidth - CARD_MARGIN;
-    top = Math.max(CARD_MARGIN, Math.min(spotlightCenterY - cardHeight / 2, viewportHeight - cardHeight - CARD_MARGIN));
+    top = Math.max(
+      CARD_MARGIN,
+      Math.min(spotlightCenterY - cardHeight / 2, viewportHeight - cardHeight - CARD_MARGIN),
+    );
   } else {
     // Fallback: position at bottom of viewport
     placement = "bottom";
@@ -125,7 +182,7 @@ function computeCardPosition(
 
 function useTourTarget(
   selector: string | null,
-  isActive: boolean
+  isActive: boolean,
 ): { rect: SpotlightRect | null; isReady: boolean } {
   const [rect, setRect] = useState<SpotlightRect | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -158,7 +215,7 @@ function useTourTarget(
 
     const updateRect = () => {
       if (cancelled || !element) return;
-      
+
       const domRect = element.getBoundingClientRect();
       setRect({
         top: domRect.top - SPOTLIGHT_PADDING,
@@ -288,7 +345,7 @@ export function GuidedLearningOverlay() {
 
   const { rect: spotlightRect, isReady } = useTourTarget(
     step.targetSelector,
-    isVisible && !isIntroOrReady
+    isVisible && !isIntroOrReady,
   );
 
   const viewport = useViewportSize();
@@ -297,13 +354,13 @@ export function GuidedLearningOverlay() {
   useEffect(() => {
     if (!isVisible) return;
     if (typeof window === "undefined") return;
-    
+
     const originalOverflow = document.body.style.overflow;
     const originalPaddingRight = document.body.style.paddingRight;
-    
+
     // Calculate scrollbar width to prevent layout shift
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    
+
     document.body.style.overflow = "hidden";
     if (scrollbarWidth > 0) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
@@ -326,15 +383,16 @@ export function GuidedLearningOverlay() {
   }, [currentStep, isVisible]);
 
   // Calculate card position based on spotlight (SSR-safe)
-  const cardPosition = (!isIntroOrReady && spotlightRect && viewport.width > 0)
-    ? computeCardPosition(
-        spotlightRect,
-        cardDimensions.width,
-        cardDimensions.height,
-        viewport.width,
-        viewport.height
-      )
-    : null;
+  const cardPosition =
+    !isIntroOrReady && spotlightRect && viewport.width > 0
+      ? computeCardPosition(
+          spotlightRect,
+          cardDimensions.width,
+          cardDimensions.height,
+          viewport.width,
+          viewport.height,
+        )
+      : null;
 
   useEffect(() => {
     const completed = getStorageValue(STORAGE_KEY);
@@ -352,13 +410,13 @@ export function GuidedLearningOverlay() {
 
   const handleNext = useCallback(() => {
     if (currentStep < STEPS.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     }
   }, [currentStep]);
 
   const handleBack = useCallback(() => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
     }
   }, [currentStep]);
 
@@ -393,14 +451,14 @@ export function GuidedLearningOverlay() {
         setIsVisible(false);
       } else if (e.key === "ArrowRight" || e.key === "Enter") {
         if (currentStep < STEPS.length - 1) {
-          setCurrentStep(prev => prev + 1);
+          setCurrentStep((prev) => prev + 1);
         } else {
           setStorageValue(STORAGE_KEY, "true");
           setIsVisible(false);
         }
       } else if (e.key === "ArrowLeft") {
         if (currentStep > 0) {
-          setCurrentStep(prev => prev - 1);
+          setCurrentStep((prev) => prev - 1);
         }
       }
     };
@@ -427,7 +485,7 @@ export function GuidedLearningOverlay() {
         aria-describedby="guided-learning-content"
       >
         {isIntroOrReady ? (
-          <div 
+          <div
             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             onClick={(e) => e.stopPropagation()}
             aria-hidden="true"
@@ -445,12 +503,12 @@ export function GuidedLearningOverlay() {
                   {showSpotlight && spotlightRect.width > 0 && spotlightRect.height > 0 && (
                     <motion.rect
                       initial={{ opacity: 0, x: 0, y: 0, width: 100, height: 100 }}
-                      animate={{ 
+                      animate={{
                         x: spotlightRect.left ?? 0,
                         y: spotlightRect.top ?? 0,
                         width: spotlightRect.width ?? 100,
                         height: spotlightRect.height ?? 100,
-                        opacity: 1
+                        opacity: 1,
                       }}
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       rx="12"
@@ -471,12 +529,12 @@ export function GuidedLearningOverlay() {
             {showSpotlight && spotlightRect.width > 0 && spotlightRect.height > 0 && (
               <motion.div
                 initial={{ opacity: 0, top: 0, left: 0, width: 100, height: 100 }}
-                animate={{ 
+                animate={{
                   top: spotlightRect.top ?? 0,
                   left: spotlightRect.left ?? 0,
                   width: spotlightRect.width ?? 100,
                   height: spotlightRect.height ?? 100,
-                  opacity: 1
+                  opacity: 1,
                 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="absolute rounded-xl ring-4 ring-primary/50 ring-offset-2 ring-offset-transparent"
@@ -488,9 +546,9 @@ export function GuidedLearningOverlay() {
         )}
 
         {/* Card Container - either centered or positioned near spotlight */}
-        <div 
+        <div
           className={
-            isIntroOrReady 
+            isIntroOrReady
               ? "fixed inset-0 flex items-center justify-center p-4 z-[10000]"
               : "fixed z-[10000]"
           }
@@ -502,13 +560,13 @@ export function GuidedLearningOverlay() {
                   maxWidth: "calc(100vw - 32px)",
                 }
               : !isIntroOrReady
-              ? {
-                  bottom: CARD_MARGIN * 2,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  maxWidth: "calc(100vw - 32px)",
-                }
-              : undefined
+                ? {
+                    bottom: CARD_MARGIN * 2,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    maxWidth: "calc(100vw - 32px)",
+                  }
+                : undefined
           }
         >
           <motion.div
@@ -527,14 +585,17 @@ export function GuidedLearningOverlay() {
                     {step.icon}
                   </div>
                   <div>
-                    <h3 
+                    <h3
                       id="guided-learning-title"
                       className="text-lg font-semibold text-foreground"
                     >
                       {t(`guidedLearning.${step.id}.title`)}
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      {t("guidedLearning.stepIndicator", { current: currentStep + 1, total: STEPS.length })}
+                      {t("guidedLearning.stepIndicator", {
+                        current: currentStep + 1,
+                        total: STEPS.length,
+                      })}
                     </p>
                   </div>
                 </div>
@@ -550,13 +611,15 @@ export function GuidedLearningOverlay() {
                 </Button>
               </div>
 
-              <div 
+              <div
                 id="guided-learning-content"
                 className="text-sm text-muted-foreground space-y-3 mb-6 leading-relaxed"
               >
-                {(t(`guidedLearning.${step.id}.content`, { returnObjects: true }) as string[]).map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
+                {(t(`guidedLearning.${step.id}.content`, { returnObjects: true }) as string[]).map(
+                  (paragraph, i) => (
+                    <p key={i}>{paragraph}</p>
+                  ),
+                )}
               </div>
 
               <div className="flex items-center gap-2 mb-4" aria-hidden="true">
@@ -567,8 +630,8 @@ export function GuidedLearningOverlay() {
                       i === currentStep
                         ? "bg-primary"
                         : i < currentStep
-                        ? "bg-primary/40"
-                        : "bg-muted"
+                          ? "bg-primary/40"
+                          : "bg-muted"
                     }`}
                   />
                 ))}
@@ -576,11 +639,7 @@ export function GuidedLearningOverlay() {
 
               <div className="flex items-center justify-between gap-2">
                 {currentStep > 0 ? (
-                  <Button
-                    variant="ghost"
-                    onClick={handleBack}
-                    data-testid="button-guide-back"
-                  >
+                  <Button variant="ghost" onClick={handleBack} data-testid="button-guide-back">
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     {t("guidedLearning.back")}
                   </Button>
@@ -596,18 +655,14 @@ export function GuidedLearningOverlay() {
                 )}
 
                 {currentStep < STEPS.length - 1 ? (
-                  <Button 
-                    ref={nextButtonRef}
-                    onClick={handleNext} 
-                    data-testid="button-guide-next"
-                  >
+                  <Button ref={nextButtonRef} onClick={handleNext} data-testid="button-guide-next">
                     {t("guidedLearning.next")}
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 ) : (
-                  <Button 
+                  <Button
                     ref={nextButtonRef}
-                    onClick={handleComplete} 
+                    onClick={handleComplete}
                     data-testid="button-guide-complete"
                   >
                     {t("guidedLearning.startExploring")}
@@ -625,7 +680,7 @@ export function GuidedLearningOverlay() {
 
 export function RestartGuideButton() {
   const { t } = useTranslation("glassWall");
-  
+
   const handleRestart = () => {
     if (typeof window !== "undefined" && (window as any).restartGuidedLearning) {
       (window as any).restartGuidedLearning();

@@ -20,7 +20,7 @@
   "russian": "[Rüssïàñ !!!]",
   "notFound": {
     "title": "[404 Pàgé Ñöt Föüñd !!!]",
-    "message": "[Dïd yöü förgét tö àdd thé pàgé tö thé röütér? !!!]"
+    "message": "[Dïd ÿöü förgét tö àdd thé pàgé tö thé röütér? !!!]"
   },
   "aria": {
     "toggleSidebar": "[Tögglé Sïdébàr !!!]",
@@ -28,12 +28,26 @@
     "breadcrumb": "[Bréàdçrümb !!!]",
     "goToPreviousPage": "[Gö tö prévïöüs pàgé !!!]",
     "goToNextPage": "[Gö tö ñéxt pàgé !!!]",
-    "morePages": "[Möré pàgés !!!]"
+    "morePages": "[Möré pàgés !!!]",
+    "previousSlide": "[Prévïöüs slïdé !!!]",
+    "nextSlide": "[Ñéxt slïdé !!!]",
+    "more": "[Möré !!!]",
+    "carousel": "[Çàröüsél !!!]",
+    "slide": "[Slïdé !!!]"
   },
   "plurals": {
-    "modesExplored": "[{count, plural, =0 {Ñö mödés éxplöréd} =1 {1 mödé éxplöréd} other {# mödés éxplöréd}} !!!]",
-    "questionsAnswered": "[{count, plural, =0 {Ñö qüéstïöñs àñswéréd} =1 {1 qüéstïöñ àñswéréd} other {# qüéstïöñs àñswéréd}} !!!]",
-    "correctAnswers": "[{count, plural, =0 {Ñö çörréçt àñswérs} =1 {1 çörréçt àñswér} other {# çörréçt àñswérs}} !!!]",
+    "modesExplored": "[{count, plural, =0 {No modes explored} =1 {1 mode explored} öthér {# modes explored}} !!!]",
+    "questionsAnswered": "[{count, plural, =0 {No questions answered} =1 {1 question answered} öthér {# questions answered}} !!!]",
+    "correctAnswers": "[{count, plural, =0 {No correct answers} =1 {1 correct answer} öthér {# correct answers}} !!!]",
     "ofTotal": "[{count} öf {total} !!!]"
+  },
+  "sidebar": {
+    "title": "[Sïdébàr !!!]",
+    "description": "[Dïsplàÿs thé möbïlé sïdébàr. !!!]"
+  },
+  "languageNative": {
+    "en": "[Éñglïsh !!!]",
+    "lv": "[Làtvïéšü !!!]",
+    "ru": "[Русский !!!]"
   }
 }

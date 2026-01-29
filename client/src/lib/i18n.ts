@@ -1,16 +1,16 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import ICU from 'i18next-icu';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import ICU from "i18next-icu";
 
-import enCommon from '../locales/en/common.json';
-import enGlassWall from '../locales/en/glass-wall.json';
-import lvCommon from '../locales/lv/common.json';
-import lvGlassWall from '../locales/lv/glass-wall.json';
-import ruCommon from '../locales/ru/common.json';
-import ruGlassWall from '../locales/ru/glass-wall.json';
-import pseudoCommon from '../locales/pseudo/common.json';
-import pseudoGlassWall from '../locales/pseudo/glass-wall.json';
+import enCommon from "../locales/en/common.json";
+import enGlassWall from "../locales/en/glass-wall.json";
+import lvCommon from "../locales/lv/common.json";
+import lvGlassWall from "../locales/lv/glass-wall.json";
+import ruCommon from "../locales/ru/common.json";
+import ruGlassWall from "../locales/ru/glass-wall.json";
+import pseudoCommon from "../locales/pseudo/common.json";
+import pseudoGlassWall from "../locales/pseudo/glass-wall.json";
 
 const resources = {
   en: {
@@ -39,12 +39,12 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: ['lv', 'en'],
-    defaultNS: 'common',
-    ns: ['common', 'glassWall'],
+    fallbackLng: ["lv", "en"],
+    defaultNS: "common",
+    ns: ["common", "glassWall"],
     detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
+      order: ["localStorage", "navigator"],
+      caches: ["localStorage"],
     },
     interpolation: {
       escapeValue: false,
@@ -55,14 +55,12 @@ i18n
     returnEmptyString: false,
     returnNull: false,
     saveMissing: isDev,
-    missingKeyHandler: isDev 
-      ? (lngs, ns, key, fallbackValue) => {
-          console.warn(`[MISSING i18n] ${ns}:${key} (langs: ${lngs.join(', ')})`);
+    missingKeyHandler: isDev
+      ? (lngs, ns, key, _fallbackValue) => {
+          console.warn(`[MISSING i18n] ${ns}:${key} (langs: ${lngs.join(", ")})`);
         }
       : undefined,
-    parseMissingKeyHandler: isDev
-      ? (key) => `[MISSING: ${key}]`
-      : (key) => '',
+    parseMissingKeyHandler: isDev ? (key) => `[MISSING: ${key}]` : (_key) => "",
   });
 
 export default i18n;

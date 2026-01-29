@@ -1,7 +1,6 @@
 {
   "title": "The Glass Wall",
-  "subtitle": "See what happens when you send data over the network. Toggle between HTTP and HTTPS to understand encryption—no real data leaves your browser.",
-  
+  "subtitle": "Observe how HTTP, HTTPS, and VPN change what network observers can see. Use the controls to compare modes; no real data leaves your browser.",
   "scenarios": "Scenarios",
   "scenario": "Scenario",
   "cheatSheetButton": "Cheat Sheet",
@@ -11,12 +10,10 @@
   "mediumRisk": "Medium risk",
   "lowRiskEnvironment": "Low risk environment",
   "considerVpn": "Consider using a VPN for sensitive activities",
-  
   "publicNetworkWarning": {
     "title": "Public Network Warning",
     "message": "Public networks increase risk of deception (rogue hotspots, fake portals). Encryption reduces some risks, but judgment still matters. Don't enter sensitive credentials on untrusted networks or pages."
   },
-  
   "networkContext": {
     "title": "What to know",
     "home": "Your home network is typically secure—you control the router and who connects. Still, always check for HTTPS (the padlock icon) when entering passwords or payment info. Most modern sites do this automatically.",
@@ -24,10 +21,9 @@
     "airport": "Airport networks are high-risk environments. Thousands of travelers, many fake hotspots, and attackers know people are in a hurry. Treat any airport Wi-Fi as hostile—VPN is strongly recommended for any sensitive activity.",
     "hotel": "Hotel Wi-Fi is shared with many guests and often has weak security. The network operator can see unencrypted traffic. Use HTTPS for everything and consider VPN if accessing sensitive accounts."
   },
-  
   "vpnActive": {
     "title": "VPN Active",
-    "message": "VPN shifts trust from the local network to the VPN provider. It doesn't make you invincible—choose a reputable provider and remember that the VPN can see your traffic.",
+    "message": "A VPN shifts trust from the local network to the VPN provider. It hides traffic from local observers, but the provider can still see it.",
     "dnsLeakNote": "Note: DNS requests can sometimes leak outside the VPN depending on settings.",
     "doesNotTitle": "VPN does NOT do",
     "doesNotBullets": [
@@ -36,19 +32,17 @@
       "Prevent the VPN provider from seeing your traffic."
     ]
   },
-  
   "modeChanged": {
     "title": "Mode Changed",
     "message": "Click 'Send Request' to see the difference in network traffic."
   },
-  
   "controls": {
     "protocol": "Protocol",
-    "protocolTooltip": "HTTP sends data in plain text. HTTPS encrypts your data so observers can't read it.",
+    "protocolTooltip": "HTTP sends data in plain text. HTTPS uses TLS to encrypt data in transit.",
     "vpn": "VPN",
-    "vpnTooltip": "A VPN creates an encrypted tunnel. It shifts trust to the VPN provider but doesn't make you invincible.",
+    "vpnTooltip": "A VPN encrypts traffic to the VPN server and hides it from the local network.",
     "attackerModel": "Attacker model",
-    "attackerModelTooltip": "Choose who might be watching. It changes what is realistically at risk.",
+    "attackerModelTooltip": "Choose the observer model; it changes what is realistically exposed.",
     "attackerModels": {
       "passive": "Passive eavesdropper",
       "rogueHotspot": "Rogue hotspot (MITM)",
@@ -58,16 +52,81 @@
     "autoPlayTooltip": "Automatically replay the timeline when you switch modes.",
     "stepMode": "Step Mode",
     "stepModeTooltip": "Advance through the timeline one step at a time for detailed learning.",
+    "stepModeHint": "Tip: use ←/→ to step.",
     "httpLabel": "HTTP",
     "httpsLabel": "HTTPS"
   },
-  
   "buttons": {
     "sendRequest": "Send Request",
     "nextStep": "Next Step",
     "replayTimeline": "Replay Timeline"
   },
-
+  "learningTools": {
+    "button": "Learning Tools",
+    "title": "Learning tools",
+    "description": "Cheat sheet, comparison, and quiz in one place.",
+    "tabs": {
+      "cheatSheet": "Cheat sheet",
+      "comparison": "Comparison",
+      "quiz": "Quiz"
+    }
+  },
+  "nextPrompt": {
+    "idle": "Choose a protocol and click Send Request to begin.",
+    "modeChanged": "Mode updated — run the timeline again to see the change.",
+    "stepMode": "Use Next Step or ←/→ to advance.",
+    "complete": "Try another mode or check your understanding."
+  },
+  "labels": {
+    "legendTitle": "Legend",
+    "metadata": "Metadata",
+    "content": "Content",
+    "visible": "Visible",
+    "encrypted": "Encrypted"
+  },
+  "flow": {
+    "title": "Suggested flow",
+    "subtitle": "A short sequence for a first run-through.",
+    "badge": "Start here",
+    "stepLabel": "Step {step}",
+    "current": "Current",
+    "complete": "Done",
+    "step1": {
+      "title": "Pick a scenario and attacker model",
+      "body": "Choose where you are and who might be watching.",
+      "hint": "Use the Scenario button and Attacker Model toggle."
+    },
+    "step2": {
+      "title": "Run the timeline",
+      "body": "Send a request and watch what changes.",
+      "hint": "Try HTTP vs HTTPS and VPN on/off."
+    },
+    "step3": {
+      "title": "Check your understanding",
+      "body": "Use the quiz or cheat sheet to reinforce key differences.",
+      "hint": "Look for the \"Show me in the timeline\" button."
+    }
+  },
+  "objectives": {
+    "title": "By the end, you can…",
+    "items": [
+      "Explain what metadata is and why HTTPS does not hide it.",
+      "Compare what HTTP vs HTTPS exposes on a shared network.",
+      "Know when a VPN helps—and what it does not protect.",
+      "Choose safer actions for common public Wi-Fi scenarios."
+    ]
+  },
+  "selfCheck": {
+    "title": "Quick self-check",
+    "subtitle": "Mark the items you can explain clearly.",
+    "items": [
+      "I can name the metadata that remains visible even with HTTPS.",
+      "I understand how HTTP and HTTPS differ for an observer.",
+      "I understand VPN limits and what it does not do.",
+      "I can choose safer actions for public Wi-Fi."
+    ],
+    "helper": "This is just for you—it is not scored."
+  },
   "aria": {
     "stageChange": "Stage: {stage}. {protocol}. {vpn}.",
     "stages": {
@@ -87,17 +146,15 @@
       "on": "VPN on"
     }
   },
-  
   "userView": {
     "title": "User View",
     "subtitle": "What you see when logging in"
   },
-  
   "wireView": {
     "title": "Wire View",
     "subtitle": "What the network can observe",
     "readyToObserve": "Ready to observe",
-    "readyToObserveHint": "Click \"Send Request\" to see what network observers could see when you submit the login form.",
+    "readyToObserveHint": "Click \"Send Request\" to see what a network observer could capture when the login form is submitted.",
     "encrypted": "Encrypted",
     "plainText": "Plain text",
     "userLabel": "user:",
@@ -119,8 +176,8 @@
         "plain": "What an observer sees: your actual data (device compromised)"
       }
     },
-    "whatObserverSeesSecure": "What an observer sees: encrypted gibberish",
-    "whatObserverSeesPlain": "What an observer sees: your actual data",
+    "whatObserverSeesSecure": "Observer view: ciphertext and metadata only",
+    "whatObserverSeesPlain": "Observer view: readable credentials and content",
     "destinationVisible": "Destination",
     "tlsRecord": "TLS Record Header",
     "encryptedPayload": "Encrypted Data (hex dump)",
@@ -145,15 +202,14 @@
       }
     },
     "explainSecure": {
-      "title": "Why can't they read this?",
-      "body": "HTTPS encrypts your data before sending it. Think of putting your letter in a tamper-proof lock box—only the recipient has the key. The hex codes above are what an attacker would capture: meaningless scrambled data that modern computers cannot crack. They can see which website you're visiting (the address on the box), but not what you're saying inside."
+      "title": "Why this is unreadable",
+      "body": "HTTPS encrypts the request body with TLS before it leaves your device. Observers capture ciphertext and the destination, but they cannot recover the content without the session keys."
     },
     "explainPlain": {
-      "title": "Why is this dangerous?",
-      "body": "HTTP sends your data as plain text—like writing your password on a postcard. Anyone on the same network (coffee shop Wi-Fi, hotel, airport) can intercept and read everything you send. Your username and password are completely exposed."
+      "title": "Why plain text is risky",
+      "body": "HTTP transmits the request body without encryption. Anyone on the same network can read credentials and session data from captured traffic."
     }
   },
-  
   "metadata": {
     "title": "Metadata",
     "alwaysVisible": "Always visible to network observers",
@@ -164,16 +220,15 @@
     "connectionVpn": "VPN Tunnel (encrypted)",
     "encryptionNone": "None",
     "encryptionTls": "TLS",
-    "metadataNote": "Even with HTTPS encryption, the network can see which website you connected to—just not what you sent or received.",
-    "advancedPrompt": "Advanced: What metadata leaks?",
-    "advancedSkip": "If this is too much, feel free to skip it. The core lesson still stands.",
+    "metadataNote": "HTTPS encrypts content, but observers can still see the domain and connection metadata.",
+    "advancedPrompt": "Advanced: Metadata that still leaks",
+    "advancedSkip": "If you are new to this, you can skip this section without missing the main point.",
     "advancedItems": [
       "DNS lookups can reveal the domain you are trying to reach.",
       "SNI can expose the site name during the TLS handshake; ECH can hide it, but it is not widely deployed yet.",
       "DoH/DoT can reduce DNS visibility, but they are not universal and can be blocked or misconfigured."
     ]
   },
-  
   "handshake": {
     "title": "TLS Handshake",
     "encryptionEstablished": "Encryption established",
@@ -184,38 +239,34 @@
     "step3": "Key Exchange: ephemeral keys generated",
     "step4": "Finished: encrypted session begins",
     "observersNote": "Observers can see this handshake occurred but cannot derive the session keys.",
-    "tooltip": "The handshake process is visible to observers—they can see a secure connection is being established—but the encryption keys remain secret."
+    "tooltip": "Observers can see a TLS handshake occur but cannot derive the session keys."
   },
-  
   "request": {
     "title": "Request",
     "encryptedPayload": "Encrypted payload",
     "plainTextVisible": "Plain text - VISIBLE",
     "encryptedNote": "Network observers see encrypted data, not the actual content.",
     "ciphertextDisclaimer": "Note: Ciphertext shown is illustrative, not an actual TLS dump.",
-    "plainTextWarning": "Anyone on the network can read your credentials!",
+    "plainTextWarning": "Anyone on the network can read your credentials.",
     "tooltip": "The HTTP request contains the data your browser sends to the server, including headers and body content.",
     "tooltipEncrypted": "The payload (request body) is encrypted and unreadable to network observers.",
     "tooltipPlainText": "The payload is sent as plain text—anyone on the network can read it."
   },
-  
   "response": {
     "title": "Response",
     "encryptedResponse": "Encrypted response",
     "plainTextResponse": "Plain text response",
-    "sessionWarning": "Session tokens are also visible! An attacker could hijack your session.",
+    "sessionWarning": "Session tokens are visible; an attacker could reuse them.",
     "tooltip": "The HTTP response contains data the server sends back, including headers (like cookies) and body content.",
     "tooltipEncrypted": "The response is encrypted—only your browser can decrypt it.",
     "tooltipPlainText": "The response is in plain text—anyone on the network can read it, including session tokens."
   },
-  
   "summary": {
     "protectedTitle": "Your data is protected",
     "exposedTitle": "Your data was exposed",
-    "protectedMessage": "Even on public Wi-Fi, encryption scrambled your credentials into unreadable code. An attacker would only see the gibberish above. Always look for the padlock (lock icon) in your browser's address bar before entering passwords or payment information.",
-    "exposedMessage": "Your username and password traveled across the network as readable text. On public Wi-Fi (coffee shops, airports, hotels), anyone with simple tools could have captured everything. This is why modern websites always use HTTPS."
+    "protectedMessage": "Encryption protected the credentials in transit. Observers would see ciphertext and destination metadata, not the username and password. Verify HTTPS before entering sensitive data.",
+    "exposedMessage": "The credentials traveled in plain text. On public Wi-Fi, a local observer could capture and read them with basic tools. Use HTTPS for any login or payment."
   },
-  
   "timeline": {
     "connect": "Connect",
     "connectDescVpn": "Establish VPN tunnel",
@@ -224,7 +275,7 @@
     "connectTooltipDirect": "DNS resolves domain name to IP address, then TCP establishes a connection to the server.",
     "handshake": "TLS Handshake",
     "handshakeDesc": "Negotiate encryption",
-    "handshakeTooltip": "Client and server exchange certificates and agree on encryption keys. This happens before any data is sent. An observer sees this handshake occur but cannot read the encrypted content.",
+    "handshakeTooltip": "Client and server exchange certificates and agree on keys before data is sent. Observers see the handshake but cannot read the encrypted content.",
     "request": "Request",
     "requestDesc": "POST /login with credentials",
     "requestTooltipSecure": "Your login credentials are encrypted before being sent. Observers see encrypted data.",
@@ -277,7 +328,6 @@
       }
     }
   },
-  
   "loginForm": {
     "title": "Sign In",
     "usernameLabel": "Username",
@@ -288,7 +338,6 @@
     "demoNote": "These are fictional credentials for demonstration only",
     "demoBadge": "Demo Site"
   },
-  
   "footer": {
     "simulationNote": "This is a simulation. No real network traffic is generated.",
     "zeroRiskLearning": "Zero-Risk Learning",
@@ -296,7 +345,6 @@
     "noTelemetry": "No Telemetry",
     "noTelemetryTooltip": "This application does not collect any data about your usage or send information to external servers."
   },
-  
   "cheatSheetModal": {
     "title": "HTTP vs HTTPS vs VPN - Quick Reference",
     "downloadPdf": "Download as PDF",
@@ -322,7 +370,6 @@
       "point4": "Shifts trust, doesn't eliminate it"
     }
   },
-  
   "progress": {
     "title": "Learning Progress",
     "explored": "Explored",
@@ -331,7 +378,6 @@
     "httpVpn": "HTTP + VPN",
     "httpsVpn": "HTTPS + VPN"
   },
-  
   "quiz": {
     "title": "Security Knowledge Quiz",
     "description": "Test your understanding of network security concepts",
@@ -357,7 +403,12 @@
     "questions": {
       "q1": {
         "question": "When you connect to a website using HTTP, who can see your password?",
-        "options": ["Only the website you're connecting to", "Anyone on the same network", "Only your internet service provider", "Nobody can see it"],
+        "options": [
+          "Only the website you're connecting to",
+          "Anyone on the same network",
+          "Only your internet service provider",
+          "Nobody can see it"
+        ],
         "explanation": "With HTTP, data is transmitted in plain text. Anyone on the same network (like a coffee shop Wi-Fi) can intercept and read your password using simple tools."
       },
       "q2": {
@@ -367,41 +418,69 @@
       },
       "q3": {
         "question": "Which of the following can a VPN hide from your local network?",
-        "options": ["Only your passwords", "Only the websites you visit", "Both your passwords and the websites you visit", "Neither - VPNs don't hide anything"],
+        "options": [
+          "Only your passwords",
+          "Only the websites you visit",
+          "Both your passwords and the websites you visit",
+          "Neither - VPNs don't hide anything"
+        ],
         "explanation": "A VPN creates an encrypted tunnel for ALL your traffic. This hides both the content (passwords, data) and metadata (which websites you visit) from local observers."
       },
       "q4": {
         "question": "You're at a coffee shop and need to check your bank account. What should you do?",
-        "options": ["Connect to the free Wi-Fi and log in normally", "Make sure the bank website uses HTTPS, or use cellular data", "Ask the barista for the Wi-Fi password first", "Use an incognito/private browser window"],
+        "options": [
+          "Connect to the free Wi-Fi and log in normally",
+          "Make sure the bank website uses HTTPS, or use cellular data",
+          "Ask the barista for the Wi-Fi password first",
+          "Use an incognito/private browser window"
+        ],
         "explanation": "For sensitive activities like banking, ensure the site uses HTTPS (look for the lock icon). Better yet, use your phone's cellular data instead of public Wi-Fi. Incognito mode doesn't protect network traffic."
       },
       "q5": {
         "question": "When using HTTPS, what can your ISP still see?",
-        "options": ["Your passwords and form data", "The content of emails you send", "Which websites you visit (but not the specific pages or content)", "Everything you do online"],
+        "options": [
+          "Your passwords and form data",
+          "The content of emails you send",
+          "Which websites you visit (but not the specific pages or content)",
+          "Everything you do online"
+        ],
         "explanation": "HTTPS encrypts the content of your communication, but your ISP can still see which domains (websites) you connect to. This is called 'metadata'. To hide this, you would need a VPN."
       },
       "q6": {
         "question": "What's the main risk of a 'fake hotspot' attack?",
-        "options": ["Slow internet speeds", "An attacker can see all your unencrypted traffic", "Your phone battery drains faster", "You get charged for Wi-Fi usage"],
+        "options": [
+          "Slow internet speeds",
+          "An attacker can see all your unencrypted traffic",
+          "Your phone battery drains faster",
+          "You get charged for Wi-Fi usage"
+        ],
         "explanation": "In a fake hotspot (evil twin) attack, an attacker creates a network that mimics a legitimate one. All your traffic passes through their equipment, allowing them to intercept unencrypted data."
       },
       "q7": {
         "question": "Which statement about VPNs is TRUE?",
-        "options": ["VPNs make you completely anonymous online", "VPNs slow down your internet but hide your traffic from local observers", "VPNs only work with HTTPS websites", "VPNs prevent all types of cyber attacks"],
+        "options": [
+          "VPNs make you completely anonymous online",
+          "VPNs slow down your internet but hide your traffic from local observers",
+          "VPNs only work with HTTPS websites",
+          "VPNs prevent all types of cyber attacks"
+        ],
         "explanation": "VPNs add a layer of encryption that may slightly slow your connection, but they effectively hide your traffic from your local network and ISP. However, the VPN provider can still see your traffic, and VPNs don't prevent phishing or malware."
       },
       "q8": {
         "question": "What information is always visible even when using HTTPS?",
-        "options": ["Your username and password", "The domain name you're connecting to", "Your credit card number", "The content of your messages"],
+        "options": [
+          "Your username and password",
+          "The domain name you're connecting to",
+          "Your credit card number",
+          "The content of your messages"
+        ],
         "explanation": "Even with HTTPS, the domain name (like 'example.com') is visible because DNS queries are typically unencrypted, and the TLS handshake reveals the server name. This is why VPNs are useful for hiding which sites you visit."
       }
     }
   },
-
   "vpnTunnelOverlay": {
     "active": "VPN Tunnel Active"
   },
-
   "comparison": {
     "title": "Side-by-Side Comparison",
     "description": "See the same request in HTTP and HTTPS simultaneously",
@@ -432,7 +511,6 @@
     "httpExplained": "All data travels in plain text. Anyone on your network can see your username, password, and session tokens.",
     "httpsExplained": "Data is encrypted before transmission. Observers see scrambled data, not your actual credentials."
   },
-
   "progressTracker": {
     "title": "Learning Progress",
     "modesExplored": "Modes explored",
@@ -447,7 +525,6 @@
     "maximumProtection": "Maximum protection",
     "resetProgress": "Reset Progress"
   },
-
   "scenarioSelector": {
     "title": "Network Scenarios",
     "description": "Explore different network environments and their security implications",
@@ -581,6 +658,11 @@
         }
       }
     },
+    "practiceCta": {
+      "title": "Try 2 quick practice steps",
+      "body": "A short exercise helps lock in the scenario.",
+      "button": "Start practice"
+    },
     "attackerModelTitle": "Attacker model lens",
     "attackerModelNotes": {
       "passive": "Assume someone is quietly observing traffic. HTTPS hides content but not the destination.",
@@ -643,10 +725,9 @@
       "rec4": "Use your phone's hotspot for important work"
     }
   },
-
   "cheatSheet": {
     "modalTitle": "Network Security Cheat Sheet",
-    "modalDescription": "A quick reference guide for HTTP, HTTPS, and VPN security concepts",
+    "modalDescription": "Quick reference for how HTTP, HTTPS, and VPN change what observers can see.",
     "printButton": "Print / Save as PDF",
     "printTitle": "HTTP vs HTTPS vs VPN — Quick Reference",
     "printFooter": "The Glass Wall - Network Security Training",
@@ -655,31 +736,31 @@
     "httpsBadge": "Safe",
     "vpnBadge": "Extra Protection",
     "httpPoints": [
-      "Data travels in plain text - anyone on the network can read it",
-      "Passwords, usernames, and personal data are visible",
-      "No protection against eavesdropping on public Wi-Fi",
-      "Look for: http:// in the address bar (no lock icon)"
+      "HTTP sends requests and responses in plain text.",
+      "Local network observers can read credentials and session data.",
+      "No confidentiality for content; only network access is required.",
+      "Indicator: http:// in the address bar and no lock icon."
     ],
     "httpsTitle": "HTTPS (Encrypted)",
     "httpsPoints": [
-      "Data is encrypted before sending—unreadable to anyone intercepting it",
-      "Passwords and personal data appear as scrambled gibberish to observers",
-      "Look for: the lock (padlock) icon in your browser's address bar",
-      "Note: Which website you visit is still visible (the address on the envelope), but not what's inside"
+      "TLS encrypts request and response bodies in transit.",
+      "Observers see ciphertext, not the submitted content.",
+      "The domain you connect to is still visible.",
+      "Indicator: https:// and a lock icon."
     ],
     "vpnTitle": "VPN (Virtual Private Network)",
     "vpnPoints": [
-      "Creates an encrypted tunnel for ALL your traffic",
-      "Hides which websites you visit from local observers",
-      "Traffic appears to come from VPN server, not your device",
-      "Useful on untrusted networks (coffee shops, airports, hotels)",
-      "Note: VPN provider can see your traffic - choose a trusted one"
+      "Encrypts traffic from your device to the VPN server.",
+      "Hides destination metadata from the local network.",
+      "Local observers see only the tunnel endpoint.",
+      "Useful on untrusted networks (coffee shops, airports, hotels).",
+      "The VPN provider can still see your traffic; choose a provider you trust."
     ],
     "attackerModelsTitle": "Attacker Models (Reality Check)",
     "attackerModels": [
-      "Passive eavesdropper: can see destinations and timing, but HTTPS protects content.",
-      "Rogue hotspot: can try phishing or fake portals even when HTTPS is used.",
-      "Compromised endpoint: malware can read your data before encryption."
+      "Passive eavesdropper: sees destinations and timing; HTTPS protects content.",
+      "Rogue hotspot: can attempt phishing or fake portals even when HTTPS is used.",
+      "Compromised endpoint: malware can read data before encryption."
     ],
     "comparisonTableTitle": "Quick Comparison",
     "tableHeaders": ["What observers see", "HTTP", "HTTPS", "HTTPS + VPN"],
@@ -698,7 +779,6 @@
       "Turn off auto-connect to Wi-Fi networks"
     ]
   },
-
   "guidedLearning": {
     "stepIndicator": "Step {current} of {total}",
     "next": "Next",
@@ -706,90 +786,80 @@
     "skip": "Skip",
     "startExploring": "Start Exploring",
     "restartGuide": "Restart Guide",
-
     "introduction": {
       "title": "Welcome to The Glass Wall",
       "content": [
-        "You've probably heard \"use HTTPS\" — but do you really know why?",
-        "Most people don't. And that's okay. In the next few minutes, you'll see what happens when your data travels across a network — and why encryption matters.",
-        "We call this \"The Glass Wall\" because without protection, the barrier between your private data and anyone watching is as thin as glass. You just can't see it."
+        "This module shows how HTTP, HTTPS, and VPN change what is visible on a network.",
+        "You will send the same login request and observe it from the browser and the network.",
+        "The name \"Glass Wall\" reflects how thin the privacy boundary is without encryption."
       ]
     },
-
     "userView": {
       "title": "What You See",
       "content": [
-        "This is a familiar sight — a login page. You type your credentials, click submit, and trust that it works.",
-        "But here's what most people don't think about: your data doesn't teleport to the server. It travels through wires, routers, and wireless signals. And on that journey, someone might be watching."
+        "The User View is a standard login form with a username and password.",
+        "When you submit it, the request travels across local networks before reaching the server."
       ]
     },
-
     "wireView": {
       "title": "What the Network Sees",
       "content": [
-        "This is the other side of the glass — what's visible to anyone observing your network traffic.",
-        "On an unprotected network, this could be the person at the next table in a coffee shop, or software silently monitoring the network.",
-        "Think of it like a one-way mirror: you can't see who's watching, but they can see everything you send."
+        "Wire View shows the traffic as a network observer would capture it.",
+        "On untrusted Wi-Fi, that observer could be a nearby device or the hotspot operator.",
+        "Change protocol and attacker model to see how visibility shifts."
       ]
     },
-
     "protocolToggle": {
-      "title": "The Critical Choice",
+      "title": "Protocol choice",
       "content": [
-        "HTTP sends your data as plain text — readable by anyone observing the network.",
-        "HTTPS encrypts your data before it leaves your device. To observers, your passwords and personal information become unreadable scrambled characters.",
-        "Toggle between these modes and watch what appears in the Wire View."
+        "HTTP sends the request body in plain text.",
+        "HTTPS encrypts the request body with TLS before it leaves your device.",
+        "Switch between them and compare the Wire View."
       ]
     },
-
     "vpnToggle": {
-      "title": "An Extra Shield",
+      "title": "VPN coverage",
       "content": [
-        "A VPN creates an encrypted tunnel for ALL your traffic — not just one website.",
-        "It hides which websites you visit from anyone on the local network. Useful in coffee shops, airports, and hotels.",
-        "But here's the nuance: a VPN shifts trust to the VPN provider. It doesn't make you invisible. Choose wisely."
+        "A VPN encrypts traffic from your device to a VPN server.",
+        "Local observers see the tunnel, not the destination or content.",
+        "The VPN provider becomes the new observer, so provider trust matters."
       ]
     },
-
     "actionArea": {
       "title": "Watch Your Data Travel",
       "content": [
-        "When you click \"Send Request,\" you'll watch your data travel from your browser to the server — step by step.",
-        "Pay close attention to what appears in the Wire View. With HTTP, you'll see your password in plain text. With HTTPS, you'll see encrypted gibberish."
+        "Send Request runs the timeline and shows each stage of the exchange.",
+        "Compare the Wire View under HTTP and HTTPS to see the difference in exposure."
       ]
     },
-
     "scenarioSelector": {
       "title": "Context Matters",
       "content": [
-        "Not all networks are equal in risk.",
-        "Your home Wi-Fi is different from airport Wi-Fi. A corporate network has different protections than a coffee shop.",
-        "Try different scenarios to understand how your environment affects your risk level. Awareness is the first step to safe behavior."
+        "Network context changes the realistic risks.",
+        "Use scenarios to model common environments and see how recommendations shift.",
+        "Focus on the attacker model and what is observable."
       ]
     },
-
     "learningTools": {
       "title": "Deepen Your Understanding",
       "content": [
-        "Use these tools to reinforce what you learn:",
-        "Cheat Sheet — A printable reference guide. Compare — See HTTP and HTTPS side-by-side. Quiz — Test your knowledge.",
-        "Come back to these after you've experimented with the main visualization."
+        "Use these tools to reinforce the core differences.",
+        "Cheat Sheet: printable reference. Comparison: side-by-side view. Quiz: recall with feedback.",
+        "Return to these after you run the timeline at least once."
       ]
     },
-
     "progressTracker": {
       "title": "Track Your Exploration",
       "content": [
-        "This tracks which combinations you've tried — HTTP, HTTPS, with and without VPN.",
-        "Try all four combinations to fully understand how each layer of protection changes what's visible on the network."
+        "This tracks which protocol and VPN combinations you have run.",
+        "Complete all four combinations to see how each layer changes visibility."
       ]
     },
-
     "ready": {
       "title": "You're Ready",
       "content": [
-        "Try this: Make sure HTTP is selected (no encryption), then click \"Send Request\" and watch what appears in the Wire View — notice your password is visible.",
-        "Then switch to HTTPS and send again. See the difference."
+        "Start with HTTP and send a request. The Wire View will display credentials in clear text.",
+        "Switch to HTTPS and run again; the credentials disappear while metadata remains."
       ]
     }
   }

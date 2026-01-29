@@ -1,7 +1,6 @@
 {
   "title": "[Thé Glàss Wàll !!!]",
-  "subtitle": "[Sée whàt hàppéñs whéñ yöü séñd dàtà övér thé ñétwörk. Tögglé bétwééñ HTTP àñd HTTPS tö üñdérstàñd éñçryptïöñ—ñö réàl dàtà léàvés yöür bröwsér. !!!]",
-  
+  "subtitle": "[Öbsérvé höw HTTP, HTTPS, àñd VPÑ çhàñgé whàt ñétwörk öbsérvérs çàñ séé. Üsé thé çöñtröls tö çömpàré mödés; ñö réàl dàtà léàvés ÿöür bröwsér. !!!]",
   "scenarios": "[Sçéñàrïös !!!]",
   "scenario": "[Sçéñàrïö !!!]",
   "cheatSheetButton": "[Çhéàt Shéét !!!]",
@@ -10,62 +9,130 @@
   "highRiskEnvironment": "[Hïgh rïsk éñvïröñméñt !!!]",
   "mediumRisk": "[Médïüm rïsk !!!]",
   "lowRiskEnvironment": "[Löw rïsk éñvïröñméñt !!!]",
-  "considerVpn": "[Çöñsïdér üsïñg à VPN för séñsïtïvé àçtïvïtïés !!!]",
-  
+  "considerVpn": "[Çöñsïdér üsïñg à VPÑ för séñsïtïvé àçtïvïtïés !!!]",
   "publicNetworkWarning": {
-    "title": "[Pübliç Ñétwörk Wàrñïñg !!!]",
-    "message": "[Pübliç ñétwörks ïñçréàsé rïsk öf déçéptïöñ !!!]"
+    "title": "[Püblïç Ñétwörk Wàrñïñg !!!]",
+    "message": "[Püblïç ñétwörks ïñçréàsé rïsk öf déçéptïöñ (rögüé hötspöts, fàké pörtàls). Éñçrÿptïöñ rédüçés sömé rïsks, büt jüdgméñt stïll màttérs. Döñ't éñtér séñsïtïvé çrédéñtïàls öñ üñtrüstéd ñétwörks ör pàgés. !!!]"
   },
-  
+  "networkContext": {
+    "title": "[Whàt tö kñöw !!!]",
+    "home": "[Ÿöür hömé ñétwörk ïs tÿpïçàllÿ séçüré—ÿöü çöñtröl thé röütér àñd whö çöññéçts. Stïll, àlwàÿs çhéçk för HTTPS (thé pàdlöçk ïçöñ) whéñ éñtérïñg pàsswörds ör pàÿméñt ïñfö. Möst mödérñ sïtés dö thïs àütömàtïçàllÿ. !!!]",
+    "coffeeShop": "[Çöfféé shöp Wï-Fï ïs à prïmé tàrgét för àttàçkérs. Àñÿöñé ñéàrbÿ çàñ sét üp à fàké hötspöt wïth thé sàmé ñàmé. Àlwàÿs üsé HTTPS, àvöïd éñtérïñg séñsïtïvé dàtà, àñd çöñsïdér à VPÑ för éxtrà prötéçtïöñ. !!!]",
+    "airport": "[Àïrpört ñétwörks àré hïgh-rïsk éñvïröñméñts. Thöüsàñds öf tràvélérs, màñÿ fàké hötspöts, àñd àttàçkérs kñöw péöplé àré ïñ à hürrÿ. Tréàt àñÿ àïrpört Wï-Fï às höstïlé—VPÑ ïs ströñglÿ réçömméñdéd för àñÿ séñsïtïvé àçtïvïtÿ. !!!]",
+    "hotel": "[Hötél Wï-Fï ïs shàréd wïth màñÿ güésts àñd öftéñ hàs wéàk séçürïtÿ. Thé ñétwörk öpéràtör çàñ séé üñéñçrÿptéd tràffïç. Üsé HTTPS för évérÿthïñg àñd çöñsïdér VPÑ ïf àççéssïñg séñsïtïvé àççöüñts. !!!]"
+  },
   "vpnActive": {
-    "title": "[VPN Àçtïvé !!!]",
-    "message": "[VPN shïfts trüst fröm thé löçàl ñétwörk !!!]",
-    "dnsLeakNote": "[Ñöté: DNS réqüésts çàñ sòmétïmés léàk öütsïdé thé VPN !!!]",
-    "doesNotTitle": "[VPN döés NÖT dö !!!]",
+    "title": "[VPÑ Àçtïvé !!!]",
+    "message": "[À VPÑ shïfts trüst fröm thé löçàl ñétwörk tö thé VPÑ prövïdér. Ït hïdés tràffïç fröm löçàl öbsérvérs, büt thé prövïdér çàñ stïll séé ït. !!!]",
+    "dnsLeakNote": "[Ñöté: DÑS réqüésts çàñ sömétïmés léàk öütsïdé thé VPÑ dépéñdïñg öñ séttïñgs. !!!]",
+    "doesNotTitle": "[VPÑ döés ÑÖT dö !!!]",
     "doesNotBullets": [
-      "[Döés ñöt prötéçt ýöü fröm phïshïñg ör màlwàré !!!]",
-      "[Döés ñöt màké ýöü àñöñymöüs !!!]",
-      "[Döés ñöt prévéñt thé VPN prövïdér fröm séeïñg ýöür tràffïc !!!]"
+      "[Prötéçt ÿöü fröm phïshïñg ör màlwàré. !!!]",
+      "[Màké ÿöü àñöñÿmöüs. !!!]",
+      "[Prévéñt thé VPÑ prövïdér fröm sééïñg ÿöür tràffïç. !!!]"
     ]
   },
-  
   "modeChanged": {
     "title": "[Mödé Çhàñgéd !!!]",
-    "message": "[Çlïçk Séñd Réqüést tö sée thé dïfféréñçé !!!]"
+    "message": "[Çlïçk 'Séñd Réqüést' tö séé thé dïfféréñçé ïñ ñétwörk tràffïç. !!!]"
   },
-  
   "controls": {
     "protocol": "[Prötöçöl !!!]",
-    "protocolTooltip": "[HTTP séñds dàtà ïñ plàïñ téxt !!!]",
-    "vpn": "[VPN !!!]",
-    "vpnTooltip": "[À VPN çréàtés àñ éñçryptéd tüññél !!!]",
-    "attackerModel": "[Àttàçkér Mödél !!!]",
-    "attackerModelTooltip": "[Çhöösé whö mïght bé wàtçhïñg !!!]",
+    "protocolTooltip": "[HTTP séñds dàtà ïñ plàïñ téxt. HTTPS üsés TLS tö éñçrÿpt dàtà ïñ tràñsït. !!!]",
+    "vpn": "[VPÑ !!!]",
+    "vpnTooltip": "[À VPÑ éñçrÿpts tràffïç tö thé VPÑ sérvér àñd hïdés ït fröm thé löçàl ñétwörk. !!!]",
+    "attackerModel": "[Àttàçkér mödél !!!]",
+    "attackerModelTooltip": "[Çhöösé thé öbsérvér mödél; ït çhàñgés whàt ïs réàlïstïçàllÿ éxpöséd. !!!]",
     "attackerModels": {
-      "passive": "[Pàssïvé Éàvésdröpper !!!]",
-      "rogueHotspot": "[Rögüé Hötspòt (MITM) !!!]",
-      "compromisedEndpoint": "[Çömpromïséd Éñdpöïñt !!!]"
+      "passive": "[Pàssïvé éàvésdröppér !!!]",
+      "rogueHotspot": "[Rögüé hötspöt (MÏTM) !!!]",
+      "compromisedEndpoint": "[Çömprömïséd éñdpöïñt !!!]"
     },
-    "autoPlay": "[Àütö-plày !!!]",
-    "autoPlayTooltip": "[Àütömàtïçàlly réplày thé tïmélïñé !!!]",
+    "autoPlay": "[Àütö-plàÿ !!!]",
+    "autoPlayTooltip": "[Àütömàtïçàllÿ réplàÿ thé tïmélïñé whéñ ÿöü swïtçh mödés. !!!]",
     "stepMode": "[Stép Mödé !!!]",
-    "stepModeTooltip": "[Àdvàñçé thröügh thé tïmélïñé öñé stép !!!]",
+    "stepModeTooltip": "[Àdvàñçé thröügh thé tïmélïñé öñé stép àt à tïmé för détàïléd léàrñïñg. !!!]",
+    "stepModeHint": "[Tïp: üsé ←/→ tö stép. !!!]",
     "httpLabel": "[HTTP !!!]",
     "httpsLabel": "[HTTPS !!!]"
   },
-  
   "buttons": {
     "sendRequest": "[Séñd Réqüést !!!]",
     "nextStep": "[Ñéxt Stép !!!]",
-    "replayTimeline": "[Réplày Tïmélïñé !!!]"
+    "replayTimeline": "[Réplàÿ Tïmélïñé !!!]"
   },
-
+  "learningTools": {
+    "button": "[Léàrñïñg Tööls !!!]",
+    "title": "[Léàrñïñg tööls !!!]",
+    "description": "[Çhéàt shéét, çömpàrïsöñ, àñd qüïz ïñ öñé plàçé. !!!]",
+    "tabs": {
+      "cheatSheet": "[Çhéàt shéét !!!]",
+      "comparison": "[Çömpàrïsöñ !!!]",
+      "quiz": "[Qüïz !!!]"
+    }
+  },
+  "nextPrompt": {
+    "idle": "[Çhöösé à prötöçöl àñd çlïçk Séñd Réqüést tö bégïñ. !!!]",
+    "modeChanged": "[Mödé üpdàtéd — rüñ thé tïmélïñé àgàïñ tö séé thé çhàñgé. !!!]",
+    "stepMode": "[Üsé Ñéxt Stép ör ←/→ tö àdvàñçé. !!!]",
+    "complete": "[Trÿ àñöthér mödé ör çhéçk ÿöür üñdérstàñdïñg. !!!]"
+  },
+  "labels": {
+    "legendTitle": "[Légéñd !!!]",
+    "metadata": "[Métàdàtà !!!]",
+    "content": "[Çöñtéñt !!!]",
+    "visible": "[Vïsïblé !!!]",
+    "encrypted": "[Éñçrÿptéd !!!]"
+  },
+  "flow": {
+    "title": "[Süggéstéd flöw !!!]",
+    "subtitle": "[À shört séqüéñçé för à fïrst rüñ-thröügh. !!!]",
+    "badge": "[Stàrt héré !!!]",
+    "stepLabel": "[Stép {step} !!!]",
+    "current": "[Çürréñt !!!]",
+    "complete": "[Döñé !!!]",
+    "step1": {
+      "title": "[Pïçk à sçéñàrïö àñd àttàçkér mödél !!!]",
+      "body": "[Çhöösé whéré ÿöü àré àñd whö mïght bé wàtçhïñg. !!!]",
+      "hint": "[Üsé thé Sçéñàrïö büttöñ àñd Àttàçkér Mödél tögglé. !!!]"
+    },
+    "step2": {
+      "title": "[Rüñ thé tïmélïñé !!!]",
+      "body": "[Séñd à réqüést àñd wàtçh whàt çhàñgés. !!!]",
+      "hint": "[Trÿ HTTP vs HTTPS àñd VPÑ öñ/öff. !!!]"
+    },
+    "step3": {
+      "title": "[Çhéçk ÿöür üñdérstàñdïñg !!!]",
+      "body": "[Üsé thé qüïz ör çhéàt shéét tö réïñförçé kéÿ dïfféréñçés. !!!]",
+      "hint": "[Löök för thé \"Shöw mé ïñ thé tïmélïñé\" büttöñ. !!!]"
+    }
+  },
+  "objectives": {
+    "title": "[Bÿ thé éñd, ÿöü çàñ… !!!]",
+    "items": [
+      "[Éxplàïñ whàt métàdàtà ïs àñd whÿ HTTPS döés ñöt hïdé ït. !!!]",
+      "[Çömpàré whàt HTTP vs HTTPS éxpösés öñ à shàréd ñétwörk. !!!]",
+      "[Kñöw whéñ à VPÑ hélps—àñd whàt ït döés ñöt prötéçt. !!!]",
+      "[Çhöösé sàfér àçtïöñs för çömmöñ püblïç Wï-Fï sçéñàrïös. !!!]"
+    ]
+  },
+  "selfCheck": {
+    "title": "[Qüïçk sélf-çhéçk !!!]",
+    "subtitle": "[Màrk thé ïtéms ÿöü çàñ éxplàïñ çléàrlÿ. !!!]",
+    "items": [
+      "[Ï çàñ ñàmé thé métàdàtà thàt rémàïñs vïsïblé évéñ wïth HTTPS. !!!]",
+      "[Ï üñdérstàñd höw HTTP àñd HTTPS dïffér för àñ öbsérvér. !!!]",
+      "[Ï üñdérstàñd VPÑ lïmïts àñd whàt ït döés ñöt dö. !!!]",
+      "[Ï çàñ çhöösé sàfér àçtïöñs för püblïç Wï-Fï. !!!]"
+    ],
+    "helper": "[Thïs ïs jüst för ÿöü—ït ïs ñöt sçöréd. !!!]"
+  },
   "aria": {
     "stageChange": "[Stàgé: {stage}. {protocol}. {vpn}. !!!]",
     "stages": {
       "idle": "[Tïmélïñé rését !!!]",
       "connect": "[Çöññéçtïöñ àñd métàdàtà !!!]",
-      "handshake": "[TLS Hàñdshàké !!!]",
+      "handshake": "[TLS hàñdshàké !!!]",
       "request": "[Réqüést séñt !!!]",
       "response": "[Réspöñsé réçéïvéd !!!]",
       "complete": "[Tïmélïñé çömplété !!!]"
@@ -75,348 +142,245 @@
       "https": "[Prötöçöl HTTPS !!!]"
     },
     "vpn": {
-      "off": "[VPN öff !!!]",
-      "on": "[VPN öñ !!!]"
+      "off": "[VPÑ öff !!!]",
+      "on": "[VPÑ öñ !!!]"
     }
   },
-  
   "userView": {
     "title": "[Üsér Vïéw !!!]",
-    "subtitle": "[Whàt yöü sée whéñ löggïñg ïñ !!!]"
+    "subtitle": "[Whàt ÿöü séé whéñ löggïñg ïñ !!!]"
   },
-  
   "wireView": {
     "title": "[Wïré Vïéw !!!]",
     "subtitle": "[Whàt thé ñétwörk çàñ öbsérvé !!!]",
-    "readyToObserve": "[Réàdy tö öbsérvé !!!]",
-    "readyToObserveHint": "[Çlïçk Séñd Réqüést tö sée whàt ñétwörk öbsérvérs çöüld sée !!!]",
+    "readyToObserve": "[Réàdÿ tö öbsérvé !!!]",
+    "readyToObserveHint": "[Çlïçk \"Séñd Réqüést\" tö séé whàt à ñétwörk öbsérvér çöüld çàptüré whéñ thé lögïñ förm ïs sübmïttéd. !!!]",
+    "encrypted": "[Éñçrÿptéd !!!]",
+    "plainText": "[Plàïñ téxt !!!]",
     "userLabel": "[üsér: !!!]",
     "passLabel": "[pàss: !!!]",
-    "vpnLabel": "[VPN !!!]",
+    "browser": "[Bröwsér !!!]",
+    "server": "[Sérvér !!!]",
+    "vpnLabel": "[VPÑ !!!]",
     "observerTitle": {
       "passive": {
-        "secure": "[Whàt àñ öbsérvér sées: éñçryptéd çöntént, vïsïblé déstïñàtïöñ !!!]",
-        "plain": "[Whàt àñ öbsérvér sées: ýöür àçtüàl dàtà !!!]"
+        "secure": "[Whàt àñ öbsérvér séés: éñçrÿptéd çöñtéñt, vïsïblé déstïñàtïöñ !!!]",
+        "plain": "[Whàt àñ öbsérvér séés: ÿöür àçtüàl dàtà !!!]"
       },
       "rogueHotspot": {
-        "secure": "[Whàt àñ öbsérvér sées: éñçryptéd çöntént, vïsïblé déstïñàtïöñ !!!]",
-        "plain": "[Whàt àñ öbsérvér sées: ýöür àçtüàl dàtà (hïghér ïñtérçépt rïsk) !!!]"
+        "secure": "[Whàt àñ öbsérvér séés: éñçrÿptéd çöñtéñt, vïsïblé déstïñàtïöñ !!!]",
+        "plain": "[Whàt àñ öbsérvér séés: ÿöür àçtüàl dàtà (plüs hïghér ïñtérçéptïöñ rïsk) !!!]"
       },
       "compromisedEndpoint": {
-        "secure": "[Whàt àñ öbsérvér sées: éñçryptéd çöntént, büt dévïçé ïs çömpromïséd !!!]",
-        "plain": "[Whàt àñ öbsérvér sées: ýöür àçtüàl dàtà (çömpromïséd dévïçé) !!!]"
+        "secure": "[Whàt àñ öbsérvér séés: éñçrÿptéd çöñtéñt, büt thé dévïçé ïs àlréàdÿ çömprömïséd !!!]",
+        "plain": "[Whàt àñ öbsérvér séés: ÿöür àçtüàl dàtà (dévïçé çömprömïséd) !!!]"
       }
     },
+    "whatObserverSeesSecure": "[Öbsérvér vïéw: çïphértéxt àñd métàdàtà öñlÿ !!!]",
+    "whatObserverSeesPlain": "[Öbsérvér vïéw: réàdàblé çrédéñtïàls àñd çöñtéñt !!!]",
+    "destinationVisible": "[Déstïñàtïöñ !!!]",
+    "tlsRecord": "[TLS Réçörd Héàdér !!!]",
+    "encryptedPayload": "[Éñçrÿptéd Dàtà (héx dümp) !!!]",
     "requestLine": "[{method} {path} HTTP/1.1 !!!]",
     "hostHeader": "[Höst: !!!]",
-    "contentTypeHeader": "[Çöntént-Typé: !!!]",
+    "contentTypeHeader": "[Çöñtéñt-Tÿpé: !!!]",
     "formFieldUsername": "[üsérñàmé= !!!]",
     "formFieldPassword": "[&pàsswörd= !!!]",
     "whyItMattersTitle": "[Whÿ thïs màttérs !!!]",
     "whyItMatters": {
       "passive": {
-        "secure": "[HTTPS prötéçts çöntént fröm pàssïvé öbsérvérs !!!]",
-        "plain": "[Wïth HTTP, ànyöñé çàñ réàd yöür dàtà !!!]"
+        "secure": "[HTTPS prötéçts thé çöñtéñt fröm pàssïvé öbsérvérs, büt théÿ stïll léàrñ whïçh sïté ÿöü vïsït. !!!]",
+        "plain": "[Wïth HTTP, àñÿöñé öñ thé ñétwörk çàñ réàd ÿöür dàtà dïréçtlÿ. !!!]"
       },
       "rogueHotspot": {
-        "secure": "[HTTPS prötéçts çöntént, büt rögüé hötspöts çàñ trïçk ýöü !!!]",
-        "plain": "[Plàïñ téxt ïs éàsy tö ïñtérçépt öñ rögüé hötspöts !!!]"
+        "secure": "[HTTPS prötéçts thé çöñtéñt, büt rögüé hötspöts çàñ stïll trïçk ÿöü wïth fàké pörtàls ör phïshïñg pàgés. !!!]",
+        "plain": "[Öñ à rögüé hötspöt, plàïñ-téxt HTTP dàtà ïs éàsÿ tö ïñtérçépt. !!!]"
       },
       "compromisedEndpoint": {
-        "secure": "[Ïf dévïçé ïs ïñféçtéd, HTTPS çàñ't prötéçt béföre éñçryptïöñ !!!]",
-        "plain": "[Çömpromïséd dévïçé éxpösés dàtà àlwàys !!!]"
+        "secure": "[Ïf ÿöür dévïçé ïs ïñféçtéd, HTTPS çàñ’t prötéçt whàt màlwàré réàds béföré éñçrÿptïöñ. !!!]",
+        "plain": "[À çömprömïséd dévïçé éxpösés ÿöür dàtà régàrdléss öf HTTP ör HTTPS. !!!]"
       }
+    },
+    "explainSecure": {
+      "title": "[Whÿ thïs ïs üñréàdàblé !!!]",
+      "body": "[HTTPS éñçrÿpts thé réqüést bödÿ wïth TLS béföré ït léàvés ÿöür dévïçé. Öbsérvérs çàptüré çïphértéxt àñd thé déstïñàtïöñ, büt théÿ çàññöt réçövér thé çöñtéñt wïthöüt thé séssïöñ kéÿs. !!!]"
+    },
+    "explainPlain": {
+      "title": "[Whÿ plàïñ téxt ïs rïskÿ !!!]",
+      "body": "[HTTP tràñsmïts thé réqüést bödÿ wïthöüt éñçrÿptïöñ. Àñÿöñé öñ thé sàmé ñétwörk çàñ réàd çrédéñtïàls àñd séssïöñ dàtà fröm çàptüréd tràffïç. !!!]"
     }
   },
-  
   "metadata": {
     "title": "[Métàdàtà !!!]",
-    "alwaysVisible": "[Àlwàys vïsïblé tö ñétwörk öbsérvérs !!!]",
+    "alwaysVisible": "[Àlwàÿs vïsïblé tö ñétwörk öbsérvérs !!!]",
     "destination": "[Déstïñàtïöñ !!!]",
     "connection": "[Çöññéçtïöñ !!!]",
-    "encryption": "[Éñçryptïöñ !!!]",
+    "encryption": "[Éñçrÿptïöñ !!!]",
     "connectionDirect": "[Dïréçt !!!]",
-    "connectionVpn": "[VPN Tüññél (éñçryptéd) !!!]",
+    "connectionVpn": "[VPÑ Tüññél (éñçrÿptéd) !!!]",
     "encryptionNone": "[Ñöñé !!!]",
     "encryptionTls": "[TLS !!!]",
-    "metadataNote": "[Évéñ wïth éñçryptïöñ, thé ñétwörk çàñ sée yöü çöññéçtéd !!!]",
-    "advancedPrompt": "[Àdvàñçéd: Whàt métàdàtà léàks? !!!]",
-    "advancedSkip": "[Ïf thïs ïs töö müçh, féél frée tö skïp ït !!!]",
+    "metadataNote": "[HTTPS éñçrÿpts çöñtéñt, büt öbsérvérs çàñ stïll séé thé dömàïñ àñd çöññéçtïöñ métàdàtà. !!!]",
+    "advancedPrompt": "[Àdvàñçéd: Métàdàtà thàt stïll léàks !!!]",
+    "advancedSkip": "[Ïf ÿöü àré ñéw tö thïs, ÿöü çàñ skïp thïs séçtïöñ wïthöüt mïssïñg thé màïñ pöïñt. !!!]",
     "advancedItems": [
-      "[DNS lööküps çàñ révéàl thé dömàïñ ýöü àré tryïñg tö réàçh !!!]",
-      "[SNI çàñ éxpösé thé sïtè ñàmé; ECH çàñ hïde ït, büt ñöt wïdély déplöyéd !!!]",
-      "[DoH/DoT çàñ rédüçé DNS vïsïbïlïty, büt ñöt ünïvérsàl !!!]"
+      "[DÑS lööküps çàñ révéàl thé dömàïñ ÿöü àré trÿïñg tö réàçh. !!!]",
+      "[SÑÏ çàñ éxpösé thé sïté ñàmé dürïñg thé TLS hàñdshàké; ÉÇH çàñ hïdé ït, büt ït ïs ñöt wïdélÿ déplöÿéd ÿét. !!!]",
+      "[DöH/DöT çàñ rédüçé DÑS vïsïbïlïtÿ, büt théÿ àré ñöt üñïvérsàl àñd çàñ bé blöçkéd ör mïsçöñfïgüréd. !!!]"
     ]
   },
-  
   "handshake": {
     "title": "[TLS Hàñdshàké !!!]",
-    "encryptionEstablished": "[Éñçryptïöñ éstàblïshéd !!!]",
+    "encryptionEstablished": "[Éñçrÿptïöñ éstàblïshéd !!!]",
     "handshakeComplete": "[TLS 1.3 Hàñdshàké Çömplété !!!]",
     "tlsBadge": "[TLS !!!]",
-    "step1": "[Çlïéñt Héllö: süppörtéd çïphér süïtés !!!]",
-    "step2": "[Sérvér Héllö: çhöséñ çïphér !!!]",
-    "step3": "[Kéy Éxçhàñgé: éphéméràl kéys !!!]",
-    "step4": "[Fïñïshéd: éñçryptéd séssïöñ bégïñs !!!]",
-    "observersNote": "[Öbsérvérs çàñ sée thïs hàñdshàké öççürréd !!!]",
-    "tooltip": "[Thé hàñdshàké pröçéss ïs vïsïblé !!!]"
+    "step1": "[Çlïéñt Héllö: süppörtéd çïphér süïtés, ràñdöm bÿtés !!!]",
+    "step2": "[Sérvér Héllö: çhöséñ çïphér, sérvér çértïfïçàté !!!]",
+    "step3": "[Kéÿ Éxçhàñgé: éphéméràl kéÿs géñéràtéd !!!]",
+    "step4": "[Fïñïshéd: éñçrÿptéd séssïöñ bégïñs !!!]",
+    "observersNote": "[Öbsérvérs çàñ séé thïs hàñdshàké öççürréd büt çàññöt dérïvé thé séssïöñ kéÿs. !!!]",
+    "tooltip": "[Öbsérvérs çàñ séé à TLS hàñdshàké öççür büt çàññöt dérïvé thé séssïöñ kéÿs. !!!]"
   },
-  
   "request": {
     "title": "[Réqüést !!!]",
-    "encryptedPayload": "[Éñçryptéd pàylöàd !!!]",
+    "encryptedPayload": "[Éñçrÿptéd pàÿlöàd !!!]",
     "plainTextVisible": "[Plàïñ téxt - VÏSÏBLÉ !!!]",
-    "encryptedNote": "[Ñétwörk öbsérvérs sée éñçryptéd dàtà !!!]",
-    "ciphertextDisclaimer": "[Ñöté: Çïphértéxt shöwñ ïs ïllüstràtïvé !!!]",
-    "plainTextWarning": "[Àñyöñé öñ thé ñétwörk çàñ réàd yöür çrédéñtïàls! !!!]",
-    "tooltip": "[Thé HTTP réqüést çöñtàïñs thé dàtà !!!]",
-    "tooltipEncrypted": "[Thé pàylöàd ïs éñçryptéd !!!]",
-    "tooltipPlainText": "[Thé pàylöàd ïs séñt às plàïñ téxt !!!]"
+    "encryptedNote": "[Ñétwörk öbsérvérs séé éñçrÿptéd dàtà, ñöt thé àçtüàl çöñtéñt. !!!]",
+    "ciphertextDisclaimer": "[Ñöté: Çïphértéxt shöwñ ïs ïllüstràtïvé, ñöt àñ àçtüàl TLS dümp. !!!]",
+    "plainTextWarning": "[Àñÿöñé öñ thé ñétwörk çàñ réàd ÿöür çrédéñtïàls. !!!]",
+    "tooltip": "[Thé HTTP réqüést çöñtàïñs thé dàtà ÿöür bröwsér séñds tö thé sérvér, ïñçlüdïñg héàdérs àñd bödÿ çöñtéñt. !!!]",
+    "tooltipEncrypted": "[Thé pàÿlöàd (réqüést bödÿ) ïs éñçrÿptéd àñd üñréàdàblé tö ñétwörk öbsérvérs. !!!]",
+    "tooltipPlainText": "[Thé pàÿlöàd ïs séñt às plàïñ téxt—àñÿöñé öñ thé ñétwörk çàñ réàd ït. !!!]"
   },
-  
   "response": {
     "title": "[Réspöñsé !!!]",
-    "encryptedResponse": "[Éñçryptéd réspöñsé !!!]",
+    "encryptedResponse": "[Éñçrÿptéd réspöñsé !!!]",
     "plainTextResponse": "[Plàïñ téxt réspöñsé !!!]",
-    "sessionWarning": "[Séssïöñ tökéñs àré àlsö vïsïblé! !!!]",
-    "tooltip": "[Thé HTTP réspöñsé çöñtàïñs dàtà !!!]",
-    "tooltipEncrypted": "[Thé réspöñsé ïs éñçryptéd !!!]",
-    "tooltipPlainText": "[Thé réspöñsé ïs ïñ plàïñ téxt !!!]"
+    "sessionWarning": "[Séssïöñ tökéñs àré vïsïblé; àñ àttàçkér çöüld réüsé thém. !!!]",
+    "tooltip": "[Thé HTTP réspöñsé çöñtàïñs dàtà thé sérvér séñds bàçk, ïñçlüdïñg héàdérs (lïké çöökïés) àñd bödÿ çöñtéñt. !!!]",
+    "tooltipEncrypted": "[Thé réspöñsé ïs éñçrÿptéd—öñlÿ ÿöür bröwsér çàñ déçrÿpt ït. !!!]",
+    "tooltipPlainText": "[Thé réspöñsé ïs ïñ plàïñ téxt—àñÿöñé öñ thé ñétwörk çàñ réàd ït, ïñçlüdïñg séssïöñ tökéñs. !!!]"
   },
-  
   "summary": {
-    "protectedTitle": "[Prötéçtéd Tràñsàçtïöñ !!!]",
-    "exposedTitle": "[Éxpöséd Tràñsàçtïöñ !!!]",
-    "protectedMessage": "[Yöür çrédéñtïàls wéré éñçryptéd !!!]",
-    "exposedMessage": "[Yöür çrédéñtïàls wéré séñt ïñ plàïñ téxt !!!]"
+    "protectedTitle": "[Ÿöür dàtà ïs prötéçtéd !!!]",
+    "exposedTitle": "[Ÿöür dàtà wàs éxpöséd !!!]",
+    "protectedMessage": "[Éñçrÿptïöñ prötéçtéd thé çrédéñtïàls ïñ tràñsït. Öbsérvérs wöüld séé çïphértéxt àñd déstïñàtïöñ métàdàtà, ñöt thé üsérñàmé àñd pàsswörd. Vérïfÿ HTTPS béföré éñtérïñg séñsïtïvé dàtà. !!!]",
+    "exposedMessage": "[Thé çrédéñtïàls tràvéléd ïñ plàïñ téxt. Öñ püblïç Wï-Fï, à löçàl öbsérvér çöüld çàptüré àñd réàd thém wïth bàsïç tööls. Üsé HTTPS för àñÿ lögïñ ör pàÿméñt. !!!]"
   },
-  
   "timeline": {
     "connect": "[Çöññéçt !!!]",
-    "connectDescVpn": "[Éstàblïsh VPN tüññél !!!]",
-    "connectDescDirect": "[DNS lööküp + TCP hàñdshàké !!!]",
-    "connectTooltipVpn": "[Yöür dévïçé fïrst çöññéçts tö thé VPN sérvér !!!]",
-    "connectTooltipDirect": "[DNS résölvés dömàïñ ñàmé tö IP àddréss !!!]",
+    "connectDescVpn": "[Éstàblïsh VPÑ tüññél !!!]",
+    "connectDescDirect": "[DÑS lööküp + TÇP hàñdshàké !!!]",
+    "connectTooltipVpn": "[Ÿöür dévïçé fïrst çöññéçts tö thé VPÑ sérvér thröügh àñ éñçrÿptéd tüññél, théñ thé VPÑ çöññéçts tö thé déstïñàtïöñ. !!!]",
+    "connectTooltipDirect": "[DÑS résölvés dömàïñ ñàmé tö ÏP àddréss, théñ TÇP éstàblïshés à çöññéçtïöñ tö thé sérvér. !!!]",
     "handshake": "[TLS Hàñdshàké !!!]",
-    "handshakeDesc": "[Ñégötïàté éñçryptïöñ !!!]",
-    "handshakeTooltip": "[Çlïéñt àñd sérvér éxçhàñgé çértïfïçàtés !!!]",
+    "handshakeDesc": "[Ñégötïàté éñçrÿptïöñ !!!]",
+    "handshakeTooltip": "[Çlïéñt àñd sérvér éxçhàñgé çértïfïçàtés àñd àgréé öñ kéÿs béföré dàtà ïs séñt. Öbsérvérs séé thé hàñdshàké büt çàññöt réàd thé éñçrÿptéd çöñtéñt. !!!]",
     "request": "[Réqüést !!!]",
-    "requestDesc": "[POST /login wïth çrédéñtïàls !!!]",
-    "requestTooltipSecure": "[Yöür lögïñ çrédéñtïàls àré éñçryptéd !!!]",
-    "requestTooltipInsecure": "[Yöür lögïñ çrédéñtïàls àré séñt ïñ plàïñ téxt !!!]",
+    "requestDesc": "[PÖST /lögïñ wïth çrédéñtïàls !!!]",
+    "requestTooltipSecure": "[Ÿöür lögïñ çrédéñtïàls àré éñçrÿptéd béföré béïñg séñt. Öbsérvérs séé éñçrÿptéd dàtà. !!!]",
+    "requestTooltipInsecure": "[Ÿöür lögïñ çrédéñtïàls àré séñt ïñ plàïñ téxt. Àñÿöñé öñ thé ñétwörk çàñ réàd thém. !!!]",
     "response": "[Réspöñsé !!!]",
     "responseDesc": "[Sérvér réspöñsé réçéïvéd !!!]",
-    "responseTooltipSecure": "[Thé sérvér's réspöñsé ïs éñçryptéd !!!]",
-    "responseTooltipInsecure": "[Thé sérvér's réspöñsé ïs ïñ plàïñ téxt !!!]",
-    "vpnTunnel": "[VPN Tüññél !!!]",
+    "responseTooltipSecure": "[Thé sérvér's réspöñsé ïs éñçrÿptéd. Öñlÿ ÿöü çàñ déçrÿpt àñd réàd ït. !!!]",
+    "responseTooltipInsecure": "[Thé sérvér's réspöñsé ïs ïñ plàïñ téxt. Àñÿöñé öñ thé ñétwörk çàñ réàd ït. !!!]",
+    "vpnTunnel": "[VPÑ Tüññél !!!]",
     "toggleDetails": "[Tögglé détàïls för {section} !!!]",
-    "attackerNoteTitle": "[Àttàçkér Mödél Ïmpàçt !!!]",
+    "attackerNoteTitle": "[Àttàçkér mödél ïmpàçt !!!]",
     "attackerNotes": {
       "metadata": {
-        "passive": "[Métàdàtà stàys vïsïblé tö pàssïvé öbsérvérs !!!]",
-        "rogueHotspot": "[Rögüé hötspöts stïll sée métàdàtà àñd çàñ déçéïvé !!!]",
-        "compromisedEndpoint": "[Çömpromïséd dévïçé méàñs métàdàtà ïs ñöt thé bïggést ïssüé !!!]"
+        "passive": "[Métàdàtà (lïké déstïñàtïöñ àñd çöññéçtïöñ tÿpé) stàÿs vïsïblé tö pàssïvé öbsérvérs. !!!]",
+        "rogueHotspot": "[Rögüé hötspöts stïll séé métàdàtà àñd çàñ àttémpt déçéptïöñ évéñ whéñ çöñtéñt ïs éñçrÿptéd. !!!]",
+        "compromisedEndpoint": "[Ïf thé dévïçé ïs çömprömïséd, métàdàtà vïsïbïlïtÿ ïs thé léàst öf thé pröblém. !!!]"
       },
       "handshake": {
-        "passive": "[Hàñdshàké ïs vïsïblé, kéys àré ñöt !!!]",
-        "rogueHotspot": "[Ïf ýöü sée çért wàrñïñgs, stöp — mïght bé MITM !!!]",
-        "compromisedEndpoint": "[Çömpromïséd dévïçé çàñ bé màñïpülàtéd !!!]"
+        "passive": "[Thé hàñdshàké ïs vïsïblé, büt thé kéÿs àré ñöt. !!!]",
+        "rogueHotspot": "[Ïf ÿöü séé çértïfïçàté wàrñïñgs, stöp—thïs màÿ bé à MÏTM àttémpt. !!!]",
+        "compromisedEndpoint": "[À çömprömïséd dévïçé çàñ bé màñïpülàtéd évéñ ïf thé hàñdshàké ïs vàlïd. !!!]"
       },
       "request": {
         "passive": {
-          "secure": "[Réqüést çöntént ïs éñçryptéd; métàdàtà lëàks !!!]",
-          "plain": "[Réqüést çöntént ïs réàdàblé tö ànyöñé !!!]"
+          "secure": "[Réqüést çöñtéñt ïs éñçrÿptéd; öñlÿ métàdàtà léàks. !!!]",
+          "plain": "[Réqüést çöñtéñt ïs réàdàblé tö àñÿöñé öñ thé ñétwörk. !!!]"
         },
         "rogueHotspot": {
-          "secure": "[Çöntént éñçryptéd, büt fàké lögïñs çàñ trïçk ýöü !!!]",
-          "plain": "[Plàïñ téxt réqüésts àré tràvïàl tö ïñtérçépt !!!]"
+          "secure": "[Çöñtéñt ïs éñçrÿptéd, büt ÿöü çàñ stïll bé trïçkéd bÿ fàké lögïñ pàgés. !!!]",
+          "plain": "[Plàïñ-téxt réqüésts àré trïvïàl tö ïñtérçépt öñ rögüé hötspöts. !!!]"
         },
         "compromisedEndpoint": {
-          "secure": "[Màlwàré çàñ réàd béföre éñçryptïöñ !!!]",
-          "plain": "[Çömpromïsé éxpösés çöntént àlwàys !!!]"
+          "secure": "[Màlwàré çàñ réàd thé réqüést béföré éñçrÿptïöñ. !!!]",
+          "plain": "[Çömprömïsé éxpösés çöñtéñt régàrdléss öf prötöçöl. !!!]"
         }
       },
       "response": {
         "passive": {
-          "secure": "[Éñçryptéd réspöñsés hïdé çöntént fröm pàssïvé öbsérvérs !!!]",
-          "plain": "[Plàïñ réspöñsés çàñ léàk séssïöñ tökéñs !!!]"
+          "secure": "[Éñçrÿptéd réspöñsés kéép çöñtéñt hïddéñ fröm pàssïvé öbsérvérs. !!!]",
+          "plain": "[Plàïñ-téxt réspöñsés çàñ éxpösé séssïöñ tökéñs. !!!]"
         },
         "rogueHotspot": {
-          "secure": "[Éñçryptéd réspöñsés stày prïvàté, phïshïñg rïsk rémàïñs !!!]",
-          "plain": "[Plàïñ réspöñsés àré éàsy tö çàptüré !!!]"
+          "secure": "[Éñçrÿptéd réspöñsés stàÿ prïvàté, büt phïshïñg rïsk rémàïñs. !!!]",
+          "plain": "[Plàïñ-téxt réspöñsés àré éàsÿ tö çàptüré öñ rögüé hötspöts. !!!]"
         },
         "compromisedEndpoint": {
-          "secure": "[Çömpromïséd dévïçés çàñ réàd àftér déçryptïöñ !!!]",
-          "plain": "[Çömpromïsé éxpösés réspöñsés àlwàys !!!]"
+          "secure": "[Çömprömïséd dévïçés çàñ réàd réspöñsés àftér déçrÿptïöñ. !!!]",
+          "plain": "[Çömprömïsé éxpösés réspöñsés régàrdléss öf prötöçöl. !!!]"
         }
       }
     }
   },
-  
   "loginForm": {
     "title": "[Sïgñ Ïñ !!!]",
-    "usernameLabel": "[Üsérnàmé !!!]",
+    "usernameLabel": "[Üsérñàmé !!!]",
     "passwordLabel": "[Pàsswörd !!!]",
     "usernamePlaceholder": "[Éñtér üsérñàmé !!!]",
     "passwordPlaceholder": "[Éñtér pàsswörd !!!]",
     "signInButton": "[Lög Ïñ !!!]",
-    "demoNote": "[Théåé àré fïçtïöñàl çrédéñtïàls !!!]",
+    "demoNote": "[Thésé àré fïçtïöñàl çrédéñtïàls för démöñstràtïöñ öñlÿ !!!]",
     "demoBadge": "[Démö Sïté !!!]"
   },
-  
   "footer": {
-    "simulationNote": "[Thïs ïs à sïmülàtïöñ !!!]",
+    "simulationNote": "[Thïs ïs à sïmülàtïöñ. Ñö réàl ñétwörk tràffïç ïs géñéràtéd. !!!]",
     "zeroRiskLearning": "[Zérö-Rïsk Léàrñïñg !!!]",
-    "zeroRiskTooltip": "[Évérythïñg yöü sée ïs fïçtïöñàl !!!]",
-    "noTelemetry": "[Ñö Télémétry !!!]",
-    "noTelemetryTooltip": "[Thïs àpplïçàtïöñ döés ñöt çölléçt !!!]"
+    "zeroRiskTooltip": "[Évérÿthïñg ÿöü séé ïs fïçtïöñàl büt réàlïstïç. Ñö àçtüàl ñétwörk dàtà ïs çàptüréd ör tràñsmïttéd. !!!]",
+    "noTelemetry": "[Ñö Télémétrÿ !!!]",
+    "noTelemetryTooltip": "[Thïs àpplïçàtïöñ döés ñöt çölléçt àñÿ dàtà àböüt ÿöür üsàgé ör séñd ïñförmàtïöñ tö éxtérñàl sérvérs. !!!]"
   },
-  
-  "scenarioSelector": {
-    "practice": {
-      "title": "[Mïçrö-pràçtïçé !!!]",
-      "description": "[Màké qüïçk çhöïçés bàséd öñ thé scénario àñd àttàçkér mödél !!!]",
-      "stepLabel": "[Stép {current} öf {total} !!!]",
-      "attackerModelLabel": "[Àttàçkér Mödél !!!]",
-      "nextStep": "[Ñéxt stép !!!]",
-      "restart": "[Réstart pràçtïçé !!!]",
-      "feedback": {
-        "correct": "[Çörréçt. {rationale} !!!]",
-        "incorrect": "[Ñöt qüïtë. Béšt àñswér: {correctOption}. {rationale} !!!]"
-      },
-      "home": {
-        "step1": {
-          "prompt": "[Yöü'ré öñ ýöür hòmë Wi-Fï. Whàt shöüld ýöü prïörïtïzé fïrst? !!!]",
-          "options": [
-            "[Üsé HTTPS sïtés àñd kéép thé röütér üpdàtéd. !!!]",
-            "[Àssümé thé röütér ïs höstïlé àñd üsë à VPN för évérythïñg. !!!]",
-            "[Stöp àñd çléàñ thé dévïçé béföré lögïñg ïñ. !!!]"
-          ],
-          "rationale": {
-            "passive": "[Wïth à {model} àttàçkér, HTTPS prötéçts çöntént àñd röütér üpdàtés rédüçé rïsk. !!!]",
-            "rogueHotspot": "[Évéñ wïth à {model} àttàçkér, HTTPS àñd röütér hygïéné stïll hélp. !!!]",
-            "compromisedEndpoint": "[Wïth à {model} àttàçkér, thé dévïçé ïs thé rïsk. Çléàñ ït fïrst. !!!]"
-          }
-        },
-        "step2": {
-          "prompt": "[À fàmïly mémbér àsks för thé Wi-Fï pàsswörd. Whàt ïs sàfést? !!!]",
-          "options": [
-            "[Shàrë ït, büt kéép à ströñg WPA2/WPA3 pàsswörd àñd üpdàté ïf ñéédéd. !!!]",
-            "[Pöst ït püblïçly för çönvénïéñçé. !!!]",
-            "[Ïgnöré dévïçé séçürïty béçàüsé HTTPS ïs éñöügh. !!!]"
-          ],
-          "rationale": {
-            "passive": "[À ströñg Wi-Fï pàsswörd lïmïts whö çàñ öbsérvé lökàl tràffïc. !!!]",
-            "rogueHotspot": "[Ströñg Wi-Fï séçürïty rédüçés üñàüthörïzéd àççéss ör spööfïñg. !!!]",
-            "compromisedEndpoint": "[Évéñ wïth dévïçé rïsk, çòñtröllïñg ñétwörk àççéss stïll màttérs. !!!]"
-          }
-        }
-      },
-      "coffeeShop": {
-        "step1": {
-          "prompt": "[Yöü'ré àt thé çöfféé shöp. Whàt ïs thé sàfést fïrst stép? !!!]",
-          "options": [
-            "[Üsé HTTPS öñly àñd àvöïd séñsïtïvé lögïñs. !!!]",
-            "[Vérïfy thé ñétwörk ñàmé wïth stàff àñd çòñsïdér à VPN. !!!]",
-            "[Àssümé thé dévïçé ïs çömpromïséd àñd stöp. !!!]"
-          ],
-          "rationale": {
-            "passive": "[Wïth à {model} àttàçkér, HTTPS àñd àvöïdïñg séñsïtïvé lögïñs rédüçé rïsk. !!!]",
-            "rogueHotspot": "[Wïth à {model} àttàçkér, vérïfyïñg thé hötspöt àñd üsïñg à VPN hélps. !!!]",
-            "compromisedEndpoint": "[Wïth à {model} àttàçkér, ñétwörk çhöïçés dö ñöt prötéçt ýöü. !!!]"
-          }
-        },
-        "step2": {
-          "prompt": "[Yöü ñééd tö çhéçk é-màïl. Whàt ïs sàfést? !!!]",
-          "options": [
-            "[Pröçééd öñly ïf thé sïtë ïs HTTPS àñd ñö çért wàrñïñgs. !!!]",
-            "[Üsé HTTP béçàüsé ït löàds fàstér. !!!]",
-            "[Wàït üñtïl ýöü çàñ üsë à trüstéd dévïçé ör ñétwörk. !!!]"
-          ],
-          "rationale": {
-            "passive": "[HTTPS prévénţs à {model} àttàçkér fröm réàdïñg çöntént. !!!]",
-            "rogueHotspot": "[À {model} àttàçkér rëlïés öñ dèwñgràdés ör fàké çérts; önly pröçééd ïf HTTPS ïs ïñtàçt. !!!]",
-            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, wàït. !!!]"
-          }
-        }
-      },
-      "airport": {
-        "step1": {
-          "prompt": "[Àt àïrpört Wi-Fï, whàt ïs thé sàfést fïrst stép? !!!]",
-          "options": [
-            "[Üsé à VPN plüs HTTPS för séñsïtïvé tàsks. !!!]",
-            "[Skïp VPN béçàüsé HTTPS ïs àlwàys éñöügh. !!!]",
-            "[Stöp àñd çléàñ thé dévïçé béföré lögïñg ïñ. !!!]"
-          ],
-          "rationale": {
-            "passive": "[À {model} àttàçkér stïll sées métàdàtà; à VPN rédüçés lökàl vïsïbïlïty. !!!]",
-            "rogueHotspot": "[Wïth à {model} àttàçkér, VPN + HTTPS àdds prötéçtïöñ. !!!]",
-            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, ñétwörk prötéçtïöñs çàñ't hélp. !!!]"
-          }
-        },
-        "step2": {
-          "prompt": "[À çàptïvé pörtàl àsks för çrédéñtïàls. Whàt shöüld ýöü dö? !!!]",
-          "options": [
-            "[Éñtér ýöür é-màïl pàsswörd tö üñlöçk Wi-Fï. !!!]",
-            "[Üsé thé pörtàl öñly för àççéss àñd àvöïd réàl pàsswörds. !!!]",
-            "[Àssümé thé dévïçé ïs çömpromïséd àñd stöp. !!!]"
-          ],
-          "rationale": {
-            "passive": "[Évéñ wïth à {model} àttàçkér, ñévér éñtér réàl çrédéñtïàls. !!!]",
-            "rogueHotspot": "[À {model} àttàçkér çàñ üsé fàké pörtàls; àvöïd réàl çrédéñtïàls. !!!]",
-            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, dö ñöt lög ïñ. !!!]"
-          }
-        }
-      },
-      "hotel": {
-        "step1": {
-          "prompt": "[Àt thé hötél ñétwörk, whàt ïs thé sàfést fïrst stép? !!!]",
-          "options": [
-            "[Çönfïrm thé ñétwörk wïth récéptïöñ àñd üsë HTTPS. !!!]",
-            "[Àssümé ït ïs sàfé lïké hòmë. !!!]",
-            "[Stöp àñd çléàñ thé dévïçé béföré lögïñg ïñ. !!!]"
-          ],
-          "rationale": {
-            "passive": "[À {model} àttàçkér çàñ stïll sée métàdàtà; vérïfyïñg thé ñétwörk hélps. !!!]",
-            "rogueHotspot": "[Wïth à {model} àttàçkér, vérïfyïñg thé ñétwörk rédüçés fàké hötspöts. !!!]",
-            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, çléàñ ït fïrst. !!!]"
-          }
-        },
-        "step2": {
-          "prompt": "[Yöü ñééd tö àççéss bàñkïñg. Whàt ïs sàfést? !!!]",
-          "options": [
-            "[Üsé à VPN àñd vérïfy HTTPS béföré lögïñg ïñ. !!!]",
-            "[Üsé HTTP för spééd. !!!]",
-            "[Wàït üñtïl ýöü çàñ üsë à trüstéd dévïçé ör ñétwörk. !!!]"
-          ],
-          "rationale": {
-            "passive": "[À {model} àttàçkér çàñ't réàd HTTPS çöntént; à VPN rédüçés lökàl éxpösüré. !!!]",
-            "rogueHotspot": "[Wïth à {model} àttàçkér, VPN + HTTPS rédüçés ïñtérçépt rïsk. !!!]",
-            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömpromïséd, dö ñöt lög ïñ. !!!]"
-          }
-        }
-      }
+  "cheatSheetModal": {
+    "title": "[HTTP vs HTTPS vs VPÑ - Qüïçk Référéñçé !!!]",
+    "downloadPdf": "[Döwñlöàd às PDF !!!]",
+    "http": {
+      "title": "[HTTP (Üñéñçrÿptéd) !!!]",
+      "point1": "[Dàtà séñt ïñ plàïñ téxt !!!]",
+      "point2": "[Àñÿöñé öñ thé ñétwörk çàñ réàd ït !!!]",
+      "point3": "[Çrédéñtïàls àñd séssïöñ tökéñs éxpöséd !!!]",
+      "point4": "[Ñö prötéçtïöñ àgàïñst éàvésdröppïñg !!!]"
+    },
+    "https": {
+      "title": "[HTTPS (Éñçrÿptéd) !!!]",
+      "point1": "[Dàtà éñçrÿptéd wïth TLS !!!]",
+      "point2": "[Çöñtéñt üñréàdàblé tö öbsérvérs !!!]",
+      "point3": "[Métàdàtà (dömàïñ) stïll vïsïblé !!!]",
+      "point4": "[Prötéçts àgàïñst éàvésdröppïñg !!!]"
+    },
+    "vpn": {
+      "title": "[VPÑ (Tüññél) !!!]",
+      "point1": "[Éñçrÿpts àll tràffïç tö VPÑ sérvér !!!]",
+      "point2": "[Hïdés déstïñàtïöñ fröm löçàl ñétwörk !!!]",
+      "point3": "[VPÑ prövïdér çàñ séé ÿöür tràffïç !!!]",
+      "point4": "[Shïfts trüst, döésñ't élïmïñàté ït !!!]"
     }
   },
-  
-  "progressTracker": {
-    "title": "[Léàrñïñg Prögrés !!!]",
-    "modesExplored": "[Mödés éxplöréd !!!]",
-    "congratulations": "[Çöñgràtülàtïöñs! Yöü'vé éxplöréd àll !!!]",
-    "httpWithoutVpn": "[HTTP wïthöüt VPN !!!]",
-    "httpWithVpn": "[HTTP wïth VPN !!!]",
-    "httpsWithoutVpn": "[HTTPS wïthöüt VPN !!!]",
-    "httpsWithVpn": "[HTTPS wïth VPN !!!]",
-    "mostVulnerable": "[Möst vülñéràblé çöñfïgüràtïöñ !!!]",
-    "contentVisibleToVpn": "[Çöñtéñt vïsïblé tö VPN !!!]",
-    "contentEncryptedMetadataVisible": "[Çöñtéñt éñçryptéd, métàdàtà vïsïblé !!!]",
-    "maximumProtection": "[Màxïmüm prötéçtïöñ !!!]",
-    "resetProgress": "[Rését Prögrés !!!]"
+  "progress": {
+    "title": "[Léàrñïñg Prögréss !!!]",
+    "explored": "[Éxplöréd !!!]",
+    "httpOnly": "[HTTP Öñlÿ !!!]",
+    "httpsOnly": "[HTTPS Öñlÿ !!!]",
+    "httpVpn": "[HTTP + VPÑ !!!]",
+    "httpsVpn": "[HTTPS + VPÑ !!!]"
   },
-  
   "quiz": {
-    "title": "[Séçürïty Kñöwlédgé Qüïz !!!]",
-    "description": "[Tést ýöür üñdérstàñdïñg öf ñétwörk séçürïty çöñçépts !!!]",
+    "title": "[Séçürïtÿ Kñöwlédgé Qüïz !!!]",
+    "description": "[Tést ÿöür üñdérstàñdïñg öf ñétwörk séçürïtÿ çöñçépts !!!]",
     "startQuiz": "[Stàrt Qüïz !!!]",
     "question": "[Qüéstïöñ !!!]",
     "of": "[öf !!!]",
@@ -426,15 +390,482 @@
     "explanation": "[Éxplàñàtïöñ !!!]",
     "showInTimeline": "[Shöw mé ïñ thé tïmélïñé !!!]",
     "nextQuestion": "[Ñéxt Qüéstïöñ !!!]",
-    "seeResults": "[Sée Résülts !!!]",
-    "tryAgain": "[Try Àgàïñ !!!]",
+    "seeResults": "[Séé Résülts !!!]",
+    "tryAgain": "[Trÿ Àgàïñ !!!]",
     "quizComplete": "[Qüïz Çömplété! !!!]",
-    "yourScore": "[Yöür Sçöré !!!]",
+    "yourScore": "[Ÿöür Sçöré !!!]",
     "categories": {
       "http": "[HTTP !!!]",
       "https": "[HTTPS !!!]",
-      "vpn": "[VPN !!!]",
+      "vpn": "[VPÑ !!!]",
       "general": "[Géñéràl !!!]"
+    },
+    "questions": {
+      "q1": {
+        "question": "[Whéñ ÿöü çöññéçt tö à wébsïté üsïñg HTTP, whö çàñ séé ÿöür pàsswörd? !!!]",
+        "options": [
+          "[Öñlÿ thé wébsïté ÿöü'ré çöññéçtïñg tö !!!]",
+          "[Àñÿöñé öñ thé sàmé ñétwörk !!!]",
+          "[Öñlÿ ÿöür ïñtérñét sérvïçé prövïdér !!!]",
+          "[Ñöbödÿ çàñ séé ït !!!]"
+        ],
+        "explanation": "[Wïth HTTP, dàtà ïs tràñsmïttéd ïñ plàïñ téxt. Àñÿöñé öñ thé sàmé ñétwörk (lïké à çöfféé shöp Wï-Fï) çàñ ïñtérçépt àñd réàd ÿöür pàsswörd üsïñg sïmplé tööls. !!!]"
+      },
+      "q2": {
+        "question": "[Whàt döés thé 'S' ïñ HTTPS stàñd för? !!!]",
+        "options": ["[Spééd !!!]", "[Séçüré !!!]", "[Sérvér !!!]", "[Stàñdàrd !!!]"],
+        "explanation": "[HTTPS stàñds för HÿpérTéxt Tràñsfér Prötöçöl Séçüré. Thé 'S' ïñdïçàtés thàt thé çöññéçtïöñ üsés éñçrÿptïöñ (TLS) tö prötéçt dàtà ïñ tràñsït. !!!]"
+      },
+      "q3": {
+        "question": "[Whïçh öf thé föllöwïñg çàñ à VPÑ hïdé fröm ÿöür löçàl ñétwörk? !!!]",
+        "options": [
+          "[Öñlÿ ÿöür pàsswörds !!!]",
+          "[Öñlÿ thé wébsïtés ÿöü vïsït !!!]",
+          "[Böth ÿöür pàsswörds àñd thé wébsïtés ÿöü vïsït !!!]",
+          "[Ñéïthér - VPÑs döñ't hïdé àñÿthïñg !!!]"
+        ],
+        "explanation": "[À VPÑ çréàtés àñ éñçrÿptéd tüññél för ÀLL ÿöür tràffïç. Thïs hïdés böth thé çöñtéñt (pàsswörds, dàtà) àñd métàdàtà (whïçh wébsïtés ÿöü vïsït) fröm löçàl öbsérvérs. !!!]"
+      },
+      "q4": {
+        "question": "[Ÿöü'ré àt à çöfféé shöp àñd ñééd tö çhéçk ÿöür bàñk àççöüñt. Whàt shöüld ÿöü dö? !!!]",
+        "options": [
+          "[Çöññéçt tö thé fréé Wï-Fï àñd lög ïñ ñörmàllÿ !!!]",
+          "[Màké süré thé bàñk wébsïté üsés HTTPS, ör üsé çéllülàr dàtà !!!]",
+          "[Àsk thé bàrïstà för thé Wï-Fï pàsswörd fïrst !!!]",
+          "[Üsé àñ ïñçögñïtö/prïvàté bröwsér wïñdöw !!!]"
+        ],
+        "explanation": "[För séñsïtïvé àçtïvïtïés lïké bàñkïñg, éñsüré thé sïté üsés HTTPS (löök för thé löçk ïçöñ). Béttér ÿét, üsé ÿöür phöñé's çéllülàr dàtà ïñstéàd öf püblïç Wï-Fï. Ïñçögñïtö mödé döésñ't prötéçt ñétwörk tràffïç. !!!]"
+      },
+      "q5": {
+        "question": "[Whéñ üsïñg HTTPS, whàt çàñ ÿöür ÏSP stïll séé? !!!]",
+        "options": [
+          "[Ÿöür pàsswörds àñd förm dàtà !!!]",
+          "[Thé çöñtéñt öf émàïls ÿöü séñd !!!]",
+          "[Whïçh wébsïtés ÿöü vïsït (büt ñöt thé spéçïfïç pàgés ör çöñtéñt) !!!]",
+          "[Évérÿthïñg ÿöü dö öñlïñé !!!]"
+        ],
+        "explanation": "[HTTPS éñçrÿpts thé çöñtéñt öf ÿöür çömmüñïçàtïöñ, büt ÿöür ÏSP çàñ stïll séé whïçh dömàïñs (wébsïtés) ÿöü çöññéçt tö. Thïs ïs çàlléd 'métàdàtà'. Tö hïdé thïs, ÿöü wöüld ñééd à VPÑ. !!!]"
+      },
+      "q6": {
+        "question": "[Whàt's thé màïñ rïsk öf à 'fàké hötspöt' àttàçk? !!!]",
+        "options": [
+          "[Slöw ïñtérñét spééds !!!]",
+          "[Àñ àttàçkér çàñ séé àll ÿöür üñéñçrÿptéd tràffïç !!!]",
+          "[Ÿöür phöñé bàttérÿ dràïñs fàstér !!!]",
+          "[Ÿöü gét çhàrgéd för Wï-Fï üsàgé !!!]"
+        ],
+        "explanation": "[Ïñ à fàké hötspöt (évïl twïñ) àttàçk, àñ àttàçkér çréàtés à ñétwörk thàt mïmïçs à légïtïmàté öñé. Àll ÿöür tràffïç pàssés thröügh théïr éqüïpméñt, àllöwïñg thém tö ïñtérçépt üñéñçrÿptéd dàtà. !!!]"
+      },
+      "q7": {
+        "question": "[Whïçh stàtéméñt àböüt VPÑs ïs TRÜÉ? !!!]",
+        "options": [
+          "[VPÑs màké ÿöü çömplétélÿ àñöñÿmöüs öñlïñé !!!]",
+          "[VPÑs slöw döwñ ÿöür ïñtérñét büt hïdé ÿöür tràffïç fröm löçàl öbsérvérs !!!]",
+          "[VPÑs öñlÿ wörk wïth HTTPS wébsïtés !!!]",
+          "[VPÑs prévéñt àll tÿpés öf çÿbér àttàçks !!!]"
+        ],
+        "explanation": "[VPÑs àdd à làÿér öf éñçrÿptïöñ thàt màÿ slïghtlÿ slöw ÿöür çöññéçtïöñ, büt théÿ éfféçtïvélÿ hïdé ÿöür tràffïç fröm ÿöür löçàl ñétwörk àñd ÏSP. Höwévér, thé VPÑ prövïdér çàñ stïll séé ÿöür tràffïç, àñd VPÑs döñ't prévéñt phïshïñg ör màlwàré. !!!]"
+      },
+      "q8": {
+        "question": "[Whàt ïñförmàtïöñ ïs àlwàÿs vïsïblé évéñ whéñ üsïñg HTTPS? !!!]",
+        "options": [
+          "[Ÿöür üsérñàmé àñd pàsswörd !!!]",
+          "[Thé dömàïñ ñàmé ÿöü'ré çöññéçtïñg tö !!!]",
+          "[Ÿöür çrédït çàrd ñümbér !!!]",
+          "[Thé çöñtéñt öf ÿöür méssàgés !!!]"
+        ],
+        "explanation": "[Évéñ wïth HTTPS, thé dömàïñ ñàmé (lïké 'éxàmplé.çöm') ïs vïsïblé béçàüsé DÑS qüérïés àré tÿpïçàllÿ üñéñçrÿptéd, àñd thé TLS hàñdshàké révéàls thé sérvér ñàmé. Thïs ïs whÿ VPÑs àré üséfül för hïdïñg whïçh sïtés ÿöü vïsït. !!!]"
+      }
+    }
+  },
+  "vpnTunnelOverlay": {
+    "active": "[VPÑ Tüññél Àçtïvé !!!]"
+  },
+  "comparison": {
+    "title": "[Sïdé-bÿ-Sïdé Çömpàrïsöñ !!!]",
+    "description": "[Séé thé sàmé réqüést ïñ HTTP àñd HTTPS sïmültàñéöüslÿ !!!]",
+    "runComparison": "[Rüñ Çömpàrïsöñ !!!]",
+    "reset": "[Rését !!!]",
+    "clickToRun": "[Çlïçk \"Rüñ Çömpàrïsöñ\" tö séé thé dïfféréñçé !!!]",
+    "httpLabel": "[HTTP !!!]",
+    "httpsLabel": "[HTTPS !!!]",
+    "withVpnLabel": "[+ VPÑ !!!]",
+    "hostLabel": "[Höst: !!!]",
+    "usernameLabel": "[üsérñàmé: !!!]",
+    "passwordLabel": "[pàsswörd: !!!]",
+    "plainTextResponseExample": "[stàtüs: süççéss, tökéñ: àbç123... !!!]",
+    "connection": "[Çöññéçtïöñ !!!]",
+    "protocol": "[Prötöçöl !!!]",
+    "tlsEncrypted": "[TLS 1.3 (éñçrÿptéd) !!!]",
+    "tcpPlain": "[TÇP (plàïñ) !!!]",
+    "requestBody": "[Réqüést Bödÿ !!!]",
+    "encryptedPayload": "[Éñçrÿptéd pàÿlöàd !!!]",
+    "plainTextVisible": "[Plàïñ téxt (vïsïblé!) !!!]",
+    "contentHidden": "[Çöñtéñt hïddéñ fröm öbsérvérs !!!]",
+    "anyoneCanRead": "[Àñÿöñé çàñ réàd thïs! !!!]",
+    "serverResponse": "[Sérvér Réspöñsé !!!]",
+    "encrypted": "[Éñçrÿptéd !!!]",
+    "secureConnection": "[Çöññéçtïöñ séçüré - çöñtéñt éñçrÿptéd !!!]",
+    "dataExposed": "[Dàtà éxpöséd - çrédéñtïàls vïsïblé! !!!]",
+    "keyTakeaways": "[Kéÿ Tàkéàwàÿs !!!]",
+    "httpExplained": "[Àll dàtà tràvéls ïñ plàïñ téxt. Àñÿöñé öñ ÿöür ñétwörk çàñ séé ÿöür üsérñàmé, pàsswörd, àñd séssïöñ tökéñs. !!!]",
+    "httpsExplained": "[Dàtà ïs éñçrÿptéd béföré tràñsmïssïöñ. Öbsérvérs séé sçràmbléd dàtà, ñöt ÿöür àçtüàl çrédéñtïàls. !!!]"
+  },
+  "progressTracker": {
+    "title": "[Léàrñïñg Prögréss !!!]",
+    "modesExplored": "[Mödés éxplöréd !!!]",
+    "congratulations": "[Çöñgràtülàtïöñs! Ÿöü'vé éxplöréd àll séçürïtÿ çöñfïgüràtïöñs. !!!]",
+    "httpWithoutVpn": "[HTTP wïthöüt VPÑ !!!]",
+    "httpWithVpn": "[HTTP wïth VPÑ !!!]",
+    "httpsWithoutVpn": "[HTTPS wïthöüt VPÑ !!!]",
+    "httpsWithVpn": "[HTTPS wïth VPÑ !!!]",
+    "mostVulnerable": "[Möst vülñéràblé çöñfïgüràtïöñ !!!]",
+    "contentVisibleToVpn": "[Çöñtéñt vïsïblé tö VPÑ, métàdàtà hïddéñ löçàllÿ !!!]",
+    "contentEncryptedMetadataVisible": "[Çöñtéñt éñçrÿptéd, métàdàtà vïsïblé löçàllÿ !!!]",
+    "maximumProtection": "[Màxïmüm prötéçtïöñ !!!]",
+    "resetProgress": "[Rését Prögréss !!!]"
+  },
+  "scenarioSelector": {
+    "title": "[Ñétwörk Sçéñàrïös !!!]",
+    "description": "[Éxplöré dïfféréñt ñétwörk éñvïröñméñts àñd théïr séçürïtÿ ïmplïçàtïöñs !!!]",
+    "risk": "[rïsk !!!]",
+    "riskLevels": {
+      "low": "[löw !!!]",
+      "medium": "[médïüm !!!]",
+      "high": "[hïgh !!!]"
+    },
+    "practice": {
+      "title": "[Mïçrö-pràçtïçé !!!]",
+      "description": "[Màké qüïçk çhöïçés bàséd öñ thé sçéñàrïö àñd àttàçkér mödél. !!!]",
+      "stepLabel": "[Stép {current} öf {total} !!!]",
+      "attackerModelLabel": "[Àttàçkér mödél !!!]",
+      "nextStep": "[Ñéxt stép !!!]",
+      "restart": "[Réstàrt pràçtïçé !!!]",
+      "feedback": {
+        "correct": "[Çörréçt. {rationale} !!!]",
+        "incorrect": "[Ñöt qüïté. Bést àñswér: {correctOption}. {rationale} !!!]"
+      },
+      "home": {
+        "step1": {
+          "prompt": "[Ÿöü'ré öñ ÿöür hömé Wï-Fï. Whàt shöüld ÿöü prïörïtïzé fïrst? !!!]",
+          "options": [
+            "[Üsé HTTPS sïtés àñd kéép thé röütér üpdàtéd. !!!]",
+            "[Àssümé thé röütér ïs höstïlé àñd üsé à VPÑ för évérÿthïñg. !!!]",
+            "[Stöp àñd çléàñ thé dévïçé béföré löggïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[Wïth à {model} àttàçkér, HTTPS prötéçts çöñtéñt whïlé röütér üpdàtés rédüçé éàsÿ çömprömïsés. !!!]",
+            "rogueHotspot": "[Évéñ wïth à {model} àttàçkér, HTTPS àñd röütér hÿgïéñé stïll rédüçé rïsk àt hömé. !!!]",
+            "compromisedEndpoint": "[Wïth à {model} àttàçkér, thé dévïçé ïtsélf ïs thé rïsk. Çléàñ ït béföré löggïñg ïñ. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[À fàmïlÿ mémbér àsks för thé Wï-Fï pàsswörd. Whàt ïs thé sàfést réspöñsé? !!!]",
+          "options": [
+            "[Shàré ït, büt kéép à ströñg WPÀ2/WPÀ3 pàsswörd àñd üpdàté ït ïf ñéédéd. !!!]",
+            "[Pöst ït püblïçlÿ för çöñvéñïéñçé. !!!]",
+            "[Ïgñöré dévïçé séçürïtÿ béçàüsé HTTPS ïs éñöügh. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À ströñg Wï-Fï pàsswörd lïmïts whö çàñ öbsérvé tràffïç öñ thé löçàl ñétwörk. !!!]",
+            "rogueHotspot": "[Ströñg Wï-Fï séçürïtÿ rédüçés thé çhàñçé öf üñàüthörïzéd àççéss ör spööféd àççéss pöïñts. !!!]",
+            "compromisedEndpoint": "[Évéñ wïth dévïçé rïsks, çöñtröllïñg whö jöïñs thé ñétwörk stïll màttérs. !!!]"
+          }
+        }
+      },
+      "coffeeShop": {
+        "step1": {
+          "prompt": "[Ÿöü'ré àt à çöfféé shöp. Whàt ïs thé sàfést fïrst stép? !!!]",
+          "options": [
+            "[Üsé HTTPS öñlÿ àñd àvöïd séñsïtïvé lögïñs. !!!]",
+            "[Vérïfÿ thé ñétwörk ñàmé wïth stàff àñd çöñsïdér à VPÑ. !!!]",
+            "[Àssümé thé dévïçé ïs çömprömïséd àñd stöp béföré löggïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[Wïth à {model} àttàçkér, HTTPS àñd àvöïdïñg séñsïtïvé lögïñs rédüçé éxpösüré. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, vérïfÿïñg thé hötspöt àñd üsïñg à VPÑ hélps prévéñt ïñtérçéptïöñ. !!!]",
+            "compromisedEndpoint": "[Wïth à {model} àttàçkér, ñétwörk çhöïçés dö ñöt prötéçt ÿöü; fïx thé dévïçé fïrst. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[Ÿöü ñééd tö çhéçk émàïl. Whàt ïs thé sàfést çhöïçé? !!!]",
+          "options": [
+            "[Pröçééd öñlÿ ïf thé sïté ïs HTTPS àñd théré àré ñö çértïfïçàté wàrñïñgs. !!!]",
+            "[Üsé HTTP béçàüsé ït löàds fàstér. !!!]",
+            "[Wàït üñtïl ÿöü çàñ üsé à trüstéd dévïçé ör ñétwörk. !!!]"
+          ],
+          "rationale": {
+            "passive": "[HTTPS prévéñts à {model} àttàçkér fröm réàdïñg çöñtéñt. !!!]",
+            "rogueHotspot": "[À {model} àttàçkér rélïés öñ döwñgràdés ör fàké çértïfïçàtés, sö öñlÿ pröçééd ïf HTTPS ïs ïñtàçt. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömprömïséd, pöstpöñé üñtïl ÿöü çàñ üsé à trüstéd dévïçé. !!!]"
+          }
+        }
+      },
+      "airport": {
+        "step1": {
+          "prompt": "[Àt àïrpört Wï-Fï, whàt ïs thé sàfést fïrst stép? !!!]",
+          "options": [
+            "[Üsé à VPÑ plüs HTTPS för séñsïtïvé tàsks. !!!]",
+            "[Skïp VPÑ béçàüsé HTTPS ïs àlwàÿs éñöügh. !!!]",
+            "[Stöp àñd çléàñ thé dévïçé béföré löggïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À {model} àttàçkér stïll séés métàdàtà; à VPÑ rédüçés löçàl vïsïbïlïtÿ. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, VPÑ plüs HTTPS àdds prötéçtïöñ àgàïñst ïñtérçéptïöñ. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömprömïséd, ñétwörk prötéçtïöñs çàññöt hélp. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[À çàptïvé pörtàl àsks för çrédéñtïàls. Whàt shöüld ÿöü dö? !!!]",
+          "options": [
+            "[Éñtér ÿöür émàïl pàsswörd tö üñlöçk Wï-Fï. !!!]",
+            "[Üsé thé pörtàl öñlÿ för àççéss àñd àvöïd réàl àççöüñt pàsswörds. !!!]",
+            "[Àssümé thé dévïçé ïs çömprömïséd àñd dö ñöt pröçééd. !!!]"
+          ],
+          "rationale": {
+            "passive": "[Évéñ wïth à {model} àttàçkér, ñévér éñtér réàl çrédéñtïàls ïñtö à pörtàl. !!!]",
+            "rogueHotspot": "[À {model} àttàçkér çàñ üsé fàké pörtàls; àvöïd réàl çrédéñtïàls àñd vérïfÿ thé dömàïñ. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömprömïséd, àvöïd löggïñg ïñ àt àll. !!!]"
+          }
+        }
+      },
+      "hotel": {
+        "step1": {
+          "prompt": "[Àt thé hötél ñétwörk, whàt ïs thé sàfést fïrst stép? !!!]",
+          "options": [
+            "[Çöñfïrm thé ñétwörk wïth réçéptïöñ àñd üsé HTTPS. !!!]",
+            "[Àssümé ït ïs sàfé lïké hömé. !!!]",
+            "[Stöp àñd çléàñ thé dévïçé béföré löggïñg ïñ. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À {model} àttàçkér çàñ stïll öbsérvé métàdàtà; vérïfÿïñg thé ñétwörk àñd HTTPS àré sàfér. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, vérïfÿïñg thé ñétwörk rédüçés thé çhàñçé öf à fàké hötspöt. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömprömïséd, ñétwörk çhöïçés àré séçöñdàrÿ tö çléàñïñg ït. !!!]"
+          }
+        },
+        "step2": {
+          "prompt": "[Ÿöü ñééd tö àççéss bàñkïñg. Whàt ïs thé sàfést çhöïçé? !!!]",
+          "options": [
+            "[Üsé à VPÑ àñd vérïfÿ HTTPS béföré löggïñg ïñ. !!!]",
+            "[Üsé HTTP för spééd. !!!]",
+            "[Wàït üñtïl ÿöü çàñ üsé à trüstéd dévïçé ör ñétwörk. !!!]"
+          ],
+          "rationale": {
+            "passive": "[À {model} àttàçkér çàññöt réàd HTTPS çöñtéñt, àñd à VPÑ rédüçés löçàl éxpösüré. !!!]",
+            "rogueHotspot": "[Wïth à {model} àttàçkér, VPÑ plüs HTTPS rédüçés ïñtérçéptïöñ rïsk. !!!]",
+            "compromisedEndpoint": "[Ïf thé dévïçé ïs çömprömïséd, dö ñöt lög ïñ üñtïl ït ïs çléàñéd. !!!]"
+          }
+        }
+      }
+    },
+    "practiceCta": {
+      "title": "[Trÿ 2 qüïçk pràçtïçé stéps !!!]",
+      "body": "[À shört éxérçïsé hélps löçk ïñ thé sçéñàrïö. !!!]",
+      "button": "[Stàrt pràçtïçé !!!]"
+    },
+    "attackerModelTitle": "[Àttàçkér mödél léñs !!!]",
+    "attackerModelNotes": {
+      "passive": "[Àssümé söméöñé ïs qüïétlÿ öbsérvïñg tràffïç. HTTPS hïdés çöñtéñt büt ñöt thé déstïñàtïöñ. !!!]",
+      "rogueHotspot": "[Àssümé à fàké hötspöt çöüld trÿ tö trïçk ÿöü évéñ ïf HTTPS ïs üséd. !!!]",
+      "compromisedEndpoint": "[Àssümé thé dévïçé ïs ïñféçtéd. Ñétwörk éñçrÿptïöñ wöñ’t prötéçt whàt màlwàré çàñ réàd. !!!]"
+    },
+    "whoCanSee": "[Whö Çàñ Séé Ÿöür Tràffïç !!!]",
+    "recommendations": "[Réçömméñdàtïöñs !!!]",
+    "httpsUsuallyEnough": "[HTTPS ïs üsüàllÿ süffïçïéñt för thïs éñvïröñméñt !!!]",
+    "httpsRecommendedVpnSensitive": "[HTTPS réçömméñdéd, VPÑ för séñsïtïvé àçtïvïtïés !!!]",
+    "vpnStronglyRecommended": "[VPÑ ströñglÿ réçömméñdéd ïñ àddïtïöñ tö HTTPS !!!]",
+    "home": {
+      "name": "[Hömé Ñétwörk !!!]",
+      "description": "[Ÿöür pérsöñàl Wï-Fï àt hömé !!!]",
+      "details": "[Hömé ñétwörks àré géñéràllÿ sàfé béçàüsé ÿöü çöñtröl thé röütér àñd whö çöññéçts. Ÿöür màïñ çöñçérñ ïs ÿöür ÏSP's àbïlïtÿ tö séé ÿöür bröwsïñg métàdàtà àñd àñÿ fàmïlÿ mémbérs shàrïñg thé ñétwörk. !!!]",
+      "threat1": "[Ÿöür ÏSP çàñ séé whïçh wébsïtés ÿöü vïsït !!!]",
+      "threat2": "[Fàmïlÿ mémbérs öñ thé sàmé ñétwörk !!!]",
+      "threat3": "[Çömprömïséd smàrt hömé dévïçés (ràré) !!!]",
+      "rec1": "[Üsé HTTPS för séñsïtïvé sïtés (üsüàllÿ àütömàtïç) !!!]",
+      "rec2": "[Kéép röütér fïrmwàré üpdàtéd !!!]",
+      "rec3": "[Üsé à ströñg Wï-Fï pàsswörd !!!]"
+    },
+    "coffeeShop": {
+      "name": "[Çöfféé Shöp Wï-Fï !!!]",
+      "description": "[Püblïç Wï-Fï àt çàfés àñd réstàüràñts !!!]",
+      "details": "[Çöfféé shöp Wï-Fï ïs hïgh rïsk béçàüsé àñÿöñé çàñ jöïñ, àñd ÿöü çàñ't vérïfÿ whö çöñtröls thé ñétwörk. Àttàçkérs öftéñ çréàté fàké hötspöts wïth sïmïlàr ñàmés tö ïñtérçépt tràffïç. !!!]",
+      "threat1": "[Àñÿöñé élsé öñ thé sàmé ñétwörk !!!]",
+      "threat2": "[Fàké hötspöts ïmpérsöñàtïñg thé véñüé !!!]",
+      "threat3": "[Ñétwörk sñïfférs çàptürïñg üñéñçrÿptéd tràffïç !!!]",
+      "threat4": "[Màñ-ïñ-thé-mïddlé àttàçks !!!]",
+      "rec1": "[Àlwàÿs vérïfÿ thé ñétwörk ñàmé wïth stàff !!!]",
+      "rec2": "[Öñlÿ üsé HTTPS wébsïtés !!!]",
+      "rec3": "[Çöñsïdér üsïñg à VPÑ !!!]",
+      "rec4": "[Àvöïd löggïñg ïñtö bàñkïñg ör séñsïtïvé àççöüñts !!!]"
+    },
+    "airport": {
+      "name": "[Àïrpört Wï-Fï !!!]",
+      "description": "[Püblïç Wï-Fï ïñ àïrpörts àñd löüñgés !!!]",
+      "details": "[Àïrpörts àré hïgh-vàlüé tàrgéts för àttàçkérs düé tö thé völümé öf büsïñéss tràvélérs. Fàké hötspöts àré éxtrémélÿ çömmöñ, àñd thé hïgh tràffïç prövïdés çövér för màlïçïöüs àçtïvïtÿ. !!!]",
+      "threat1": "[Hïgh völümé öf pötéñtïàl àttàçkérs !!!]",
+      "threat2": "[Fàké hötspöts (vérÿ çömmöñ) !!!]",
+      "threat3": "[Çörpöràté éspïöñàgé !!!]",
+      "threat4": "[Àütömàtéd sçàññïñg tööls !!!]",
+      "rec1": "[Üsé çéllülàr dàtà ïf pössïblé !!!]",
+      "rec2": "[VPÑ ïs ströñglÿ réçömméñdéd !!!]",
+      "rec3": "[Àvöïd fïlé shàrïñg ör rémöté àççéss !!!]",
+      "rec4": "[Lög öüt öf àççöüñts whéñ döñé !!!]"
+    },
+    "hotel": {
+      "name": "[Hötél Wï-Fï !!!]",
+      "description": "[Hötél àñd àççömmödàtïöñ ñétwörks !!!]",
+      "details": "[Hötél ñétwörks àré mödéràtélÿ rïskÿ. Whïlé théÿ tÿpïçàllÿ hàvé sömé séçürïtÿ méàsürés, ÿöü'ré shàrïñg thé ñétwörk wïth stràñgérs. Büsïñéss tràvélérs àré öftéñ tàrgétéd. !!!]",
+      "threat1": "[Öthér hötél güésts !!!]",
+      "threat2": "[Çömprömïséd hötél ñétwörk éqüïpméñt !!!]",
+      "threat3": "[Hötél ÏT stàff (ïñsïdér thréàt) !!!]",
+      "threat4": "[Fàké ñétwörks ïñ büsÿ àréàs !!!]",
+      "rec1": "[Üsé VPÑ för büsïñéss àçtïvïtïés !!!]",
+      "rec2": "[Vérïfÿ thé öffïçïàl ñétwörk ñàmé !!!]",
+      "rec3": "[Àvöïd séñsïtïvé tràñsàçtïöñs !!!]",
+      "rec4": "[Üsé ÿöür phöñé's hötspöt för ïmpörtàñt wörk !!!]"
+    }
+  },
+  "cheatSheet": {
+    "modalTitle": "[Ñétwörk Séçürïtÿ Çhéàt Shéét !!!]",
+    "modalDescription": "[Qüïçk référéñçé för höw HTTP, HTTPS, àñd VPÑ çhàñgé whàt öbsérvérs çàñ séé. !!!]",
+    "printButton": "[Prïñt / Sàvé às PDF !!!]",
+    "printTitle": "[HTTP vs HTTPS vs VPÑ — Qüïçk Référéñçé !!!]",
+    "printFooter": "[Thé Glàss Wàll - Ñétwörk Séçürïtÿ Tràïñïñg !!!]",
+    "httpTitle": "[HTTP (Üñéñçrÿptéd) !!!]",
+    "httpBadge": "[Ñöt Sàfé !!!]",
+    "httpsBadge": "[Sàfé !!!]",
+    "vpnBadge": "[Éxtrà Prötéçtïöñ !!!]",
+    "httpPoints": [
+      "[HTTP séñds réqüésts àñd réspöñsés ïñ plàïñ téxt. !!!]",
+      "[Löçàl ñétwörk öbsérvérs çàñ réàd çrédéñtïàls àñd séssïöñ dàtà. !!!]",
+      "[Ñö çöñfïdéñtïàlïtÿ för çöñtéñt; öñlÿ ñétwörk àççéss ïs réqüïréd. !!!]",
+      "[Ïñdïçàtör: http:// ïñ thé àddréss bàr àñd ñö löçk ïçöñ. !!!]"
+    ],
+    "httpsTitle": "[HTTPS (Éñçrÿptéd) !!!]",
+    "httpsPoints": [
+      "[TLS éñçrÿpts réqüést àñd réspöñsé bödïés ïñ tràñsït. !!!]",
+      "[Öbsérvérs séé çïphértéxt, ñöt thé sübmïttéd çöñtéñt. !!!]",
+      "[Thé dömàïñ ÿöü çöññéçt tö ïs stïll vïsïblé. !!!]",
+      "[Ïñdïçàtör: https:// àñd à löçk ïçöñ. !!!]"
+    ],
+    "vpnTitle": "[VPÑ (Vïrtüàl Prïvàté Ñétwörk) !!!]",
+    "vpnPoints": [
+      "[Éñçrÿpts tràffïç fröm ÿöür dévïçé tö thé VPÑ sérvér. !!!]",
+      "[Hïdés déstïñàtïöñ métàdàtà fröm thé löçàl ñétwörk. !!!]",
+      "[Löçàl öbsérvérs séé öñlÿ thé tüññél éñdpöïñt. !!!]",
+      "[Üséfül öñ üñtrüstéd ñétwörks (çöfféé shöps, àïrpörts, hötéls). !!!]",
+      "[Thé VPÑ prövïdér çàñ stïll séé ÿöür tràffïç; çhöösé à prövïdér ÿöü trüst. !!!]"
+    ],
+    "attackerModelsTitle": "[Àttàçkér Mödéls (Réàlïtÿ Çhéçk) !!!]",
+    "attackerModels": [
+      "[Pàssïvé éàvésdröppér: séés déstïñàtïöñs àñd tïmïñg; HTTPS prötéçts çöñtéñt. !!!]",
+      "[Rögüé hötspöt: çàñ àttémpt phïshïñg ör fàké pörtàls évéñ whéñ HTTPS ïs üséd. !!!]",
+      "[Çömprömïséd éñdpöïñt: màlwàré çàñ réàd dàtà béföré éñçrÿptïöñ. !!!]"
+    ],
+    "comparisonTableTitle": "[Qüïçk Çömpàrïsöñ !!!]",
+    "tableHeaders": ["[Whàt öbsérvérs séé !!!]", "[HTTP !!!]", "[HTTPS !!!]", "[HTTPS + VPÑ !!!]"],
+    "tableRows": {
+      "passwords": ["[Ÿöür pàsswörds !!!]", "[Vïsïblé !!!]", "[Éñçrÿptéd !!!]", "[Éñçrÿptéd !!!]"],
+      "formData": [
+        "[Förm dàtà ÿöü sübmït !!!]",
+        "[Vïsïblé !!!]",
+        "[Éñçrÿptéd !!!]",
+        "[Éñçrÿptéd !!!]"
+      ],
+      "websites": ["[Wébsïtés ÿöü vïsït !!!]", "[Vïsïblé !!!]", "[Vïsïblé !!!]", "[Hïddéñ !!!]"],
+      "ipAddress": ["[Ÿöür ÏP àddréss !!!]", "[Vïsïblé !!!]", "[Vïsïblé !!!]", "[Hïddéñ !!!]"]
+    },
+    "safetyTipsTitle": "[Püblïç Wï-Fï Sàfétÿ Tïps !!!]",
+    "safetyTips": [
+      "[Àlwàÿs vérïfÿ thé ñétwörk ñàmé wïth stàff béföré çöññéçtïñg !!!]",
+      "[Löök för HTTPS (löçk ïçöñ) béföré éñtérïñg àñÿ séñsïtïvé ïñförmàtïöñ !!!]",
+      "[Çöñsïdér üsïñg à VPÑ whéñ öñ üñtrüstéd ñétwörks !!!]",
+      "[Àvöïd löggïñg ïñtö bàñkïñg ör séñsïtïvé àççöüñts öñ püblïç Wï-Fï !!!]",
+      "[Türñ öff àütö-çöññéçt tö Wï-Fï ñétwörks !!!]"
+    ]
+  },
+  "guidedLearning": {
+    "stepIndicator": "[Stép {current} öf {total} !!!]",
+    "next": "[Ñéxt !!!]",
+    "back": "[Bàçk !!!]",
+    "skip": "[Skïp !!!]",
+    "startExploring": "[Stàrt Éxplörïñg !!!]",
+    "restartGuide": "[Réstàrt Güïdé !!!]",
+    "introduction": {
+      "title": "[Wélçömé tö Thé Glàss Wàll !!!]",
+      "content": [
+        "[Thïs mödülé shöws höw HTTP, HTTPS, àñd VPÑ çhàñgé whàt ïs vïsïblé öñ à ñétwörk. !!!]",
+        "[Ÿöü wïll séñd thé sàmé lögïñ réqüést àñd öbsérvé ït fröm thé bröwsér àñd thé ñétwörk. !!!]",
+        "[Thé ñàmé \"Glàss Wàll\" réfléçts höw thïñ thé prïvàçÿ böüñdàrÿ ïs wïthöüt éñçrÿptïöñ. !!!]"
+      ]
+    },
+    "userView": {
+      "title": "[Whàt Ÿöü Séé !!!]",
+      "content": [
+        "[Thé Üsér Vïéw ïs à stàñdàrd lögïñ förm wïth à üsérñàmé àñd pàsswörd. !!!]",
+        "[Whéñ ÿöü sübmït ït, thé réqüést tràvéls àçröss löçàl ñétwörks béföré réàçhïñg thé sérvér. !!!]"
+      ]
+    },
+    "wireView": {
+      "title": "[Whàt thé Ñétwörk Séés !!!]",
+      "content": [
+        "[Wïré Vïéw shöws thé tràffïç às à ñétwörk öbsérvér wöüld çàptüré ït. !!!]",
+        "[Öñ üñtrüstéd Wï-Fï, thàt öbsérvér çöüld bé à ñéàrbÿ dévïçé ör thé hötspöt öpéràtör. !!!]",
+        "[Çhàñgé prötöçöl àñd àttàçkér mödél tö séé höw vïsïbïlïtÿ shïfts. !!!]"
+      ]
+    },
+    "protocolToggle": {
+      "title": "[Prötöçöl çhöïçé !!!]",
+      "content": [
+        "[HTTP séñds thé réqüést bödÿ ïñ plàïñ téxt. !!!]",
+        "[HTTPS éñçrÿpts thé réqüést bödÿ wïth TLS béföré ït léàvés ÿöür dévïçé. !!!]",
+        "[Swïtçh bétwééñ thém àñd çömpàré thé Wïré Vïéw. !!!]"
+      ]
+    },
+    "vpnToggle": {
+      "title": "[VPÑ çövéràgé !!!]",
+      "content": [
+        "[À VPÑ éñçrÿpts tràffïç fröm ÿöür dévïçé tö à VPÑ sérvér. !!!]",
+        "[Löçàl öbsérvérs séé thé tüññél, ñöt thé déstïñàtïöñ ör çöñtéñt. !!!]",
+        "[Thé VPÑ prövïdér béçömés thé ñéw öbsérvér, sö prövïdér trüst màttérs. !!!]"
+      ]
+    },
+    "actionArea": {
+      "title": "[Wàtçh Ÿöür Dàtà Tràvél !!!]",
+      "content": [
+        "[Séñd Réqüést rüñs thé tïmélïñé àñd shöws éàçh stàgé öf thé éxçhàñgé. !!!]",
+        "[Çömpàré thé Wïré Vïéw üñdér HTTP àñd HTTPS tö séé thé dïfféréñçé ïñ éxpösüré. !!!]"
+      ]
+    },
+    "scenarioSelector": {
+      "title": "[Çöñtéxt Màttérs !!!]",
+      "content": [
+        "[Ñétwörk çöñtéxt çhàñgés thé réàlïstïç rïsks. !!!]",
+        "[Üsé sçéñàrïös tö mödél çömmöñ éñvïröñméñts àñd séé höw réçömméñdàtïöñs shïft. !!!]",
+        "[Föçüs öñ thé àttàçkér mödél àñd whàt ïs öbsérvàblé. !!!]"
+      ]
+    },
+    "learningTools": {
+      "title": "[Déépéñ Ÿöür Üñdérstàñdïñg !!!]",
+      "content": [
+        "[Üsé thésé tööls tö réïñförçé thé çöré dïfféréñçés. !!!]",
+        "[Çhéàt Shéét: prïñtàblé référéñçé. Çömpàrïsöñ: sïdé-bÿ-sïdé vïéw. Qüïz: réçàll wïth féédbàçk. !!!]",
+        "[Rétürñ tö thésé àftér ÿöü rüñ thé tïmélïñé àt léàst öñçé. !!!]"
+      ]
+    },
+    "progressTracker": {
+      "title": "[Tràçk Ÿöür Éxplöràtïöñ !!!]",
+      "content": [
+        "[Thïs tràçks whïçh prötöçöl àñd VPÑ çömbïñàtïöñs ÿöü hàvé rüñ. !!!]",
+        "[Çömplété àll föür çömbïñàtïöñs tö séé höw éàçh làÿér çhàñgés vïsïbïlïtÿ. !!!]"
+      ]
+    },
+    "ready": {
+      "title": "[Ÿöü'ré Réàdÿ !!!]",
+      "content": [
+        "[Stàrt wïth HTTP àñd séñd à réqüést. Thé Wïré Vïéw wïll dïsplàÿ çrédéñtïàls ïñ çléàr téxt. !!!]",
+        "[Swïtçh tö HTTPS àñd rüñ àgàïñ; thé çrédéñtïàls dïsàppéàr whïlé métàdàtà rémàïñs. !!!]"
+      ]
     }
   }
 }
