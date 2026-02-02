@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
+import {
   HelpCircle,
   CheckCircle,
   XCircle,
@@ -24,6 +25,14 @@ import {
   Shield,
   Eye,
 } from "lucide-react";
+import type { TimelineStage, ProtocolMode, VpnMode } from "@/pages/glass-wall";
+
+type QuizTimelineLink = {
+  stage: TimelineStage;
+  sectionId: "metadata" | "handshake" | "request" | "response";
+  protocolMode?: ProtocolMode;
+  vpnMode?: VpnMode;
+};
 
 interface Question {
   id: string;
@@ -43,10 +52,59 @@ const QUESTIONS: Question[] = [
 ];
 
 interface QuizModeProps {
-  trigger?: React.ReactNode;
+  trigger?: ReactNode;
+  onShowInTimeline?: (link: QuizTimelineLink) => void;
 }
 
-export function QuizMode({ trigger }: QuizModeProps) {
+interface QuizContentProps {
+  onShowInTimeline?: (link: QuizTimelineLink) => void;
+  onRequestClose?: () => void;
+  showHeader?: boolean;
+}
+
+type QuestionId = (typeof QUESTIONS)[number]["id"];
+
+const QUIZ_TIMELINE_LINKS: Record<QuestionId, QuizTimelineLink> = {
+  q1: { stage: "request", sectionId: "request", protocolMode: "http" },
+  q2: { stage: "handshake", sectionId: "handshake", protocolMode: "https" },
+  q3: { stage: "connect", sectionId: "metadata", vpnMode: "on" },
+  q4: { stage: "request", sectionId: "request", protocolMode: "https" },
+  q5: { stage: "connect", sectionId: "metadata", protocolMode: "https" },
+  q6: { stage: "request", sectionId: "request", protocolMode: "http" },
+  q7: { stage: "connect", sectionId: "metadata", vpnMode: "on" },
+  q8: { stage: "connect", sectionId: "metadata", protocolMode: "https" },
+};
+
+export function QuizMode({ trigger, onShowInTimeline }: QuizModeProps) {
+  const { t } = useTranslation("glassWall");
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {trigger || (
+          <Button variant="outline" data-testid="button-quiz-mode">
+            <HelpCircle className="w-4 h-4 mr-2" />
+            {t("quizButton")}
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl">
+        <QuizContent
+          onShowInTimeline={onShowInTimeline}
+          onRequestClose={() => setOpen(false)}
+          showHeader
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function QuizContent({
+  onShowInTimeline,
+  onRequestClose,
+  showHeader = false,
+}: QuizContentProps) {
   const { t } = useTranslation("glassWall");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -58,8 +116,11 @@ export function QuizMode({ trigger }: QuizModeProps) {
   const isCorrect = selectedAnswer === currentQuestion.correctIndex;
 
   const questionText = t(`quiz.questions.${currentQuestion.id}.question`);
-  const optionsArray = t(`quiz.questions.${currentQuestion.id}.options`, { returnObjects: true }) as string[];
+  const optionsArray = t(`quiz.questions.${currentQuestion.id}.options`, {
+    returnObjects: true,
+  }) as string[];
   const explanationText = t(`quiz.questions.${currentQuestion.id}.explanation`);
+  const categoryLabel = t(`quiz.categories.${currentQuestion.category}`);
 
   const score = useMemo(() => {
     return answers.reduce<number>((acc, answer, index) => {
@@ -67,20 +128,23 @@ export function QuizMode({ trigger }: QuizModeProps) {
     }, 0);
   }, [answers]);
 
-  const handleSelectAnswer = useCallback((index: number) => {
-    if (selectedAnswer !== null) return;
-    setSelectedAnswer(index);
-    setShowExplanation(true);
-    setAnswers(prev => {
-      const next = [...prev];
-      next[currentQuestionIndex] = index;
-      return next;
-    });
-  }, [selectedAnswer, currentQuestionIndex]);
+  const handleSelectAnswer = useCallback(
+    (index: number) => {
+      if (selectedAnswer !== null) return;
+      setSelectedAnswer(index);
+      setShowExplanation(true);
+      setAnswers((prev) => {
+        const next = [...prev];
+        next[currentQuestionIndex] = index;
+        return next;
+      });
+    },
+    [selectedAnswer, currentQuestionIndex],
+  );
 
   const handleNext = useCallback(() => {
     if (currentQuestionIndex < QUESTIONS.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
@@ -96,78 +160,81 @@ export function QuizMode({ trigger }: QuizModeProps) {
     setIsComplete(false);
   }, []);
 
-  const progressPercent = ((currentQuestionIndex + (selectedAnswer !== null ? 1 : 0)) / QUESTIONS.length) * 100;
+  const progressPercent =
+    ((currentQuestionIndex + (selectedAnswer !== null ? 1 : 0)) / QUESTIONS.length) * 100;
 
   const getCategoryIcon = (category: Question["category"]) => {
     switch (category) {
-      case "http": return <Unlock className="w-3 h-3" />;
-      case "https": return <Lock className="w-3 h-3" />;
-      case "vpn": return <Shield className="w-3 h-3" />;
-      default: return <Eye className="w-3 h-3" />;
+      case "http":
+        return <Unlock className="w-3 h-3" />;
+      case "https":
+        return <Lock className="w-3 h-3" />;
+      case "vpn":
+        return <Shield className="w-3 h-3" />;
+      default:
+        return <Eye className="w-3 h-3" />;
     }
   };
 
   const getCategoryColor = (category: Question["category"]) => {
     switch (category) {
-      case "http": return "bg-red-500/10 text-red-600";
-      case "https": return "bg-green-500/10 text-green-600";
-      case "vpn": return "bg-purple-500/10 text-purple-600";
-      default: return "bg-blue-500/10 text-blue-600";
+      case "http":
+        return "bg-red-500/10 text-red-600";
+      case "https":
+        return "bg-green-500/10 text-green-600";
+      case "vpn":
+        return "bg-purple-500/10 text-purple-600";
+      default:
+        return "bg-blue-500/10 text-blue-600";
     }
   };
 
+  const timelineLink = QUIZ_TIMELINE_LINKS[currentQuestion.id as QuestionId];
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {trigger || (
-          <Button variant="outline" data-testid="button-quiz-mode">
-            <HelpCircle className="w-4 h-4 mr-2" />
-            {t("quizButton")}
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+    <>
+      {showHeader && (
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
             {t("quiz.title")}
           </DialogTitle>
-          <DialogDescription>
-            Test your understanding of network security concepts
-          </DialogDescription>
+          <DialogDescription>{t("quiz.description")}</DialogDescription>
         </DialogHeader>
+      )}
 
-        {!isComplete ? (
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between gap-2 text-sm">
-                <span className="text-muted-foreground">
-                  {t("quiz.question")} {currentQuestionIndex + 1} {t("quiz.of")} {QUESTIONS.length}
-                </span>
-                <span className="font-medium text-foreground">
-                  {t("quiz.score")}: {score}/{answers.filter(a => a !== null).length}
-                </span>
-              </div>
-              <Progress value={progressPercent} className="h-2" />
+      {!isComplete ? (
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <span className="text-muted-foreground">
+                {t("quiz.question")} {currentQuestionIndex + 1} {t("quiz.of")} {QUESTIONS.length}
+              </span>
+              <span className="font-medium text-foreground">
+                {t("quiz.score")}: {score}/{answers.filter((a) => a !== null).length}
+              </span>
+            </div>
+            <Progress value={progressPercent} className="h-2" />
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-start gap-2">
+              <Badge className={`text-xs ${getCategoryColor(currentQuestion.category)}`}>
+                {getCategoryIcon(currentQuestion.category)}
+                <span className="ml-1">{categoryLabel}</span>
+              </Badge>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-start gap-2">
-                <Badge className={`text-xs ${getCategoryColor(currentQuestion.category)}`}>
-                  {getCategoryIcon(currentQuestion.category)}
-                  <span className="ml-1 capitalize">{currentQuestion.category}</span>
-                </Badge>
-              </div>
+            <h3 className="text-lg font-medium text-foreground" data-testid="text-question">
+              {questionText}
+            </h3>
 
-              <h3 className="text-lg font-medium text-foreground" data-testid="text-question">
-                {questionText}
-              </h3>
-
-              <div className="space-y-2">
-                {Array.isArray(optionsArray) && optionsArray.map((option: string, index: number) => {
+            <div className="space-y-2">
+              {Array.isArray(optionsArray) &&
+                optionsArray.map((option: string, index: number) => {
                   let bgColor = "";
                   let borderColor = "";
-                  
+
                   if (selectedAnswer !== null) {
                     if (index === currentQuestion.correctIndex) {
                       bgColor = "bg-green-500/10";
@@ -194,7 +261,8 @@ export function QuizMode({ trigger }: QuizModeProps) {
                         {selectedAnswer !== null && index === selectedAnswer && !isCorrect && (
                           <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
                         )}
-                        {(selectedAnswer === null || (index !== currentQuestion.correctIndex && index !== selectedAnswer)) && (
+                        {(selectedAnswer === null ||
+                          (index !== currentQuestion.correctIndex && index !== selectedAnswer)) && (
                           <span className="w-4 h-4 flex-shrink-0" />
                         )}
                         <span>{option}</span>
@@ -202,102 +270,119 @@ export function QuizMode({ trigger }: QuizModeProps) {
                     </Button>
                   );
                 })}
-              </div>
             </div>
+          </div>
 
-            {showExplanation && (
-              <Card className={`p-4 animate-fade-in ${isCorrect ? "bg-green-500/5 border-green-500/20" : "bg-amber-500/5 border-amber-500/20"}`}>
-                <div className="flex items-start gap-2">
-                  {isCorrect ? (
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-                  )}
-                  <div>
-                    <p className={`font-medium mb-1 ${isCorrect ? "text-green-600" : "text-amber-600"}`}>
-                      {isCorrect ? t("quiz.correct") : t("quiz.incorrect")}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {explanationText}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            )}
-
-            {selectedAnswer !== null && (
-              <Button 
-                onClick={handleNext} 
-                className="w-full"
-                data-testid="button-next-question"
-              >
-                {currentQuestionIndex < QUESTIONS.length - 1 ? (
-                  <>
-                    {t("quiz.nextQuestion")}
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </>
+          {showExplanation && (
+            <Card
+              className={`p-4 animate-fade-in ${isCorrect ? "bg-green-500/5 border-green-500/20" : "bg-amber-500/5 border-amber-500/20"}`}
+            >
+              <div className="flex items-start gap-2">
+                {isCorrect ? (
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 ) : (
-                  <>
-                    {t("quiz.seeResults")}
-                    <Trophy className="w-4 h-4 ml-2" />
-                  </>
+                  <XCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                 )}
-              </Button>
-            )}
-          </div>
-        ) : (
-          <div className="space-y-6 text-center py-4">
-            <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${
-              score >= QUESTIONS.length * 0.8 ? "bg-green-500/10" :
-              score >= QUESTIONS.length * 0.5 ? "bg-amber-500/10" :
-              "bg-red-500/10"
-            }`}>
-              <Trophy className={`w-10 h-10 ${
-                score >= QUESTIONS.length * 0.8 ? "text-green-500" :
-                score >= QUESTIONS.length * 0.5 ? "text-amber-500" :
-                "text-red-500"
-              }`} />
-            </div>
-
-            <div>
-              <h3 className="text-2xl font-bold text-foreground mb-2" data-testid="text-final-score">
-                {score} {t("quiz.of")} {QUESTIONS.length}
-              </h3>
-              <p className="text-muted-foreground">
-                {t("quiz.quizComplete")}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-4 gap-2">
-              {QUESTIONS.map((q, index) => {
-                const answered = answers[index];
-                const correct = answered === q.correctIndex;
-                return (
-                  <div 
-                    key={q.id}
-                    className={`w-full aspect-square rounded-md flex items-center justify-center ${
-                      answered === null ? "bg-muted" :
-                      correct ? "bg-green-500/10" : "bg-red-500/10"
-                    }`}
-                    title={`${t("quiz.question")} ${index + 1}`}
+                <div>
+                  <p
+                    className={`font-medium mb-1 ${isCorrect ? "text-green-600" : "text-amber-600"}`}
                   >
-                    {answered !== null && (
-                      correct 
-                        ? <CheckCircle className="w-4 h-4 text-green-500" />
-                        : <XCircle className="w-4 h-4 text-red-500" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                    {isCorrect ? t("quiz.correct") : t("quiz.incorrect")}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{explanationText}</p>
+                </div>
+              </div>
+              {onShowInTimeline && timelineLink && (
+                <Button
+                  variant="outline"
+                  className="mt-3 w-full"
+                  onClick={() => {
+                    onShowInTimeline(timelineLink);
+                    onRequestClose?.();
+                  }}
+                  data-testid="button-show-in-timeline"
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  {t("quiz.showInTimeline")}
+                </Button>
+              )}
+            </Card>
+          )}
 
-            <Button onClick={handleRestart} className="w-full" data-testid="button-restart-quiz">
-              <RotateCcw className="w-4 h-4 mr-2" />
-              {t("quiz.tryAgain")}
+          {selectedAnswer !== null && (
+            <Button onClick={handleNext} className="w-full" data-testid="button-next-question">
+              {currentQuestionIndex < QUESTIONS.length - 1 ? (
+                <>
+                  {t("quiz.nextQuestion")}
+                  <ChevronRight className="w-4 h-4 ml-2" />
+                </>
+              ) : (
+                <>
+                  {t("quiz.seeResults")}
+                  <Trophy className="w-4 h-4 ml-2" />
+                </>
+              )}
             </Button>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-6 text-center py-4">
+          <div
+            className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${
+              score >= QUESTIONS.length * 0.8
+                ? "bg-green-500/10"
+                : score >= QUESTIONS.length * 0.5
+                  ? "bg-amber-500/10"
+                  : "bg-red-500/10"
+            }`}
+          >
+            <Trophy
+              className={`w-10 h-10 ${
+                score >= QUESTIONS.length * 0.8
+                  ? "text-green-500"
+                  : score >= QUESTIONS.length * 0.5
+                    ? "text-amber-500"
+                    : "text-red-500"
+              }`}
+            />
           </div>
-        )}
-      </DialogContent>
-    </Dialog>
+
+          <div>
+            <h3 className="text-2xl font-bold text-foreground mb-2" data-testid="text-final-score">
+              {score} {t("quiz.of")} {QUESTIONS.length}
+            </h3>
+            <p className="text-muted-foreground">{t("quiz.quizComplete")}</p>
+          </div>
+
+          <div className="grid grid-cols-4 gap-2">
+            {QUESTIONS.map((q, index) => {
+              const answered = answers[index];
+              const correct = answered === q.correctIndex;
+              return (
+                <div
+                  key={q.id}
+                  className={`w-full aspect-square rounded-md flex items-center justify-center ${
+                    answered === null ? "bg-muted" : correct ? "bg-green-500/10" : "bg-red-500/10"
+                  }`}
+                  title={`${t("quiz.question")} ${index + 1}`}
+                >
+                  {answered !== null &&
+                    (correct ? (
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <XCircle className="w-4 h-4 text-red-500" />
+                    ))}
+                </div>
+              );
+            })}
+          </div>
+
+          <Button onClick={handleRestart} className="w-full" data-testid="button-restart-quiz">
+            <RotateCcw className="w-4 h-4 mr-2" />
+            {t("quiz.tryAgain")}
+          </Button>
+        </div>
+      )}
+    </>
   );
 }

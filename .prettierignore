@@ -1,0 +1,6 @@
+dist
+node_modules
+attached_assets
+client/dist
+server/dist
+package-lock.json

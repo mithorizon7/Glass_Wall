@@ -1,11 +1,11 @@
 /**
  * Shared i18n utilities
- * 
+ *
  * Common functions used across i18n scripts to avoid duplication.
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 /**
  * Flatten nested object keys into dot-notation array
@@ -13,11 +13,11 @@ import path from 'path';
  * @param {string} prefix - Current key prefix
  * @returns {string[]} Array of flattened keys
  */
-export function flattenKeys(obj, prefix = '') {
+export function flattenKeys(obj, prefix = "") {
   const keys = [];
   for (const key of Object.keys(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
-    if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+    if (typeof obj[key] === "object" && obj[key] !== null && !Array.isArray(obj[key])) {
       keys.push(...flattenKeys(obj[key], fullKey));
     } else {
       keys.push(fullKey);
@@ -33,7 +33,7 @@ export function flattenKeys(obj, prefix = '') {
  * @returns {*} Value at path or undefined
  */
 export function getNestedValue(obj, keyPath) {
-  return keyPath.split('.').reduce((o, k) => o?.[k], obj);
+  return keyPath.split(".").reduce((o, k) => o?.[k], obj);
 }
 
 /**
@@ -46,7 +46,7 @@ export function loadJsonFile(filePath) {
     if (!fs.existsSync(filePath)) {
       return { data: null, error: `File not found: ${filePath}` };
     }
-    const content = fs.readFileSync(filePath, 'utf8');
+    const content = fs.readFileSync(filePath, "utf8");
     return { data: JSON.parse(content), error: null };
   } catch (e) {
     return { data: null, error: `JSON parse error in ${filePath}: ${e.message}` };
@@ -60,15 +60,15 @@ export function loadJsonFile(filePath) {
  */
 export function getConfig(baseDir) {
   return {
-    localesDir: path.join(baseDir, '../client/src/locales'),
-    srcDir: path.join(baseDir, '../client/src'),
-    languages: ['en', 'lv', 'ru'],
-    productionLanguages: ['en', 'lv', 'ru'],
-    namespaces: ['common', 'glass-wall'],
+    localesDir: path.join(baseDir, "../client/src/locales"),
+    srcDir: path.join(baseDir, "../client/src"),
+    languages: ["en", "lv", "ru"],
+    productionLanguages: ["en", "lv", "ru"],
+    namespaces: ["common", "glass-wall"],
     namespaceMap: {
-      'glassWall': 'glass-wall',
-      'common': 'common'
-    }
+      glassWall: "glass-wall",
+      common: "common",
+    },
   };
 }
 
@@ -79,8 +79,8 @@ export function getConfig(baseDir) {
  */
 export function namespaceToFile(ns) {
   const map = {
-    'glassWall': 'glass-wall',
-    'common': 'common'
+    glassWall: "glass-wall",
+    common: "common",
   };
   return map[ns] || ns;
 }
@@ -92,18 +92,23 @@ export function namespaceToFile(ns) {
  * @param {string[]} extensions - File extensions to match
  * @param {string[]} ignoreDirs - Directories to ignore
  */
-export function walkDirectory(dir, callback, extensions = ['.tsx', '.ts'], ignoreDirs = ['.', 'node_modules', 'locales']) {
+export function walkDirectory(
+  dir,
+  callback,
+  extensions = [".tsx", ".ts"],
+  ignoreDirs = [".", "node_modules", "locales"],
+) {
   const files = fs.readdirSync(dir);
-  
+
   for (const file of files) {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
-    
+
     if (stat.isDirectory()) {
-      if (!file.startsWith('.') && !ignoreDirs.includes(file)) {
+      if (!file.startsWith(".") && !ignoreDirs.includes(file)) {
         walkDirectory(filePath, callback, extensions, ignoreDirs);
       }
-    } else if (extensions.some(ext => file.endsWith(ext))) {
+    } else if (extensions.some((ext) => file.endsWith(ext))) {
       callback(filePath);
     }
   }

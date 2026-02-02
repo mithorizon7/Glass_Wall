@@ -6,9 +6,9 @@ export default {
   theme: {
     extend: {
       borderRadius: {
-        lg: ".5625rem", /* 9px */
-        md: ".375rem", /* 6px */
-        sm: ".1875rem", /* 3px */
+        lg: ".5625rem" /* 9px */,
+        md: ".375rem" /* 6px */,
+        sm: ".1875rem" /* 3px */,
       },
       colors: {
         // Flat / base colors (regular buttons)
@@ -73,7 +73,7 @@ export default {
         "sidebar-accent": {
           DEFAULT: "hsl(var(--sidebar-accent) / <alpha-value>)",
           foreground: "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
-          border: "var(--sidebar-accent-border)"
+          border: "var(--sidebar-accent-border)",
         },
         status: {
           online: "rgb(34 197 94)",
@@ -116,7 +116,7 @@ export default {
           from: { strokeDashoffset: "20" },
           to: { strokeDashoffset: "0" },
         },
-        "glow": {
+        glow: {
           "0%, 100%": { boxShadow: "0 0 8px 2px var(--glow-color)" },
           "50%": { boxShadow: "0 0 16px 4px var(--glow-color)" },
         },
@@ -129,7 +129,7 @@ export default {
         "fade-in": "fade-in 0.3s ease-out forwards",
         "slide-down": "slide-down 0.3s ease-out forwards",
         "tunnel-dash": "tunnel-dash 1s linear infinite",
-        "glow": "glow 2s ease-in-out infinite",
+        glow: "glow 2s ease-in-out infinite",
       },
     },
   },

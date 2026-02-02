@@ -1,26 +1,34 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
-import { Lock, Unlock, Eye, EyeOff, AlertTriangle, ShieldCheck, Monitor, Server, Wifi } from "lucide-react";
+import { Lock, Eye, EyeOff, AlertTriangle, ShieldCheck, Monitor, Server, Wifi } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { TimelineStage, ProtocolMode, VpnMode, DemoPayload } from "@/pages/glass-wall";
+import type {
+  TimelineStage,
+  ProtocolMode,
+  VpnMode,
+  DemoPayload,
+  AttackerModel,
+} from "@/pages/glass-wall";
 
 interface WireViewProps {
   stage: TimelineStage;
   protocolMode: ProtocolMode;
   vpnMode: VpnMode;
+  attackerModel: AttackerModel;
   payload: DemoPayload;
 }
 
 function generateHexDump(seed: string, lines: number = 3): string[] {
+  const safeSeed = seed.length > 0 ? seed : "0";
   const hexChars = "0123456789abcdef";
   const result: string[] = [];
   let offset = 0;
-  
+
   for (let line = 0; line < lines; line++) {
     let hex = "";
     for (let i = 0; i < 16; i++) {
-      const charCode = (seed.charCodeAt(i % seed.length) + line * 7 + i * 13) % 256;
+      const charCode = (safeSeed.charCodeAt(i % safeSeed.length) + line * 7 + i * 13) % 256;
       hex += hexChars[Math.floor(charCode / 16)] + hexChars[charCode % 16] + " ";
     }
     const offsetStr = offset.toString(16).padStart(4, "0");
@@ -38,21 +46,21 @@ function generateTlsRecord(payload: string): string {
   return `${recordType} ${version} ${lengthFormatted}`;
 }
 
-function DataPacket({ 
-  username, 
-  password, 
+function DataPacket({
+  username,
+  password,
   isSecure,
-  stage,
-  isVisible
-}: { 
-  username: string; 
-  password: string; 
+  stage: _stage,
+  isVisible,
+}: {
+  username: string;
+  password: string;
   isSecure: boolean;
   stage: TimelineStage;
   isVisible: boolean;
 }) {
   const { t } = useTranslation("glassWall");
-  
+
   const hexLines = useMemo(() => generateHexDump(username + password, 2), [username, password]);
 
   if (!isVisible) return null;
@@ -64,8 +72,8 @@ function DataPacket({
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.3 }}
       className={`rounded-lg p-3 font-mono text-xs border-2 max-w-[220px] ${
-        isSecure 
-          ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/40" 
+        isSecure
+          ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/40"
           : "bg-[hsl(var(--http-danger))]/10 border-[hsl(var(--http-danger))]/40"
       }`}
     >
@@ -76,7 +84,10 @@ function DataPacket({
             <span className="text-[10px] font-medium">{t("wireView.encrypted")}</span>
           </div>
           {hexLines.map((line, i) => (
-            <div key={i} className="text-muted-foreground text-[10px] leading-tight opacity-60 whitespace-nowrap">
+            <div
+              key={i}
+              className="text-muted-foreground text-[10px] leading-tight opacity-60 whitespace-nowrap"
+            >
               {line}
             </div>
           ))}
@@ -88,12 +99,19 @@ function DataPacket({
             <span className="text-[10px] font-medium">{t("wireView.plainText")}</span>
           </div>
           <div className="flex gap-1">
-            <span className="text-muted-foreground">user:</span>
-            <span className="text-foreground font-semibold" data-testid="text-wire-username">{username}</span>
+            <span className="text-muted-foreground">{t("wireView.userLabel")}</span>
+            <span className="text-foreground font-semibold" data-testid="text-wire-username">
+              {username}
+            </span>
           </div>
           <div className="flex gap-1">
-            <span className="text-muted-foreground">pass:</span>
-            <span className="text-[hsl(var(--http-danger))] font-semibold" data-testid="text-wire-password">{password}</span>
+            <span className="text-muted-foreground">{t("wireView.passLabel")}</span>
+            <span
+              className="text-[hsl(var(--http-danger))] font-semibold"
+              data-testid="text-wire-password"
+            >
+              {password}
+            </span>
           </div>
         </div>
       )}
@@ -101,13 +119,21 @@ function DataPacket({
   );
 }
 
-export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProps) {
+export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload }: WireViewProps) {
   const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
   const isActive = stage !== "idle";
   const showRequest = stage === "request" || stage === "response" || stage === "complete";
   const showResponse = stage === "response" || stage === "complete";
   const showHandshake = isSecure && (stage === "handshake" || showRequest);
+  const observerTitle = t(
+    `wireView.observerTitle.${attackerModel}.${isSecure ? "secure" : "plain"}`,
+  );
+  const whyItMatters = t(`wireView.whyItMatters.${attackerModel}.${isSecure ? "secure" : "plain"}`);
+  const metadataBadgeClass =
+    "bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30";
+  const contentBadgeClass =
+    "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30";
 
   const getPacketPosition = () => {
     if (stage === "connect" || stage === "handshake") return 0;
@@ -127,9 +153,7 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
         <h3 className="text-base font-medium text-foreground mb-1">
           {t("wireView.readyToObserve")}
         </h3>
-        <p className="text-sm text-muted-foreground max-w-xs">
-          {t("wireView.readyToObserveHint")}
-        </p>
+        <p className="text-sm text-muted-foreground max-w-xs">{t("wireView.readyToObserveHint")}</p>
       </div>
     );
   }
@@ -139,32 +163,40 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
       <div className="relative">
         <div className="flex items-center justify-between gap-2 mb-4">
           <div className="flex flex-col items-center gap-1">
-            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
-              isActive ? "bg-primary/10" : "bg-muted/30"
-            }`}>
-              <Monitor className={`w-6 h-6 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
+            <div
+              className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                isActive ? "bg-primary/10" : "bg-muted/30"
+              }`}
+            >
+              <Monitor
+                className={`w-6 h-6 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+              />
             </div>
             <span className="text-xs text-muted-foreground">{t("wireView.browser")}</span>
           </div>
 
           <div className="flex-1 flex items-center justify-center relative h-24">
-            <div className={`absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full transition-colors ${
-              isSecure 
-                ? "bg-[hsl(var(--https-success))]/20" 
-                : "bg-[hsl(var(--http-danger))]/20"
-            }`}>
+            <div
+              className={`absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full transition-colors ${
+                isSecure ? "bg-[hsl(var(--https-success))]/20" : "bg-[hsl(var(--http-danger))]/20"
+              }`}
+            >
               <motion.div
                 className={`h-full rounded-full ${
-                  isSecure 
-                    ? "bg-[hsl(var(--https-success))]" 
-                    : "bg-[hsl(var(--http-danger))]"
+                  isSecure ? "bg-[hsl(var(--https-success))]" : "bg-[hsl(var(--http-danger))]"
                 }`}
                 initial={{ width: "0%" }}
-                animate={{ 
-                  width: stage === "connect" ? "25%" : 
-                         stage === "handshake" ? "40%" : 
-                         stage === "request" ? "70%" : 
-                         stage === "response" || stage === "complete" ? "100%" : "0%"
+                animate={{
+                  width:
+                    stage === "connect"
+                      ? "25%"
+                      : stage === "handshake"
+                        ? "40%"
+                        : stage === "request"
+                          ? "70%"
+                          : stage === "response" || stage === "complete"
+                            ? "100%"
+                            : "0%",
                 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
               />
@@ -172,7 +204,9 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
 
             {vpnMode === "on" && (
               <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 h-8 border-2 border-dashed border-[hsl(var(--vpn-tunnel))]/40 rounded-full flex items-center justify-center">
-                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-background px-2">VPN</span>
+                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-background px-2">
+                  {t("wireView.vpnLabel")}
+                </span>
               </div>
             )}
 
@@ -182,9 +216,9 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                   key="packet"
                   className="absolute z-10"
                   initial={{ left: "10%", opacity: 0 }}
-                  animate={{ 
+                  animate={{
                     left: packetPosition === 1 ? "40%" : packetPosition === 2 ? "70%" : "10%",
-                    opacity: 1
+                    opacity: 1,
                   }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -208,12 +242,12 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute left-1/4 -translate-x-1/2 -top-10"
                 >
-                  <Badge 
-                    variant="outline" 
+                  <Badge
+                    variant="outline"
                     className="text-[10px] border-[hsl(var(--https-success))]/50 text-[hsl(var(--https-success))] bg-background"
                   >
                     <ShieldCheck className="w-3 h-3 mr-1" />
-                    TLS
+                    {t("handshake.tlsBadge")}
                   </Badge>
                 </motion.div>
               )}
@@ -226,18 +260,28 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
                 <div className="w-10 h-10 rounded-lg bg-[hsl(var(--vpn-tunnel))]/10 flex items-center justify-center">
                   <Wifi className="w-5 h-5 text-[hsl(var(--vpn-tunnel))]" />
                 </div>
-                <span className="text-[10px] text-muted-foreground">VPN</span>
+                <span className="text-[10px] text-muted-foreground">{t("wireView.vpnLabel")}</span>
               </div>
             )}
             <div className="flex flex-col items-center gap-1">
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
-                showResponse ? (isSecure ? "bg-[hsl(var(--https-success))]/10" : "bg-[hsl(var(--http-danger))]/10") : "bg-muted/30"
-              }`}>
-                <Server className={`w-6 h-6 ${
-                  showResponse 
-                    ? (isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]")
-                    : "text-muted-foreground"
-                }`} />
+              <div
+                className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                  showResponse
+                    ? isSecure
+                      ? "bg-[hsl(var(--https-success))]/10"
+                      : "bg-[hsl(var(--http-danger))]/10"
+                    : "bg-muted/30"
+                }`}
+              >
+                <Server
+                  className={`w-6 h-6 ${
+                    showResponse
+                      ? isSecure
+                        ? "text-[hsl(var(--https-success))]"
+                        : "text-[hsl(var(--http-danger))]"
+                      : "text-muted-foreground"
+                  }`}
+                />
               </div>
               <span className="text-xs text-muted-foreground">{t("wireView.server")}</span>
             </div>
@@ -245,11 +289,13 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
         </div>
       </div>
 
-      <div className={`p-4 rounded-lg border transition-colors ${
-        isSecure 
-          ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20" 
-          : "bg-[hsl(var(--http-danger))]/5 border-[hsl(var(--http-danger))]/20"
-      }`}>
+      <div
+        className={`p-4 rounded-lg border transition-colors ${
+          isSecure
+            ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20"
+            : "bg-[hsl(var(--http-danger))]/5 border-[hsl(var(--http-danger))]/20"
+        }`}
+      >
         <div className="flex items-start gap-3">
           {isSecure ? (
             <EyeOff className="w-5 h-5 text-[hsl(var(--https-success))] shrink-0 mt-0.5" />
@@ -257,57 +303,118 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
             <Eye className="w-5 h-5 text-[hsl(var(--http-danger))] shrink-0 mt-0.5" />
           )}
           <div className="flex-1 min-w-0">
-            <p className={`text-sm font-medium mb-2 ${
-              isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
-            }`}>
-              {isSecure ? t("wireView.whatObserverSeesSecure") : t("wireView.whatObserverSeesPlain")}
+            <p
+              className={`text-sm font-medium mb-2 ${
+                isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
+              }`}
+            >
+              {observerTitle}
             </p>
-            
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide text-muted-foreground mb-3">
+              <Badge className={metadataBadgeClass}>{t("labels.metadata")}</Badge>
+              <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
+            </div>
+
             {showRequest && (
               <div className="space-y-3">
                 <div className="font-mono text-xs space-y-1 bg-background/50 rounded p-3">
                   {isSecure ? (
                     <div className="text-muted-foreground space-y-2">
+                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide">
+                        <Badge className={metadataBadgeClass}>{t("labels.metadata")}</Badge>
+                        <span className="opacity-60">{t("labels.visible")}</span>
+                      </div>
                       <div className="opacity-70">
-                        <span className="text-[hsl(var(--https-success))]">{t("wireView.destinationVisible")}:</span> {payload.domain}
+                        <span className="text-[hsl(var(--https-success))]">
+                          {t("wireView.destinationVisible")}:
+                        </span>{" "}
+                        {payload.domain}
                       </div>
                       <div className="border-t border-border/30 pt-2">
-                        <div className="text-[10px] opacity-50 mb-1">{t("wireView.tlsRecord")}:</div>
-                        <div className="opacity-50 text-[10px]">{generateTlsRecord(payload.body.username + payload.body.password)}</div>
+                        <div className="text-[10px] opacity-50 mb-1">
+                          {t("wireView.tlsRecord")}:
+                        </div>
+                        <div className="opacity-50 text-[10px]">
+                          {generateTlsRecord(payload.body.username + payload.body.password)}
+                        </div>
                       </div>
                       <div className="border-t border-border/30 pt-2">
-                        <div className="text-[10px] opacity-50 mb-1">{t("wireView.encryptedPayload")}:</div>
-                        {generateHexDump(payload.body.username + payload.body.password + payload.domain, 4).map((line, i) => (
-                          <div key={i} className="opacity-40 text-[10px] whitespace-nowrap">{line}</div>
+                        <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
+                          <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
+                          <span className="opacity-60">{t("labels.encrypted")}</span>
+                        </div>
+                        <div className="text-[10px] opacity-50 mb-1">
+                          {t("wireView.encryptedPayload")}:
+                        </div>
+                        {generateHexDump(
+                          payload.body.username + payload.body.password + payload.domain,
+                          4,
+                        ).map((line, i) => (
+                          <div key={i} className="opacity-40 text-[10px] whitespace-nowrap">
+                            {line}
+                          </div>
                         ))}
                       </div>
                     </div>
                   ) : (
                     <>
-                      <div className="text-muted-foreground">POST /login HTTP/1.1</div>
-                      <div className="text-muted-foreground">Host: {payload.domain}</div>
-                      <div className="text-muted-foreground">Content-Type: application/x-www-form-urlencoded</div>
+                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
+                        <Badge className={metadataBadgeClass}>{t("labels.metadata")}</Badge>
+                        <span className="opacity-60">{t("labels.visible")}</span>
+                      </div>
+                      <div className="text-muted-foreground">
+                        {t("wireView.requestLine", { method: payload.method, path: payload.path })}
+                      </div>
+                      <div className="text-muted-foreground">
+                        {t("wireView.hostHeader")} {payload.domain}
+                      </div>
+                      <div className="text-muted-foreground">
+                        {t("wireView.contentTypeHeader")} {payload.headers["Content-Type"]}
+                      </div>
                       <div className="border-t border-border/30 mt-2 pt-2">
-                        <span className="text-muted-foreground">username=</span>
-                        <span className="text-foreground font-semibold">{payload.body.username}</span>
-                        <span className="text-muted-foreground">&amp;password=</span>
-                        <span className="text-[hsl(var(--http-danger))] font-semibold">{payload.body.password}</span>
+                        <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
+                          <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
+                          <span className="opacity-60">{t("labels.visible")}</span>
+                        </div>
+                        <span className="text-muted-foreground">
+                          {t("wireView.formFieldUsername")}
+                        </span>
+                        <span className="text-foreground font-semibold">
+                          {payload.body.username}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {t("wireView.formFieldPassword")}
+                        </span>
+                        <span className="text-[hsl(var(--http-danger))] font-semibold">
+                          {payload.body.password}
+                        </span>
                       </div>
                     </>
                   )}
                 </div>
-                
-                <div className={`text-xs p-3 rounded-lg ${
-                  isSecure 
-                    ? "bg-[hsl(var(--https-success))]/5 text-muted-foreground" 
-                    : "bg-[hsl(var(--http-danger))]/5 text-muted-foreground"
-                }`}>
+
+                <div
+                  className={`text-xs p-3 rounded-lg ${
+                    isSecure
+                      ? "bg-[hsl(var(--https-success))]/5 text-muted-foreground"
+                      : "bg-[hsl(var(--http-danger))]/5 text-muted-foreground"
+                  }`}
+                >
                   <p className="font-medium mb-1">
-                    {isSecure ? t("wireView.explainSecure.title") : t("wireView.explainPlain.title")}
+                    {isSecure
+                      ? t("wireView.explainSecure.title")
+                      : t("wireView.explainPlain.title")}
                   </p>
                   <p className="opacity-80 leading-relaxed">
                     {isSecure ? t("wireView.explainSecure.body") : t("wireView.explainPlain.body")}
                   </p>
+                </div>
+
+                <div className="text-xs p-3 rounded-lg bg-muted/50 text-muted-foreground">
+                  <p className="font-medium mb-1 text-foreground">
+                    {t("wireView.whyItMattersTitle")}
+                  </p>
+                  <p className="opacity-80 leading-relaxed">{whyItMatters}</p>
                 </div>
               </div>
             )}
@@ -320,22 +427,21 @@ export function WireView({ stage, protocolMode, vpnMode, payload }: WireViewProp
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-4 rounded-lg border ${
-            isSecure 
-              ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/30" 
+            isSecure
+              ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/30"
               : "bg-[hsl(var(--http-danger))]/10 border-[hsl(var(--http-danger))]/30"
           }`}
           data-testid="container-summary"
         >
-          <h4 className={`font-semibold mb-2 ${
-            isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
-          }`}>
+          <h4
+            className={`font-semibold mb-2 ${
+              isSecure ? "text-[hsl(var(--https-success))]" : "text-[hsl(var(--http-danger))]"
+            }`}
+          >
             {isSecure ? t("summary.protectedTitle") : t("summary.exposedTitle")}
           </h4>
           <p className="text-sm text-muted-foreground">
-            {isSecure 
-              ? t("summary.protectedMessage")
-              : t("summary.exposedMessage")
-            }
+            {isSecure ? t("summary.protectedMessage") : t("summary.exposedMessage")}
           </p>
         </motion.div>
       )}

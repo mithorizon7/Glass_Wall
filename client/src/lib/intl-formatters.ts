@@ -1,13 +1,13 @@
 /**
  * Internationalized formatting utilities
- * 
+ *
  * Uses Intl.* APIs for locale-aware formatting of dates, numbers, and currencies.
  * These formatters automatically adapt to the current i18n locale.
- * 
+ *
  * Formatters are cached per locale for performance.
  */
 
-import i18n from './i18n';
+import i18n from "./i18n";
 
 type DateTimeFormatterKey = string;
 type NumberFormatterKey = string;
@@ -19,7 +19,7 @@ const listFormatters = new Map<string, Intl.ListFormat>();
 const pluralRules = new Map<string, Intl.PluralRules>();
 
 function getCurrentLocale(): string {
-  return i18n.language || 'lv';
+  return i18n.language || "lv";
 }
 
 function makeCacheKey(locale: string, options: object): string {
@@ -29,7 +29,7 @@ function makeCacheKey(locale: string, options: object): string {
 function getDateTimeFormatter(options: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
   const locale = getCurrentLocale();
   const key = makeCacheKey(locale, options);
-  
+
   let formatter = dateTimeFormatters.get(key);
   if (!formatter) {
     formatter = new Intl.DateTimeFormat(locale, options);
@@ -41,7 +41,7 @@ function getDateTimeFormatter(options: Intl.DateTimeFormatOptions): Intl.DateTim
 function getNumberFormatter(options: Intl.NumberFormatOptions): Intl.NumberFormat {
   const locale = getCurrentLocale();
   const key = makeCacheKey(locale, options);
-  
+
   let formatter = numberFormatters.get(key);
   if (!formatter) {
     formatter = new Intl.NumberFormat(locale, options);
@@ -50,10 +50,12 @@ function getNumberFormatter(options: Intl.NumberFormatOptions): Intl.NumberForma
   return formatter;
 }
 
-function getRelativeTimeFormatter(options: Intl.RelativeTimeFormatOptions): Intl.RelativeTimeFormat {
+function getRelativeTimeFormatter(
+  options: Intl.RelativeTimeFormatOptions,
+): Intl.RelativeTimeFormat {
   const locale = getCurrentLocale();
   const key = makeCacheKey(locale, options);
-  
+
   let formatter = relativeTimeFormatters.get(key);
   if (!formatter) {
     formatter = new Intl.RelativeTimeFormat(locale, options);
@@ -65,7 +67,7 @@ function getRelativeTimeFormatter(options: Intl.RelativeTimeFormatOptions): Intl
 function getListFormatter(options: Intl.ListFormatOptions): Intl.ListFormat {
   const locale = getCurrentLocale();
   const key = makeCacheKey(locale, options);
-  
+
   let formatter = listFormatters.get(key);
   if (!formatter) {
     formatter = new Intl.ListFormat(locale, options);
@@ -77,7 +79,7 @@ function getListFormatter(options: Intl.ListFormatOptions): Intl.ListFormat {
 function getPluralRulesFormatter(options: Intl.PluralRulesOptions): Intl.PluralRules {
   const locale = getCurrentLocale();
   const key = makeCacheKey(locale, options);
-  
+
   let rules = pluralRules.get(key);
   if (!rules) {
     rules = new Intl.PluralRules(locale, options);
@@ -88,7 +90,7 @@ function getPluralRulesFormatter(options: Intl.PluralRulesOptions): Intl.PluralR
 
 function toDate(date: Date | number | string): Date {
   if (date instanceof Date) return date;
-  if (typeof date === 'number') return new Date(date);
+  if (typeof date === "number") return new Date(date);
   return new Date(date);
 }
 
@@ -97,7 +99,7 @@ function toDate(date: Date | number | string): Date {
  */
 export function formatDate(
   date: Date | number | string,
-  options: Intl.DateTimeFormatOptions = { dateStyle: 'medium' }
+  options: Intl.DateTimeFormatOptions = { dateStyle: "medium" },
 ): string {
   return getDateTimeFormatter(options).format(toDate(date));
 }
@@ -107,7 +109,7 @@ export function formatDate(
  */
 export function formatDateTime(
   date: Date | number | string,
-  options: Intl.DateTimeFormatOptions = { dateStyle: 'medium', timeStyle: 'short' }
+  options: Intl.DateTimeFormatOptions = { dateStyle: "medium", timeStyle: "short" },
 ): string {
   return getDateTimeFormatter(options).format(toDate(date));
 }
@@ -117,7 +119,7 @@ export function formatDateTime(
  */
 export function formatTime(
   date: Date | number | string,
-  options: Intl.DateTimeFormatOptions = { timeStyle: 'short' }
+  options: Intl.DateTimeFormatOptions = { timeStyle: "short" },
 ): string {
   return getDateTimeFormatter(options).format(toDate(date));
 }
@@ -128,7 +130,7 @@ export function formatTime(
 export function formatRelativeTime(
   value: number,
   unit: Intl.RelativeTimeFormatUnit,
-  options: Intl.RelativeTimeFormatOptions = { numeric: 'auto' }
+  options: Intl.RelativeTimeFormatOptions = { numeric: "auto" },
 ): string {
   return getRelativeTimeFormatter(options).format(value, unit);
 }
@@ -136,10 +138,7 @@ export function formatRelativeTime(
 /**
  * Format a number according to the current locale
  */
-export function formatNumber(
-  value: number,
-  options: Intl.NumberFormatOptions = {}
-): string {
+export function formatNumber(value: number, options: Intl.NumberFormatOptions = {}): string {
   return getNumberFormatter(options).format(value);
 }
 
@@ -148,9 +147,9 @@ export function formatNumber(
  */
 export function formatPercent(
   value: number,
-  options: Intl.NumberFormatOptions = { minimumFractionDigits: 0, maximumFractionDigits: 1 }
+  options: Intl.NumberFormatOptions = { minimumFractionDigits: 0, maximumFractionDigits: 1 },
 ): string {
-  return getNumberFormatter({ style: 'percent', ...options }).format(value);
+  return getNumberFormatter({ style: "percent", ...options }).format(value);
 }
 
 /**
@@ -158,10 +157,10 @@ export function formatPercent(
  */
 export function formatCurrency(
   value: number,
-  currency: string = 'EUR',
-  options: Intl.NumberFormatOptions = {}
+  currency: string = "EUR",
+  options: Intl.NumberFormatOptions = {},
 ): string {
-  return getNumberFormatter({ style: 'currency', currency, ...options }).format(value);
+  return getNumberFormatter({ style: "currency", currency, ...options }).format(value);
 }
 
 /**
@@ -170,7 +169,7 @@ export function formatCurrency(
  */
 export function formatList(
   items: string[],
-  options: Intl.ListFormatOptions = { style: 'long', type: 'conjunction' }
+  options: Intl.ListFormatOptions = { style: "long", type: "conjunction" },
 ): string {
   return getListFormatter(options).format(items);
 }
@@ -181,7 +180,7 @@ export function formatList(
  */
 export function getPluralCategory(
   count: number,
-  options: Intl.PluralRulesOptions = { type: 'cardinal' }
+  options: Intl.PluralRulesOptions = { type: "cardinal" },
 ): Intl.LDMLPluralRule {
   return getPluralRulesFormatter(options).select(count);
 }

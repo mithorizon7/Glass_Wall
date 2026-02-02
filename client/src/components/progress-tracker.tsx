@@ -1,18 +1,13 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Trans } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { 
-  CheckCircle, 
-  Circle, 
+  CheckCircle,
+  Circle,
   Trophy,
   ChevronDown,
   RotateCcw,
@@ -23,6 +18,33 @@ import {
 } from "lucide-react";
 
 const STORAGE_KEY = "glass-wall-progress";
+
+function safeStorageGet(key: string): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key: string, value: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage errors (private mode, blocked storage)
+  }
+}
+
+function safeStorageRemove(key: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Ignore storage errors (private mode, blocked storage)
+  }
+}
 
 interface ProgressState {
   httpExplored: boolean;
@@ -53,18 +75,19 @@ interface ProgressTrackerProps {
   className?: string;
 }
 
-export function ProgressTracker({ 
-  currentProtocol, 
-  currentVpn, 
+export function ProgressTracker({
+  currentProtocol,
+  currentVpn,
   timelineComplete,
-  className = "" 
+  className = "",
 }: ProgressTrackerProps) {
   const { t } = useTranslation("glassWall");
   const [progress, setProgress] = useState<ProgressState>(DEFAULT_PROGRESS);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const hasAutoOpenedRef = useRef(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = safeStorageGet(STORAGE_KEY);
     if (stored) {
       try {
         setProgress(JSON.parse(stored));
@@ -76,25 +99,26 @@ export function ProgressTracker({
 
   useEffect(() => {
     if (timelineComplete) {
-      setProgress(prev => {
+      setProgress((prev) => {
         const updated = { ...prev };
-        
+
         if (currentProtocol === "http") {
           updated.httpExplored = true;
         } else {
           updated.httpsExplored = true;
         }
-        
+
         if (currentVpn === "off") {
           updated.vpnOffExplored = true;
         } else {
           updated.vpnOnExplored = true;
         }
-        
-        const comboKey = `${currentProtocol}Vpn${currentVpn === "off" ? "Off" : "On"}` as keyof ProgressState;
+
+        const comboKey =
+          `${currentProtocol}Vpn${currentVpn === "off" ? "Off" : "On"}` as keyof ProgressState;
         updated[comboKey] = true;
-        
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+        safeStorageSet(STORAGE_KEY, JSON.stringify(updated));
         return updated;
       });
     }
@@ -102,7 +126,7 @@ export function ProgressTracker({
 
   const handleReset = useCallback(() => {
     setProgress(DEFAULT_PROGRESS);
-    localStorage.removeItem(STORAGE_KEY);
+    safeStorageRemove(STORAGE_KEY);
   }, []);
 
   const completedCount = [
@@ -115,42 +139,49 @@ export function ProgressTracker({
   const progressPercent = (completedCount / 4) * 100;
   const allComplete = completedCount === 4;
 
+  useEffect(() => {
+    if (completedCount > 0 && !hasAutoOpenedRef.current) {
+      setIsOpen(true);
+      hasAutoOpenedRef.current = true;
+    }
+  }, [completedCount]);
+
   const combinations = [
-    { 
-      key: "httpVpnOff", 
-      label: t("progressTracker.httpWithoutVpn"), 
+    {
+      key: "httpVpnOff",
+      label: t("progressTracker.httpWithoutVpn"),
       done: progress.httpVpnOff,
       protocolIcon: Unlock,
       vpnIcon: ShieldOff,
       protocolColor: "text-red-500",
-      description: t("progressTracker.mostVulnerable")
+      description: t("progressTracker.mostVulnerable"),
     },
-    { 
-      key: "httpVpnOn", 
-      label: t("progressTracker.httpWithVpn"), 
+    {
+      key: "httpVpnOn",
+      label: t("progressTracker.httpWithVpn"),
       done: progress.httpVpnOn,
       protocolIcon: Unlock,
       vpnIcon: Shield,
       protocolColor: "text-red-500",
-      description: t("progressTracker.contentVisibleToVpn")
+      description: t("progressTracker.contentVisibleToVpn"),
     },
-    { 
-      key: "httpsVpnOff", 
-      label: t("progressTracker.httpsWithoutVpn"), 
+    {
+      key: "httpsVpnOff",
+      label: t("progressTracker.httpsWithoutVpn"),
       done: progress.httpsVpnOff,
       protocolIcon: Lock,
       vpnIcon: ShieldOff,
       protocolColor: "text-green-500",
-      description: t("progressTracker.contentEncryptedMetadataVisible")
+      description: t("progressTracker.contentEncryptedMetadataVisible"),
     },
-    { 
-      key: "httpsVpnOn", 
-      label: t("progressTracker.httpsWithVpn"), 
+    {
+      key: "httpsVpnOn",
+      label: t("progressTracker.httpsWithVpn"),
       done: progress.httpsVpnOn,
       protocolIcon: Lock,
       vpnIcon: Shield,
       protocolColor: "text-green-500",
-      description: t("progressTracker.maximumProtection")
+      description: t("progressTracker.maximumProtection"),
     },
   ];
 
@@ -158,8 +189,8 @@ export function ProgressTracker({
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <Card className={`p-4 ${className}`}>
         <CollapsibleTrigger asChild>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="w-full flex items-center justify-between gap-2 p-0 h-auto"
             data-testid="button-toggle-progress"
           >
@@ -169,25 +200,24 @@ export function ProgressTracker({
               ) : (
                 <Circle className="w-5 h-5 text-muted-foreground" />
               )}
-              <span className="font-semibold text-foreground">
-                {t("progressTracker.title")}
-              </span>
+              <span className="font-semibold text-foreground">{t("progressTracker.title")}</span>
               <Badge variant="secondary" className="text-xs">
                 {completedCount}/4
               </Badge>
             </div>
-            <ChevronDown 
-              className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`} 
+            <ChevronDown
+              className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
             />
           </Button>
         </CollapsibleTrigger>
-        
+
         <CollapsibleContent className="mt-4">
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-2 text-sm">
                 <span className="text-muted-foreground">
-                  {t("common:plurals.ofTotal", { count: completedCount, total: 4 })} {t("progressTracker.modesExplored")}
+                  {t("common:plurals.ofTotal", { count: completedCount, total: 4 })}{" "}
+                  {t("progressTracker.modesExplored")}
                 </span>
                 <span className="font-medium text-foreground">{Math.round(progressPercent)}%</span>
               </div>
@@ -207,9 +237,9 @@ export function ProgressTracker({
               {combinations.map((combo) => {
                 const ProtocolIcon = combo.protocolIcon;
                 const VpnIcon = combo.vpnIcon;
-                
+
                 return (
-                  <div 
+                  <div
                     key={combo.key}
                     className={`flex items-center gap-3 p-2 rounded-md transition-colors ${
                       combo.done ? "bg-muted/50" : ""
@@ -225,7 +255,9 @@ export function ProgressTracker({
                       <ProtocolIcon className={`w-4 h-4 ${combo.protocolColor} flex-shrink-0`} />
                       <VpnIcon className="w-4 h-4 text-purple-500 flex-shrink-0" />
                       <div className="min-w-0">
-                        <p className={`text-sm truncate ${combo.done ? "text-foreground" : "text-muted-foreground"}`}>
+                        <p
+                          className={`text-sm truncate ${combo.done ? "text-foreground" : "text-muted-foreground"}`}
+                        >
                           {combo.label}
                         </p>
                       </div>
@@ -235,9 +267,9 @@ export function ProgressTracker({
               })}
             </div>
 
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleReset}
               className="w-full text-muted-foreground"
               data-testid="button-reset-progress"

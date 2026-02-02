@@ -7,49 +7,49 @@ Terms marked as **LOCKED** must never be translated.
 
 These technical terms remain in English across all locales:
 
-| Term | Reason |
-|------|--------|
-| HTTP | Protocol name |
-| HTTPS | Protocol name |
-| VPN | Acronym |
-| TLS | Protocol name |
-| SSL | Protocol name (legacy) |
-| DNS | Protocol name |
-| TCP | Protocol name |
-| POST | HTTP method |
-| GET | HTTP method |
-| Set-Cookie | HTTP header |
-| IP | Acronym |
-| Wi-Fi | Brand/technology name |
+| Term       | Reason                 |
+| ---------- | ---------------------- |
+| HTTP       | Protocol name          |
+| HTTPS      | Protocol name          |
+| VPN        | Acronym                |
+| TLS        | Protocol name          |
+| SSL        | Protocol name (legacy) |
+| DNS        | Protocol name          |
+| TCP        | Protocol name          |
+| POST       | HTTP method            |
+| GET        | HTTP method            |
+| Set-Cookie | HTTP header            |
+| IP         | Acronym                |
+| Wi-Fi      | Brand/technology name  |
 
 ## Translated Terms (Consistency Required)
 
-| English | Latvian (lv) | Russian (ru) | Context |
-|---------|--------------|--------------|---------|
-| Encryption | Šifrēšana | Шифрование | Data protection |
-| Plaintext | Vienkāršs teksts | Открытый текст | Unencrypted data |
-| Ciphertext | Šifrētais teksts | Зашифрованный текст | Encrypted data |
-| Handshake | Rokasspiediens | Рукопожатие | TLS connection |
-| Tunnel | Tunelis | Туннель | VPN tunnel |
-| Request | Pieprasījums | Запрос | HTTP request |
-| Response | Atbilde | Ответ | HTTP response |
-| Connection | Savienojums | Соединение | Network connection |
-| Metadata | Metadati | Метаданные | Request metadata |
-| Public Wi-Fi | Publiskais Wi-Fi | Публичный Wi-Fi | Network type |
-| Secure | Drošs | Безопасный | Security state |
-| Vulnerable | Neaizsargāts | Уязвимый | Security state |
-| Protected | Aizsargāts | Защищённый | Security state |
+| English      | Latvian (lv)     | Russian (ru)        | Context            |
+| ------------ | ---------------- | ------------------- | ------------------ |
+| Encryption   | Šifrēšana        | Шифрование          | Data protection    |
+| Plaintext    | Vienkāršs teksts | Открытый текст      | Unencrypted data   |
+| Ciphertext   | Šifrētais teksts | Зашифрованный текст | Encrypted data     |
+| Handshake    | Rokasspiediens   | Рукопожатие         | TLS connection     |
+| Tunnel       | Tunelis          | Туннель             | VPN tunnel         |
+| Request      | Pieprasījums     | Запрос              | HTTP request       |
+| Response     | Atbilde          | Ответ               | HTTP response      |
+| Connection   | Savienojums      | Соединение          | Network connection |
+| Metadata     | Metadati         | Метаданные          | Request metadata   |
+| Public Wi-Fi | Publiskais Wi-Fi | Публичный Wi-Fi     | Network type       |
+| Secure       | Drošs            | Безопасный          | Security state     |
+| Vulnerable   | Neaizsargāts     | Уязвимый            | Security state     |
+| Protected    | Aizsargāts       | Защищённый          | Security state     |
 
 ## UI Element Terms
 
-| English | Latvian (lv) | Russian (ru) | Usage |
-|---------|--------------|--------------|-------|
-| Enable | Iespējot | Включить | Toggle on |
-| Disable | Atspējot | Отключить | Toggle off |
-| Start | Sākt | Начать | Begin action |
-| Reset | Atiestatīt | Сбросить | Clear state |
-| Continue | Turpināt | Продолжить | Next step |
-| Learn more | Uzzināt vairāk | Подробнее | Info link |
+| English    | Latvian (lv)   | Russian (ru) | Usage        |
+| ---------- | -------------- | ------------ | ------------ |
+| Enable     | Iespējot       | Включить     | Toggle on    |
+| Disable    | Atspējot       | Отключить    | Toggle off   |
+| Start      | Sākt           | Начать       | Begin action |
+| Reset      | Atiestatīt     | Сбросить     | Clear state  |
+| Continue   | Turpināt       | Продолжить   | Next step    |
+| Learn more | Uzzināt vairāk | Подробнее    | Info link    |
 
 ## Translation Guidelines
 
@@ -62,6 +62,7 @@ These technical terms remain in English across all locales:
 ## Adding New Terms
 
 When adding new translatable content:
+
 1. Check this glossary first for existing translations
 2. If term is new, add it here with proposed translations
 3. Get native speaker review before merging
@@ -70,10 +71,12 @@ When adding new translatable content:
 ## Quality Sign-off
 
 Translation quality is reviewed by:
+
 - **Latvian**: Native Latvian speaker (assign team member before production)
 - **Russian**: Native Russian speaker (assign team member before production)
 
 **Process:**
+
 1. All translation PRs require review from assigned language owner
 2. Use this glossary as the source of truth for term consistency
 3. Run `npm run i18n:check` before merging any translation changes
