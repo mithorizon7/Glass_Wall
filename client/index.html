@@ -12,6 +12,23 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Polyfill for Array/String.prototype.at (ES2022) - needed for older browsers
+      if (!Array.prototype.at) {
+        Array.prototype.at = function(n) {
+          n = Math.trunc(n) || 0;
+          if (n < 0) n += this.length;
+          return n < 0 || n >= this.length ? undefined : this[n];
+        };
+      }
+      if (!String.prototype.at) {
+        String.prototype.at = function(n) {
+          n = Math.trunc(n) || 0;
+          if (n < 0) n += this.length;
+          return n < 0 || n >= this.length ? undefined : this.charAt(n);
+        };
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
