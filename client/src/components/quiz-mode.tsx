@@ -183,7 +183,7 @@ export function QuizContent({
       case "https":
         return "bg-green-500/10 text-green-600";
       case "vpn":
-        return "bg-purple-500/10 text-purple-600";
+        return "bg-[hsl(var(--vpn-tunnel))]/10 text-[hsl(var(--vpn-tunnel))]";
       default:
         return "bg-blue-500/10 text-blue-600";
     }

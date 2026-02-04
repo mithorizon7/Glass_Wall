@@ -153,7 +153,7 @@ export function ProgressTracker({
       done: progress.httpVpnOff,
       protocolIcon: Unlock,
       vpnIcon: ShieldOff,
-      protocolColor: "text-red-500",
+      protocolColor: "text-[hsl(var(--http-danger))]",
       description: t("progressTracker.mostVulnerable"),
     },
     {
@@ -162,7 +162,7 @@ export function ProgressTracker({
       done: progress.httpVpnOn,
       protocolIcon: Unlock,
       vpnIcon: Shield,
-      protocolColor: "text-red-500",
+      protocolColor: "text-[hsl(var(--http-danger))]",
       description: t("progressTracker.contentVisibleToVpn"),
     },
     {
@@ -171,7 +171,7 @@ export function ProgressTracker({
       done: progress.httpsVpnOff,
       protocolIcon: Lock,
       vpnIcon: ShieldOff,
-      protocolColor: "text-green-500",
+      protocolColor: "text-[hsl(var(--https-success))]",
       description: t("progressTracker.contentEncryptedMetadataVisible"),
     },
     {
@@ -180,7 +180,7 @@ export function ProgressTracker({
       done: progress.httpsVpnOn,
       protocolIcon: Lock,
       vpnIcon: Shield,
-      protocolColor: "text-green-500",
+      protocolColor: "text-[hsl(var(--https-success))]",
       description: t("progressTracker.maximumProtection"),
     },
   ];
@@ -191,7 +191,7 @@ export function ProgressTracker({
         <CollapsibleTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full flex items-center justify-between gap-2 p-0 h-auto"
+            className="w-full flex items-center justify-between gap-2 p-0 h-auto rounded-2xl"
             data-testid="button-toggle-progress"
           >
             <div className="flex items-center gap-2">
@@ -241,8 +241,8 @@ export function ProgressTracker({
                 return (
                   <div
                     key={combo.key}
-                    className={`flex items-center gap-3 p-2 rounded-md transition-colors ${
-                      combo.done ? "bg-muted/50" : ""
+                    className={`flex items-center gap-3 p-2 rounded-xl border border-border/50 transition-colors ${
+                      combo.done ? "bg-card/60 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.3)]" : ""
                     }`}
                     data-testid={`progress-item-${combo.key}`}
                   >
@@ -253,7 +253,9 @@ export function ProgressTracker({
                     )}
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <ProtocolIcon className={`w-4 h-4 ${combo.protocolColor} flex-shrink-0`} />
-                      <VpnIcon className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                      <VpnIcon
+                        className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] flex-shrink-0"
+                      />
                       <div className="min-w-0">
                         <p
                           className={`text-sm truncate ${combo.done ? "text-foreground" : "text-muted-foreground"}`}

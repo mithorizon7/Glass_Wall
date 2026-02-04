@@ -34,14 +34,24 @@ export function InfoBanner({
     success: "bg-[hsl(var(--https-success))]/20",
   };
 
+  const stripeStyles = {
+    warning: "bg-[hsl(var(--warning-bg))]",
+    info: "bg-primary",
+    success: "bg-[hsl(var(--https-success))]",
+  };
+
   return (
     <div
-      className={`flex items-start gap-4 px-5 py-4 rounded-lg border ${typeStyles[type]} ${className}`}
+      className={`relative flex items-start gap-4 px-5 py-4 rounded-2xl border overflow-hidden shadow-[0_18px_40px_-32px_rgba(15,23,42,0.35)] backdrop-blur ${typeStyles[type]} ${className}`}
       role="alert"
       data-testid={`banner-${type}`}
     >
+      <span
+        className={`absolute left-0 top-0 h-full w-1 rounded-l-2xl ${stripeStyles[type]}`}
+        aria-hidden="true"
+      />
       <div
-        className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${iconBgStyles[type]}`}
+        className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center ${iconBgStyles[type]}`}
       >
         {icon}
       </div>

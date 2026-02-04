@@ -71,7 +71,7 @@ function DataPacket({
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-lg p-3 font-mono text-xs border-2 max-w-[220px] ${
+      className={`rounded-2xl p-3 font-mono text-xs border-2 max-w-[230px] shadow-[0_18px_40px_-28px_rgba(15,23,42,0.4)] backdrop-blur ${
         isSecure
           ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/40"
           : "bg-[hsl(var(--http-danger))]/10 border-[hsl(var(--http-danger))]/40"
@@ -147,7 +147,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
   if (stage === "idle") {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
-        <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mb-3">
+        <div className="w-12 h-12 rounded-2xl bg-card/70 border border-border/60 flex items-center justify-center mb-3 shadow-[0_12px_30px_-24px_rgba(15,23,42,0.35)]">
           <Eye className="w-6 h-6 text-muted-foreground" />
         </div>
         <h3 className="text-base font-medium text-foreground mb-1">
@@ -164,8 +164,8 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
         <div className="flex items-center justify-between gap-2 mb-4">
           <div className="flex flex-col items-center gap-1">
             <div
-              className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
-                isActive ? "bg-primary/10" : "bg-muted/30"
+              className={`w-12 h-12 rounded-2xl border border-border/60 flex items-center justify-center transition-colors ${
+                isActive ? "bg-primary/10" : "bg-card/60"
               }`}
             >
               <Monitor
@@ -204,7 +204,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
 
             {vpnMode === "on" && (
               <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 h-8 border-2 border-dashed border-[hsl(var(--vpn-tunnel))]/40 rounded-full flex items-center justify-center">
-                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-background px-2">
+                <span className="text-[10px] text-[hsl(var(--vpn-tunnel))] bg-card/90 px-2 rounded-full">
                   {t("wireView.vpnLabel")}
                 </span>
               </div>
@@ -244,7 +244,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
                 >
                   <Badge
                     variant="outline"
-                    className="text-[10px] border-[hsl(var(--https-success))]/50 text-[hsl(var(--https-success))] bg-background"
+                    className="text-[10px] border-[hsl(var(--https-success))]/50 text-[hsl(var(--https-success))] bg-card/90"
                   >
                     <ShieldCheck className="w-3 h-3 mr-1" />
                     {t("handshake.tlsBadge")}
@@ -257,7 +257,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
           <div className="flex items-center gap-2">
             {vpnMode === "on" && (
               <div className="flex flex-col items-center gap-1">
-                <div className="w-10 h-10 rounded-lg bg-[hsl(var(--vpn-tunnel))]/10 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl border border-[hsl(var(--vpn-tunnel))]/30 bg-[hsl(var(--vpn-tunnel))]/10 flex items-center justify-center">
                   <Wifi className="w-5 h-5 text-[hsl(var(--vpn-tunnel))]" />
                 </div>
                 <span className="text-[10px] text-muted-foreground">{t("wireView.vpnLabel")}</span>
@@ -265,12 +265,12 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
             )}
             <div className="flex flex-col items-center gap-1">
               <div
-                className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                className={`w-12 h-12 rounded-2xl border border-border/60 flex items-center justify-center transition-colors ${
                   showResponse
                     ? isSecure
                       ? "bg-[hsl(var(--https-success))]/10"
                       : "bg-[hsl(var(--http-danger))]/10"
-                    : "bg-muted/30"
+                    : "bg-card/60"
                 }`}
               >
                 <Server
@@ -290,7 +290,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
       </div>
 
       <div
-        className={`p-4 rounded-lg border transition-colors ${
+        className={`p-4 rounded-2xl border transition-colors shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)] ${
           isSecure
             ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20"
             : "bg-[hsl(var(--http-danger))]/5 border-[hsl(var(--http-danger))]/20"
@@ -317,7 +317,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
 
             {showRequest && (
               <div className="space-y-3">
-                <div className="font-mono text-xs space-y-1 bg-background/50 rounded p-3">
+                <div className="font-mono text-xs space-y-1 bg-background/70 rounded-xl p-3 border border-border/60">
                   {isSecure ? (
                     <div className="text-muted-foreground space-y-2">
                       <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide">
@@ -330,19 +330,19 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
                         </span>{" "}
                         {payload.domain}
                       </div>
-                      <div className="border-t border-border/30 pt-2">
-                        <div className="text-[10px] opacity-50 mb-1">
-                          {t("wireView.tlsRecord")}:
+                        <div className="border-t border-border/40 pt-2">
+                          <div className="text-[10px] opacity-50 mb-1">
+                            {t("wireView.tlsRecord")}:
+                          </div>
+                          <div className="opacity-50 text-[10px]">
+                            {generateTlsRecord(payload.body.username + payload.body.password)}
+                          </div>
                         </div>
-                        <div className="opacity-50 text-[10px]">
-                          {generateTlsRecord(payload.body.username + payload.body.password)}
-                        </div>
-                      </div>
-                      <div className="border-t border-border/30 pt-2">
-                        <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
-                          <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
-                          <span className="opacity-60">{t("labels.encrypted")}</span>
-                        </div>
+                        <div className="border-t border-border/40 pt-2">
+                          <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
+                            <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
+                            <span className="opacity-60">{t("labels.encrypted")}</span>
+                          </div>
                         <div className="text-[10px] opacity-50 mb-1">
                           {t("wireView.encryptedPayload")}:
                         </div>
@@ -371,7 +371,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
                       <div className="text-muted-foreground">
                         {t("wireView.contentTypeHeader")} {payload.headers["Content-Type"]}
                       </div>
-                      <div className="border-t border-border/30 mt-2 pt-2">
+                      <div className="border-t border-border/40 mt-2 pt-2">
                         <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
                           <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
                           <span className="opacity-60">{t("labels.visible")}</span>
@@ -394,7 +394,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
                 </div>
 
                 <div
-                  className={`text-xs p-3 rounded-lg ${
+                  className={`text-xs p-3 rounded-xl border border-border/60 ${
                     isSecure
                       ? "bg-[hsl(var(--https-success))]/5 text-muted-foreground"
                       : "bg-[hsl(var(--http-danger))]/5 text-muted-foreground"
@@ -410,7 +410,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
                   </p>
                 </div>
 
-                <div className="text-xs p-3 rounded-lg bg-muted/50 text-muted-foreground">
+                <div className="text-xs p-3 rounded-xl border border-border/50 bg-muted/50 text-muted-foreground">
                   <p className="font-medium mb-1 text-foreground">
                     {t("wireView.whyItMattersTitle")}
                   </p>
@@ -426,7 +426,7 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`p-4 rounded-lg border ${
+          className={`p-4 rounded-2xl border shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)] ${
             isSecure
               ? "bg-[hsl(var(--https-success))]/10 border-[hsl(var(--https-success))]/30"
               : "bg-[hsl(var(--http-danger))]/10 border-[hsl(var(--http-danger))]/30"

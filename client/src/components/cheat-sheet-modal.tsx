@@ -315,11 +315,11 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
           </ul>
         </Card>
 
-        <Card className="p-4 pl-6 bg-gradient-to-r from-purple-500/10 to-transparent">
+        <Card className="p-4 pl-6 bg-gradient-to-r from-[hsl(var(--vpn-tunnel))]/10 to-transparent">
           <div className="flex items-center gap-2 mb-3">
-            <Shield className="w-5 h-5 text-purple-500" />
+            <Shield className="w-5 h-5 text-[hsl(var(--vpn-tunnel))]" />
             <h3 className="font-semibold text-lg text-foreground">{t("cheatSheet.vpnTitle")}</h3>
-            <Badge className="bg-purple-500/10 text-purple-600 text-xs">
+            <Badge className="bg-[hsl(var(--vpn-tunnel))]/10 text-[hsl(var(--vpn-tunnel))] text-xs">
               {t("cheatSheet.vpnBadge")}
             </Badge>
           </div>
@@ -328,9 +328,9 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
               vpnPoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-2">
                   {i < 3 ? (
-                    <CheckCircle className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] mt-0.5 flex-shrink-0" />
                   ) : i === 3 ? (
-                    <EyeOff className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                    <EyeOff className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] mt-0.5 flex-shrink-0" />
                   ) : (
                     <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
                   )}

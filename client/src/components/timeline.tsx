@@ -125,15 +125,16 @@ export function Timeline({
 
   const stageColors = useMemo(
     () => ({
-      inactive: "border-muted bg-muted/30 text-muted-foreground",
+      inactive:
+        "border-border/60 bg-card/60 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(255,255,255,0.45)]",
       active:
         protocolMode === "https"
-          ? "border-[hsl(var(--https-success))] bg-[hsl(var(--https-success))]/10 text-[hsl(var(--https-success))] animate-pulse-node"
-          : "border-[hsl(var(--http-danger))] bg-[hsl(var(--http-danger))]/10 text-[hsl(var(--http-danger))] animate-pulse-node",
+          ? "border-[hsl(var(--https-success))] bg-[hsl(var(--https-success))]/10 text-[hsl(var(--https-success))] shadow-[0_12px_30px_-18px_hsl(var(--https-success)/0.45)] animate-pulse-node"
+          : "border-[hsl(var(--http-danger))] bg-[hsl(var(--http-danger))]/10 text-[hsl(var(--http-danger))] shadow-[0_12px_30px_-18px_hsl(var(--http-danger)/0.45)] animate-pulse-node",
       complete:
         protocolMode === "https"
-          ? "border-[hsl(var(--https-success))] bg-[hsl(var(--https-success))] text-white"
-          : "border-[hsl(var(--http-danger))] bg-[hsl(var(--http-danger))] text-white",
+          ? "border-[hsl(var(--https-success))] bg-[hsl(var(--https-success))] text-white shadow-[0_16px_35px_-22px_hsl(var(--https-success)/0.55)]"
+          : "border-[hsl(var(--http-danger))] bg-[hsl(var(--http-danger))] text-white shadow-[0_16px_35px_-22px_hsl(var(--http-danger)/0.55)]",
     }),
     [protocolMode],
   );
@@ -318,7 +319,7 @@ export function Timeline({
   return (
     <div className="mb-6 space-y-6">
       {vpnMode === "on" && (
-        <div className="flex items-center justify-center gap-2 mb-6 py-3 px-4 rounded-lg bg-[hsl(var(--vpn-tunnel))]/10 border border-[hsl(var(--vpn-tunnel))]/30">
+        <div className="flex items-center justify-center gap-2 mb-6 py-3 px-5 rounded-full bg-[hsl(var(--vpn-tunnel))]/10 border border-[hsl(var(--vpn-tunnel))]/30 shadow-[0_12px_30px_-24px_rgba(15,23,42,0.35)]">
           <Wifi className="w-4 h-4 text-[hsl(var(--vpn-tunnel))]" />
           <ArrowRight className="w-3 h-3 text-muted-foreground" />
           <Shield className="w-4 h-4 text-[hsl(var(--vpn-tunnel))]" />
@@ -332,7 +333,7 @@ export function Timeline({
         </div>
       )}
 
-      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mb-4">
+      <div className="flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-4">
         <span>{t("labels.legendTitle")}</span>
         <Badge className={`text-[10px] uppercase tracking-wide ${metadataBadgeClass}`}>
           {t("labels.metadata")}
@@ -356,10 +357,10 @@ export function Timeline({
                     data-testid={`timeline-node-${node.id}`}
                   >
                     <div
-                      className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${stageColors[state]}`}
-                    >
-                      {state === "complete" ? <CheckCircle2 className="w-5 h-5" /> : node.icon}
-                    </div>
+                    className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${stageColors[state]}`}
+                  >
+                    {state === "complete" ? <CheckCircle2 className="w-5 h-5" /> : node.icon}
+                  </div>
                     <span
                       className={`text-sm font-medium mt-2 ${
                         state === "inactive" ? "text-muted-foreground" : "text-foreground"
@@ -378,7 +379,7 @@ export function Timeline({
               </Tooltip>
 
               {showLine && (
-                <div className="flex-1 h-0.5 mx-2 bg-muted relative overflow-hidden">
+                <div className="flex-1 h-0.5 mx-2 bg-muted/60 relative overflow-hidden rounded-full">
                   {(state === "complete" || state === "active") && (
                     <div
                       className={`absolute inset-y-0 left-0 ${lineColor} transition-all duration-700 ${
@@ -404,14 +405,16 @@ export function Timeline({
           return (
             <div
               key={section.id}
-              className={`rounded-lg border transition-colors ${
-                isActive ? "border-border bg-background" : "border-muted bg-muted/30"
+              className={`rounded-2xl border transition-colors ${
+                isActive
+                  ? "border-border/70 bg-card/70 shadow-[0_16px_30px_-24px_rgba(15,23,42,0.3)]"
+                  : "border-border/50 bg-muted/40"
               }`}
             >
               <Button
                 type="button"
                 variant="ghost"
-                className={`w-full justify-between px-4 py-3 h-auto ${isDisabled ? "opacity-60" : ""}`}
+                className={`w-full justify-between px-4 py-3 h-auto rounded-2xl ${isDisabled ? "opacity-60" : ""}`}
                 onClick={() => onToggleNode(section.id)}
                 disabled={isDisabled}
                 aria-expanded={isExpanded}
@@ -429,7 +432,7 @@ export function Timeline({
                 <div className="px-4 pb-4">
                   {section.content}
                   {attackerNote && (
-                    <div className="mt-3 rounded-lg border border-border/60 bg-muted/40 p-3 text-xs text-muted-foreground">
+                    <div className="mt-3 rounded-xl border border-border/60 bg-muted/40 p-3 text-xs text-muted-foreground">
                       <p className="font-medium text-foreground mb-1">
                         {t("timeline.attackerNoteTitle")}
                       </p>

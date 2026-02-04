@@ -25,10 +25,10 @@ export function DemoLoginForm({
   return (
     <div className="space-y-6">
       <div
-        className={`flex items-center gap-2 px-4 py-3 rounded-lg border ${
+        className={`flex items-center gap-2 px-4 py-3 rounded-full border shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)] ${
           isSecure
-            ? "bg-[hsl(var(--https-success))]/5 border-[hsl(var(--https-success))]/20"
-            : "bg-[hsl(var(--http-danger))]/5 border-[hsl(var(--http-danger))]/20"
+            ? "bg-[hsl(var(--https-success))]/8 border-[hsl(var(--https-success))]/25"
+            : "bg-[hsl(var(--http-danger))]/8 border-[hsl(var(--http-danger))]/25"
         }`}
         data-testid="container-url-bar"
       >
@@ -52,7 +52,7 @@ export function DemoLoginForm({
         </span>
       </div>
 
-      <div className="bg-muted/30 rounded-lg p-6">
+      <div className="bg-card/80 rounded-2xl border border-border/60 p-6 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.4)] backdrop-blur">
         <div className="flex items-center justify-between gap-3 mb-6">
           <div className="flex items-center gap-2">
             <Globe className="w-5 h-5 text-muted-foreground" />
@@ -73,7 +73,7 @@ export function DemoLoginForm({
               type="text"
               value={payload.body.username}
               onChange={(e) => onUsernameChange(e.target.value)}
-              className="bg-background font-mono"
+              className="bg-background/80 font-mono"
               placeholder={t("loginForm.usernamePlaceholder")}
               data-testid="input-demo-username"
             />
@@ -88,7 +88,7 @@ export function DemoLoginForm({
               type="password"
               value={payload.body.password}
               onChange={(e) => onPasswordChange(e.target.value)}
-              className="bg-background font-mono"
+              className="bg-background/80 font-mono"
               placeholder={t("loginForm.passwordPlaceholder")}
               data-testid="input-demo-password"
             />

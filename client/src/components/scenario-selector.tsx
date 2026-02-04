@@ -100,8 +100,8 @@ function ScenarioCard({ scenario, isSelected, onSelect }: ScenarioCardProps) {
 
   return (
     <Card
-      className={`p-4 cursor-pointer transition-all hover-elevate ${
-        isSelected ? "ring-2 ring-primary" : ""
+      className={`p-4 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-32px_rgba(15,23,42,0.35)] ${
+        isSelected ? "ring-2 ring-primary/40" : ""
       }`}
       onClick={onSelect}
       data-testid={`scenario-card-${scenario.id}`}

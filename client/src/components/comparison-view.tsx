@@ -53,7 +53,7 @@ function ComparisonWireView({ protocolMode, vpnMode, stage, payload }: Compariso
           </>
         )}
         {vpnMode === "on" && (
-          <Badge className="bg-purple-500/10 text-purple-600 text-xs">
+          <Badge className="bg-[hsl(var(--vpn-tunnel))]/10 text-[hsl(var(--vpn-tunnel))] text-xs">
             {t("comparison.withVpnLabel")}
           </Badge>
         )}

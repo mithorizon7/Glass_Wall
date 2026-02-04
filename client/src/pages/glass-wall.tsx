@@ -408,105 +408,131 @@ export default function GlassWall() {
   }, [showModeChangeBanner, stepMode, t, timelineStage]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="absolute -top-40 right-[-10%] h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.35),transparent_65%)] blur-3xl opacity-70" />
+        <div className="absolute top-[20%] -left-32 h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle_at_center,hsl(var(--vpn-tunnel)/0.3),transparent_65%)] blur-3xl opacity-60" />
+        <div className="absolute bottom-[-25%] left-1/3 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,hsl(var(--https-success)/0.22),transparent_70%)] blur-3xl opacity-50" />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 py-10 md:py-14">
         <div className="sr-only" aria-live="polite" aria-atomic="true">
           {stageAnnouncement}
         </div>
-        <header className="text-center mb-10 md:mb-12">
-          <div className="flex justify-end mb-4">
-            <LanguageSwitcher />
-          </div>
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4"
-            data-testid="text-page-title"
-          >
-            {t("title")}
-          </h1>
-          <p
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6"
-            data-testid="text-page-subtitle"
-          >
-            {t("subtitle")}
-          </p>
-          <div className="max-w-3xl mx-auto mb-6">
-            <LearningObjectivesCard />
-          </div>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <div data-onboarding="scenario-selector">
-              <ScenarioSelector
-                currentScenario={currentScenario}
-                onScenarioChange={setCurrentScenario}
-                attackerModel={attackerModel}
-              />
+        <header
+          className="relative mb-12 md:mb-16 opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
+          style={{ animationDelay: "40ms" }}
+        >
+          <div className="flex justify-end mb-6">
+            <div className="rounded-full border border-border/60 bg-card/70 px-3 py-2 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.4)] backdrop-blur">
+              <LanguageSwitcher />
             </div>
-            <div data-onboarding="learning-tools" className="flex items-center gap-3">
-              <LearningToolsHub
-                payload={payload}
-                vpnMode={vpnMode}
-                onShowInTimeline={handleQuizShowTimeline}
-              />
+          </div>
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <div className="text-center lg:text-left">
+              <div className="mx-auto lg:mx-0 h-1 w-20 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--vpn-tunnel))] mb-4" />
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold tracking-tight text-foreground mb-4"
+                data-testid="text-page-title"
+              >
+                {t("title")}
+              </h1>
+              <p
+                className="text-lg md:text-xl text-muted-foreground max-w-2xl lg:max-w-xl mx-auto lg:mx-0 text-balance"
+                data-testid="text-page-subtitle"
+              >
+                {t("subtitle")}
+              </p>
+            </div>
+            <div className="space-y-4">
+              <LearningObjectivesCard className="shadow-[0_20px_50px_-40px_rgba(15,23,42,0.45)]" />
+              <div className="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
+                <div data-onboarding="scenario-selector">
+                  <ScenarioSelector
+                    currentScenario={currentScenario}
+                    onScenarioChange={setCurrentScenario}
+                    attackerModel={attackerModel}
+                  />
+                </div>
+                <div data-onboarding="learning-tools" className="flex items-center gap-3">
+                  <LearningToolsHub
+                    payload={payload}
+                    vpnMode={vpnMode}
+                    onShowInTimeline={handleQuizShowTimeline}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </header>
 
         {/* Current Scenario - Page Headline */}
-        <div className="text-center mb-8" data-testid="scenario-header">
-          <div className="inline-flex items-center gap-3 mb-2">
-            <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                currentScenario.riskLevel === "high"
-                  ? "bg-red-500/10"
-                  : currentScenario.riskLevel === "medium"
-                    ? "bg-amber-500/10"
-                    : "bg-green-500/10"
-              }`}
-            >
-              <currentScenario.icon
-                className={`w-5 h-5 ${
+        <Card
+          className="p-6 md:p-8 mb-8 text-center opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
+          style={{ animationDelay: "120ms" }}
+          data-testid="scenario-header"
+        >
+          <div className="flex flex-col items-center gap-3">
+            <div className="inline-flex items-center gap-3">
+              <div
+                className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
                   currentScenario.riskLevel === "high"
-                    ? "text-red-600 dark:text-red-400"
+                    ? "bg-red-500/10"
                     : currentScenario.riskLevel === "medium"
-                      ? "text-amber-600 dark:text-amber-400"
-                      : "text-green-600 dark:text-green-400"
+                      ? "bg-amber-500/10"
+                      : "bg-green-500/10"
                 }`}
-              />
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-              {t(`scenarioSelector.${currentScenario.id}.name`)}
-            </h2>
-            <Badge
-              className={`text-xs ${
-                currentScenario.riskLevel === "high"
-                  ? "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"
+              >
+                <currentScenario.icon
+                  className={`w-6 h-6 ${
+                    currentScenario.riskLevel === "high"
+                      ? "text-red-600 dark:text-red-400"
+                      : currentScenario.riskLevel === "medium"
+                        ? "text-amber-600 dark:text-amber-400"
+                        : "text-green-600 dark:text-green-400"
+                  }`}
+                />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-serif font-semibold text-foreground">
+                {t(`scenarioSelector.${currentScenario.id}.name`)}
+              </h2>
+              <Badge
+                className={`text-[11px] ${
+                  currentScenario.riskLevel === "high"
+                    ? "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20"
+                    : currentScenario.riskLevel === "medium"
+                      ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                      : "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
+                }`}
+              >
+                {currentScenario.riskLevel === "high"
+                  ? t("highRiskEnvironment")
                   : currentScenario.riskLevel === "medium"
-                    ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
-                    : "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
-              }`}
-            >
+                    ? t("mediumRisk")
+                    : t("lowRiskEnvironment")}
+              </Badge>
+            </div>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-balance">
               {currentScenario.riskLevel === "high"
-                ? t("highRiskEnvironment")
+                ? `${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
                 : currentScenario.riskLevel === "medium"
-                  ? t("mediumRisk")
-                  : t("lowRiskEnvironment")}
-            </Badge>
+                  ? `${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t("considerVpn")}.`
+                  : t(`scenarioSelector.${currentScenario.id}.rec1`)}
+            </p>
           </div>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            {currentScenario.riskLevel === "high"
-              ? `${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t(`scenarioSelector.${currentScenario.id}.rec1`)}.`
-              : currentScenario.riskLevel === "medium"
-                ? `${t(`scenarioSelector.${currentScenario.id}.threat1`)}. ${t("considerVpn")}.`
-                : t(`scenarioSelector.${currentScenario.id}.rec1`)}
-          </p>
-        </div>
+        </Card>
 
-        <InfoBanner
-          type="info"
-          icon={<Wifi className="w-5 h-5" />}
-          title={t("networkContext.title")}
-          message={t(`networkContext.${currentScenario.id}`)}
-          className="mb-6"
-        />
+        <div
+          className="opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
+          style={{ animationDelay: "160ms" }}
+        >
+          <InfoBanner
+            type="info"
+            icon={<Wifi className="w-5 h-5" />}
+            title={t("networkContext.title")}
+            message={t(`networkContext.${currentScenario.id}`)}
+            className="mb-6"
+          />
+        </div>
 
         {vpnMode === "on" && (
           <div className="mb-4 space-y-3">
@@ -568,57 +594,67 @@ export default function GlassWall() {
           className="mb-6"
         />
 
-        <ControlPanel
-          protocolMode={protocolMode}
-          vpnMode={vpnMode}
-          attackerModel={attackerModel}
-          autoPlay={autoPlay}
-          stepMode={stepMode}
-          onProtocolChange={(value: ProtocolMode) => handleModeChange("protocol", value)}
-          onVpnChange={(value: VpnMode) => handleModeChange("vpn", value)}
-          onAttackerModelChange={handleAttackerModelChange}
-          onAutoPlayChange={handleAutoPlayChange}
-          onStepModeChange={handleStepModeChange}
-          className="mb-8"
-        />
+        <div
+          className="opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
+          style={{ animationDelay: "200ms" }}
+        >
+          <ControlPanel
+            protocolMode={protocolMode}
+            vpnMode={vpnMode}
+            attackerModel={attackerModel}
+            autoPlay={autoPlay}
+            stepMode={stepMode}
+            onProtocolChange={(value: ProtocolMode) => handleModeChange("protocol", value)}
+            onVpnChange={(value: VpnMode) => handleModeChange("vpn", value)}
+            onAttackerModelChange={handleAttackerModelChange}
+            onAutoPlayChange={handleAutoPlayChange}
+            onStepModeChange={handleStepModeChange}
+            className="mb-10"
+          />
+        </div>
 
         <div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 md:mb-12"
-          data-onboarding="action-area"
+          className="opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
+          style={{ animationDelay: "240ms" }}
         >
-          {stepMode && timelineStage !== "idle" && timelineStage !== "complete" ? (
-            <Button
-              size="lg"
-              onClick={handleNextStep}
-              className="px-8 py-6 text-lg"
-              data-testid="button-next-step"
-            >
-              <ChevronRight className="w-5 h-5 mr-2" />
-              {t("buttons.nextStep")}
-            </Button>
-          ) : (
-            <Button
-              size="lg"
-              onClick={playTimeline}
-              disabled={isAnimating}
-              className="px-8 py-6 text-lg"
-              data-testid="button-send-request"
-            >
-              <Play className="w-5 h-5 mr-2" />
-              {t("buttons.sendRequest")}
-            </Button>
-          )}
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={resetTimeline}
-            disabled={timelineStage === "idle"}
-            className="px-6 py-6"
-            data-testid="button-replay"
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 md:mb-14"
+            data-onboarding="action-area"
           >
-            <RotateCcw className="w-5 h-5 mr-2" />
-            {t("buttons.replayTimeline")}
-          </Button>
+            {stepMode && timelineStage !== "idle" && timelineStage !== "complete" ? (
+              <Button
+                size="lg"
+                onClick={handleNextStep}
+                className="px-10 py-6 text-lg shadow-[0_20px_45px_-30px_rgba(15,23,42,0.45)]"
+                data-testid="button-next-step"
+              >
+                <ChevronRight className="w-5 h-5 mr-2" />
+                {t("buttons.nextStep")}
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                onClick={playTimeline}
+                disabled={isAnimating}
+                className="px-10 py-6 text-lg shadow-[0_20px_45px_-30px_rgba(15,23,42,0.45)]"
+                data-testid="button-send-request"
+              >
+                <Play className="w-5 h-5 mr-2" />
+                {t("buttons.sendRequest")}
+              </Button>
+            )}
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={resetTimeline}
+              disabled={timelineStage === "idle"}
+              className="px-8 py-6"
+              data-testid="button-replay"
+            >
+              <RotateCcw className="w-5 h-5 mr-2" />
+              {t("buttons.replayTimeline")}
+            </Button>
+          </div>
         </div>
         {nextPrompt && (
           <div className="mb-10 md:mb-12 text-center text-sm text-muted-foreground">
@@ -626,10 +662,13 @@ export default function GlassWall() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="p-6 md:p-8 relative overflow-visible" data-onboarding="user-view-card">
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10 opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
+          style={{ animationDelay: "280ms" }}
+        >
+          <Card className="p-8 md:p-10 relative overflow-visible" data-onboarding="user-view-card">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.2)]">
                 <Eye className="w-5 h-5 text-primary" />
               </div>
               <div>
@@ -650,11 +689,11 @@ export default function GlassWall() {
             />
           </Card>
 
-          <Card className="p-6 md:p-8 relative overflow-visible" data-onboarding="wire-view-card">
+          <Card className="p-8 md:p-10 relative overflow-visible" data-onboarding="wire-view-card">
             {vpnMode === "on" && <VpnTunnelOverlay />}
             <div className="flex items-center gap-3 mb-6">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)] ${
                   protocolMode === "https"
                     ? "bg-[hsl(var(--https-success))]/10"
                     : "bg-[hsl(var(--http-danger))]/10"
@@ -721,7 +760,7 @@ export default function GlassWall() {
           />
         </div>
 
-        <footer className="mt-16 text-center">
+        <footer className="mt-20 pt-8 border-t border-border/60 text-center">
           <p className="text-sm text-muted-foreground mb-4">{t("footer.simulationNote")}</p>
           <div className="flex items-center justify-center gap-6 flex-wrap">
             <Tooltip>
