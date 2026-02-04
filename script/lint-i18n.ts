@@ -4,11 +4,57 @@ import { execSync } from "child_process";
 import ts from "typescript";
 
 const ROOT = process.cwd();
-const FILES = execSync("rg --files client/src", { encoding: "utf8" })
-  .trim()
-  .split("\n")
-  .filter(Boolean)
-  .filter((file) => file.endsWith(".ts") || file.endsWith(".tsx"));
+
+function collectSourceFiles(rootDir: string) {
+  const results: string[] = [];
+  const stack = [rootDir];
+
+  while (stack.length) {
+    const current = stack.pop();
+    if (!current) {
+      continue;
+    }
+    let entries: fs.Dirent[];
+    try {
+      entries = fs.readdirSync(current, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      if (entry.name.startsWith(".")) {
+        continue;
+      }
+      const fullPath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === "node_modules" || entry.name === "dist") {
+          continue;
+        }
+        stack.push(fullPath);
+      } else if (entry.isFile()) {
+        if (fullPath.endsWith(".ts") || fullPath.endsWith(".tsx")) {
+          results.push(path.relative(ROOT, fullPath));
+        }
+      }
+    }
+  }
+
+  return results;
+}
+
+let files: string[] = [];
+try {
+  files = execSync("rg --files client/src", {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  })
+    .trim()
+    .split("\n")
+    .filter(Boolean);
+} catch {
+  files = collectSourceFiles(path.join(ROOT, "client", "src"));
+}
+
+const FILES = files.filter((file) => file.endsWith(".ts") || file.endsWith(".tsx"));
 
 const USER_FACING_ATTRS = new Set([
   "aria-label",
