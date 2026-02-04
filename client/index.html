@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <script>
-      // Polyfill for Array/String.prototype.at (ES2022) - MUST run before any modules
+      // ES2020-2023 Polyfills - MUST run before any modules load
+      // Required for older browsers and some Safari versions
+      
+      // Array.prototype.at (ES2022)
       if (!Array.prototype.at) {
         Array.prototype.at = function(n) {
           n = Math.trunc(n) || 0;
@@ -10,11 +13,42 @@
           return n < 0 || n >= this.length ? undefined : this[n];
         };
       }
+      // String.prototype.at (ES2022)
       if (!String.prototype.at) {
         String.prototype.at = function(n) {
           n = Math.trunc(n) || 0;
           if (n < 0) n += this.length;
           return n < 0 || n >= this.length ? undefined : this.charAt(n);
+        };
+      }
+      // Object.hasOwn (ES2022)
+      if (!Object.hasOwn) {
+        Object.hasOwn = function(obj, prop) {
+          return Object.prototype.hasOwnProperty.call(obj, prop);
+        };
+      }
+      // String.prototype.replaceAll (ES2021) - older Safari
+      if (!String.prototype.replaceAll) {
+        String.prototype.replaceAll = function(search, replacement) {
+          return this.split(search).join(replacement);
+        };
+      }
+      // Array.prototype.findLast (ES2023)
+      if (!Array.prototype.findLast) {
+        Array.prototype.findLast = function(fn, thisArg) {
+          for (var i = this.length - 1; i >= 0; i--) {
+            if (fn.call(thisArg, this[i], i, this)) return this[i];
+          }
+          return undefined;
+        };
+      }
+      // Array.prototype.findLastIndex (ES2023)
+      if (!Array.prototype.findLastIndex) {
+        Array.prototype.findLastIndex = function(fn, thisArg) {
+          for (var i = this.length - 1; i >= 0; i--) {
+            if (fn.call(thisArg, this[i], i, this)) return i;
+          }
+          return -1;
         };
       }
     </script>
