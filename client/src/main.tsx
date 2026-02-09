@@ -13,26 +13,35 @@ function resetInitialScrollPosition() {
   if (typeof window === "undefined") return;
   if (window.location.hash) return;
 
-  // Keep browser back/forward behavior intact.
-  const navigationEntry = performance.getEntriesByType("navigation")[0] as
-    | PerformanceNavigationTiming
-    | undefined;
-  if (navigationEntry?.type === "back_forward") {
-    return;
-  }
+  const previousScrollRestoration = window.history.scrollRestoration;
+  // Disable browser/session scroll restoration during first paint.
+  window.history.scrollRestoration = "manual";
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
 
   // Run multiple times to override browser/session restoration timing differences.
   scrollToTop();
-  const timeoutId = window.setTimeout(scrollToTop, 0);
-  const rafId = window.requestAnimationFrame(scrollToTop);
+  const timeoutIds = [0, 60, 220].map((delay) => window.setTimeout(scrollToTop, delay));
+  const rafId = window.requestAnimationFrame(() => {
+    scrollToTop();
+    window.requestAnimationFrame(scrollToTop);
+  });
+  const handlePageShow = (event: PageTransitionEvent) => {
+    // Keep bfcache navigation restoration behavior.
+    if (event.persisted) return;
+    scrollToTop();
+  };
+  window.addEventListener("pageshow", handlePageShow);
 
   return () => {
-    window.clearTimeout(timeoutId);
+    timeoutIds.forEach((id) => window.clearTimeout(id));
     window.cancelAnimationFrame(rafId);
+    window.removeEventListener("pageshow", handlePageShow);
+    window.history.scrollRestoration = previousScrollRestoration;
   };
 }
 
