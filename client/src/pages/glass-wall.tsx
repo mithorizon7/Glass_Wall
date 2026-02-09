@@ -666,7 +666,10 @@ export default function GlassWall() {
           className="grid grid-cols-1 lg:grid-cols-2 gap-10 opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
           style={{ animationDelay: "280ms" }}
         >
-          <Card className="p-8 md:p-10 relative overflow-visible" data-onboarding="user-view-card">
+          <Card
+            className="p-8 md:p-10 relative overflow-visible lg:col-start-1 lg:row-start-1"
+            data-onboarding="user-view-card"
+          >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.2)]">
                 <Eye className="w-5 h-5 text-primary" />
@@ -689,7 +692,10 @@ export default function GlassWall() {
             />
           </Card>
 
-          <Card className="p-8 md:p-10 relative overflow-visible" data-onboarding="wire-view-card">
+          <Card
+            className="p-8 md:p-10 relative overflow-visible lg:col-start-2 lg:row-start-1 lg:row-span-2"
+            data-onboarding="wire-view-card"
+          >
             {vpnMode === "on" && <VpnTunnelOverlay />}
             <div className="flex items-center gap-3 mb-6">
               <div
@@ -738,6 +744,44 @@ export default function GlassWall() {
                 onToggleNode={toggleNodeExpansion}
                 stepMode={stepMode}
               />
+            </div>
+          </Card>
+
+          <Card className="p-8 md:p-10 relative overflow-visible lg:col-start-1 lg:row-start-2">
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)] ${
+                  protocolMode === "https"
+                    ? "bg-[hsl(var(--https-success))]/10"
+                    : "bg-[hsl(var(--http-danger))]/10"
+                }`}
+              >
+                {protocolMode === "https" ? (
+                  <EyeOff className="w-5 h-5 text-[hsl(var(--https-success))]" />
+                ) : (
+                  <Eye className="w-5 h-5 text-[hsl(var(--http-danger))]" />
+                )}
+              </div>
+              <div>
+                <h2
+                  className="text-xl font-semibold text-foreground"
+                  data-testid="text-observer-view-title"
+                >
+                  {t("wireView.subtitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">{t("wireView.title")}</p>
+              </div>
+              <Badge
+                variant="outline"
+                className={`ml-auto uppercase tracking-wide font-mono text-xs ${
+                  protocolMode === "https"
+                    ? "border-[hsl(var(--https-success))] text-[hsl(var(--https-success))]"
+                    : "border-[hsl(var(--http-danger))] text-[hsl(var(--http-danger))]"
+                }`}
+                data-testid="badge-observer-protocol-mode"
+              >
+                {protocolMode.toUpperCase()}
+              </Badge>
             </div>
 
             <WireView
