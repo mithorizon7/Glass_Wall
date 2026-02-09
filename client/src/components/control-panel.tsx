@@ -20,6 +20,30 @@ interface ControlPanelProps {
   className?: string;
 }
 
+interface InlineInfoTooltipProps {
+  label: string;
+  content: string;
+}
+
+function InlineInfoTooltip({ label, content }: InlineInfoTooltipProps) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          aria-label={label}
+          className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+        >
+          <Info className="w-3 h-3" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className="max-w-xs">
+        <p>{content}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
 export function ControlPanel({
   protocolMode,
   vpnMode,
@@ -42,18 +66,15 @@ export function ControlPanel({
         <div className="flex items-center justify-between mb-3">
           <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-1">
             {t("controls.protocol")}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="w-3 h-3 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p>{t("controls.protocolTooltip")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <InlineInfoTooltip
+              label={t("controls.protocolTooltip")}
+              content={t("controls.protocolTooltip")}
+            />
           </Label>
         </div>
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={() => onProtocolChange("http")}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full border text-sm font-semibold transition-all ${
               protocolMode === "http"
@@ -66,6 +87,7 @@ export function ControlPanel({
             <span className="font-medium">{t("controls.httpLabel")}</span>
           </button>
           <button
+            type="button"
             onClick={() => onProtocolChange("https")}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full border text-sm font-semibold transition-all ${
               protocolMode === "https"
@@ -84,18 +106,12 @@ export function ControlPanel({
         <div className="flex items-center justify-between mb-3">
           <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-1">
             {t("controls.vpn")}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="w-3 h-3 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p>{t("controls.vpnTooltip")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <InlineInfoTooltip label={t("controls.vpnTooltip")} content={t("controls.vpnTooltip")} />
           </Label>
         </div>
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={() => onVpnChange("off")}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full border text-sm font-semibold transition-all ${
               vpnMode === "off"
@@ -108,6 +124,7 @@ export function ControlPanel({
             <span className="font-medium">{tc("off")}</span>
           </button>
           <button
+            type="button"
             onClick={() => onVpnChange("on")}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full border text-sm font-semibold transition-all ${
               vpnMode === "on"
@@ -126,18 +143,15 @@ export function ControlPanel({
         <div className="flex items-center justify-between mb-3">
           <Label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-1">
             {t("controls.attackerModel")}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info className="w-3 h-3 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p>{t("controls.attackerModelTooltip")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <InlineInfoTooltip
+              label={t("controls.attackerModelTooltip")}
+              content={t("controls.attackerModelTooltip")}
+            />
           </Label>
         </div>
         <div className="grid grid-cols-1 gap-2">
           <button
+            type="button"
             onClick={() => onAttackerModelChange("passive")}
             className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-2xl border transition-all text-left text-sm font-semibold ${
               attackerModel === "passive"
@@ -149,6 +163,7 @@ export function ControlPanel({
             <span className="font-medium">{t("controls.attackerModels.passive")}</span>
           </button>
           <button
+            type="button"
             onClick={() => onAttackerModelChange("rogueHotspot")}
             className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-2xl border transition-all text-left text-sm font-semibold ${
               attackerModel === "rogueHotspot"
@@ -160,6 +175,7 @@ export function ControlPanel({
             <span className="font-medium">{t("controls.attackerModels.rogueHotspot")}</span>
           </button>
           <button
+            type="button"
             onClick={() => onAttackerModelChange("compromisedEndpoint")}
             className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-2xl border transition-all text-left text-sm font-semibold ${
               attackerModel === "compromisedEndpoint"
@@ -183,14 +199,10 @@ export function ControlPanel({
               >
                 {t("controls.autoPlay")}
               </Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="w-3 h-3 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p>{t("controls.autoPlayTooltip")}</p>
-                </TooltipContent>
-              </Tooltip>
+              <InlineInfoTooltip
+                label={t("controls.autoPlayTooltip")}
+                content={t("controls.autoPlayTooltip")}
+              />
             </div>
             <Switch
               id="toggle-auto-play"
@@ -208,14 +220,10 @@ export function ControlPanel({
               >
                 {t("controls.stepMode")}
               </Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="w-3 h-3 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p>{t("controls.stepModeTooltip")}</p>
-                </TooltipContent>
-              </Tooltip>
+              <InlineInfoTooltip
+                label={t("controls.stepModeTooltip")}
+                content={t("controls.stepModeTooltip")}
+              />
             </div>
             <Switch
               id="toggle-step-mode"

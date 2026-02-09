@@ -352,15 +352,17 @@ export function Timeline({
             <div key={node.id} className="flex items-center flex-1">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div
-                    className="flex flex-col items-center cursor-help"
+                  <button
+                    type="button"
+                    aria-label={node.tooltipContent}
+                    className="flex flex-col items-center rounded-lg cursor-help focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                     data-testid={`timeline-node-${node.id}`}
                   >
                     <div
-                    className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${stageColors[state]}`}
-                  >
-                    {state === "complete" ? <CheckCircle2 className="w-5 h-5" /> : node.icon}
-                  </div>
+                      className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${stageColors[state]}`}
+                    >
+                      {state === "complete" ? <CheckCircle2 className="w-5 h-5" /> : node.icon}
+                    </div>
                     <span
                       className={`text-sm font-medium mt-2 ${
                         state === "inactive" ? "text-muted-foreground" : "text-foreground"
@@ -371,7 +373,7 @@ export function Timeline({
                     <span className="text-xs text-muted-foreground text-center max-w-[100px] hidden sm:block">
                       {node.description}
                     </span>
-                  </div>
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
                   <p>{node.tooltipContent}</p>

@@ -100,10 +100,20 @@ function ScenarioCard({ scenario, isSelected, onSelect }: ScenarioCardProps) {
 
   return (
     <Card
-      className={`p-4 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-32px_rgba(15,23,42,0.35)] ${
+      className={`p-4 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-32px_rgba(15,23,42,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
         isSelected ? "ring-2 ring-primary/40" : ""
       }`}
       onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-pressed={isSelected}
+      aria-label={name}
       data-testid={`scenario-card-${scenario.id}`}
     >
       <div className="flex items-start gap-3">

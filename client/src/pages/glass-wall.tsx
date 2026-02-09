@@ -765,12 +765,16 @@ export default function GlassWall() {
           <div className="flex items-center justify-center gap-6 flex-wrap">
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="cursor-help">
+                <button
+                  type="button"
+                  aria-label={t("footer.zeroRiskTooltip")}
+                  className="cursor-help rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                >
                   <Badge variant="secondary">
                     <Shield className="w-3 h-3 mr-1" />
                     {t("footer.zeroRiskLearning")}
                   </Badge>
-                </span>
+                </button>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p>{t("footer.zeroRiskTooltip")}</p>
@@ -778,12 +782,16 @@ export default function GlassWall() {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="cursor-help">
+                <button
+                  type="button"
+                  aria-label={t("footer.noTelemetryTooltip")}
+                  className="cursor-help rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                >
                   <Badge variant="secondary">
                     <EyeOff className="w-3 h-3 mr-1" />
                     {t("footer.noTelemetry")}
                   </Badge>
-                </span>
+                </button>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p>{t("footer.noTelemetryTooltip")}</p>

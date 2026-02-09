@@ -13,6 +13,14 @@ function resetInitialScrollPosition() {
   if (typeof window === "undefined") return;
   if (window.location.hash) return;
 
+  // Preserve expected browser behavior for history navigation.
+  const navigationEntry = performance.getEntriesByType("navigation")[0] as
+    | PerformanceNavigationTiming
+    | undefined;
+  if (navigationEntry?.type === "back_forward") {
+    return;
+  }
+
   const previousScrollRestoration = window.history.scrollRestoration;
   // Disable browser/session scroll restoration during first paint.
   window.history.scrollRestoration = "manual";
@@ -26,9 +34,10 @@ function resetInitialScrollPosition() {
   // Run multiple times to override browser/session restoration timing differences.
   scrollToTop();
   const timeoutIds = [0, 60, 220].map((delay) => window.setTimeout(scrollToTop, delay));
+  let nestedRafId: number | null = null;
   const rafId = window.requestAnimationFrame(() => {
     scrollToTop();
-    window.requestAnimationFrame(scrollToTop);
+    nestedRafId = window.requestAnimationFrame(scrollToTop);
   });
   const handlePageShow = (event: PageTransitionEvent) => {
     // Keep bfcache navigation restoration behavior.
@@ -40,6 +49,9 @@ function resetInitialScrollPosition() {
   return () => {
     timeoutIds.forEach((id) => window.clearTimeout(id));
     window.cancelAnimationFrame(rafId);
+    if (nestedRafId !== null) {
+      window.cancelAnimationFrame(nestedRafId);
+    }
     window.removeEventListener("pageshow", handlePageShow);
     window.history.scrollRestoration = previousScrollRestoration;
   };
@@ -114,7 +126,16 @@ async function boot() {
     const { default: App } = await import("./App");
     createRoot(root).render(<App />);
   } finally {
-    cleanupScrollReset?.();
+    if (cleanupScrollReset) {
+      const releaseScrollReset = () => {
+        window.setTimeout(cleanupScrollReset, 1200);
+      };
+      if (document.readyState === "complete") {
+        releaseScrollReset();
+      } else {
+        window.addEventListener("load", releaseScrollReset, { once: true });
+      }
+    }
     unregisterBootErrorHandlers();
   }
 }
