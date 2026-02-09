@@ -38,6 +38,12 @@ export function serveStatic(app: Express) {
       return;
     }
 
+    // API routes should never fall through to SPA HTML.
+    if (req.path === "/api" || req.path.startsWith("/api/")) {
+      res.status(404).json({ message: "Not Found" });
+      return;
+    }
+
     // Never rewrite missing files (e.g. stale JS chunks) to HTML.
     if (path.extname(req.path)) {
       res.status(404).type("text/plain").send("Not Found");
@@ -45,7 +51,7 @@ export function serveStatic(app: Express) {
     }
 
     const acceptHeader = req.headers.accept ?? "";
-    const acceptsHtml = acceptHeader === "" || acceptHeader.includes("text/html");
+    const acceptsHtml = acceptHeader === "" || req.accepts("html");
     if (!acceptsHtml) {
       res.status(404).type("text/plain").send("Not Found");
       return;

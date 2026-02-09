@@ -4,7 +4,7 @@ import "./index.css";
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
-    return `${error.name}: ${error.message}`;
+    return error.stack ? error.stack : `${error.name}: ${error.message}`;
   }
   return String(error);
 }
@@ -12,7 +12,28 @@ function getErrorMessage(error: unknown): string {
 function resetInitialScrollPosition() {
   if (typeof window === "undefined") return;
   if (window.location.hash) return;
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+  // Keep browser back/forward behavior intact.
+  const navigationEntry = performance.getEntriesByType("navigation")[0] as
+    | PerformanceNavigationTiming
+    | undefined;
+  if (navigationEntry?.type === "back_forward") {
+    return;
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
+  // Run multiple times to override browser/session restoration timing differences.
+  scrollToTop();
+  const timeoutId = window.setTimeout(scrollToTop, 0);
+  const rafId = window.requestAnimationFrame(scrollToTop);
+
+  return () => {
+    window.clearTimeout(timeoutId);
+    window.cancelAnimationFrame(rafId);
+  };
 }
 
 function showFatalError(error: unknown) {
@@ -38,15 +59,35 @@ function showFatalError(error: unknown) {
   root.replaceChildren(container);
 }
 
-window.addEventListener("error", (event) => {
-  if (event.error) {
-    showFatalError(event.error);
-  }
-});
+function registerBootErrorHandlers() {
+  let active = true;
+  let shown = false;
 
-window.addEventListener("unhandledrejection", (event) => {
-  showFatalError(event.reason);
-});
+  const showOnce = (error: unknown) => {
+    if (!active || shown) return;
+    shown = true;
+    showFatalError(error);
+  };
+
+  const handleError = (event: ErrorEvent) => {
+    if (event.error) {
+      showOnce(event.error);
+    }
+  };
+
+  const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+    showOnce(event.reason);
+  };
+
+  window.addEventListener("error", handleError);
+  window.addEventListener("unhandledrejection", handleUnhandledRejection);
+
+  return () => {
+    active = false;
+    window.removeEventListener("error", handleError);
+    window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+  };
+}
 
 async function boot() {
   const root = document.getElementById("root");
@@ -54,12 +95,19 @@ async function boot() {
     throw new Error("Root element '#root' not found");
   }
 
-  // Prevent restored mid-page positions from making the hero appear "cut off" on load.
-  resetInitialScrollPosition();
+  const unregisterBootErrorHandlers = registerBootErrorHandlers();
 
-  await import("./lib/i18n");
-  const { default: App } = await import("./App");
-  createRoot(root).render(<App />);
+  // Prevent restored mid-page positions from making the hero appear "cut off" on load.
+  const cleanupScrollReset = resetInitialScrollPosition();
+
+  try {
+    await import("./lib/i18n");
+    const { default: App } = await import("./App");
+    createRoot(root).render(<App />);
+  } finally {
+    cleanupScrollReset?.();
+    unregisterBootErrorHandlers();
+  }
 }
 
 boot().catch((error) => {
