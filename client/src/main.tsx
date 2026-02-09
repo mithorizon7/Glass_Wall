@@ -9,6 +9,12 @@ function getErrorMessage(error: unknown): string {
   return String(error);
 }
 
+function resetInitialScrollPosition() {
+  if (typeof window === "undefined") return;
+  if (window.location.hash) return;
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
 function showFatalError(error: unknown) {
   const root = document.getElementById("root");
   if (!root) return;
@@ -47,6 +53,9 @@ async function boot() {
   if (!root) {
     throw new Error("Root element '#root' not found");
   }
+
+  // Prevent restored mid-page positions from making the hero appear "cut off" on load.
+  resetInitialScrollPosition();
 
   await import("./lib/i18n");
   const { default: App } = await import("./App");
