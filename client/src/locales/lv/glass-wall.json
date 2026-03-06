@@ -72,10 +72,10 @@
     }
   },
   "nextPrompt": {
-    "idle": "Izvēlieties protokolu un nospiediet “Sūtīt pieprasījumu”, lai sāktu.",
-    "modeChanged": "Režīms mainīts — palaidiet laika līniju vēlreiz.",
-    "stepMode": "Izmantojiet “Nākamais solis” vai ←/→, lai virzītos.",
-    "complete": "Izmēģiniet citu režīmu vai pārbaudiet izpratni."
+    "idle": "Izmantojiet kontrolsarakstu zemāk un tad spiediet “Sūtīt pieprasījumu”.",
+    "modeChanged": "Režīms atjaunināts. Palaidiet laika līniju vēlreiz un salīdziniet redzamību.",
+    "stepMode": "Soļu režīms ir ieslēgts. Lietojiet “Nākamais solis” vai izslēdziet to pilnam skrējienam.",
+    "complete": "Labs skrējiens. Pārejiet uz nākamo kontrolsaraksta soli."
   },
   "labels": {
     "legendTitle": "Leģenda",
@@ -86,25 +86,25 @@
   },
   "flow": {
     "title": "Ieteiktā secība",
-    "subtitle": "Īsa secība pirmajai iziešanai.",
+    "subtitle": "Ātrākais ceļš līdz pirmajam drošības secinājumam.",
     "badge": "Sāciet šeit",
     "stepLabel": "Solis {step}",
     "current": "Tagad",
     "complete": "Pabeigts",
     "step1": {
-      "title": "Izvēlieties scenāriju un uzbrucēja modeli",
-      "body": "Nosakiet vidi un iespējamo novērotāju.",
-      "hint": "Izmantojiet pogu «Scenāriji» un uzbrucēja modeli."
+      "title": "Palaidiet HTTP vienreiz (bāze)",
+      "body": "Atstājiet VPN izslēgtu un nosūtiet vienu pieprasījumu.",
+      "hint": "“Tīkla skatā” pieteikšanās dati būs salasāmi."
     },
     "step2": {
-      "title": "Palaidiet laika līniju",
-      "body": "Nosūtiet pieprasījumu un vērojiet izmaiņas.",
-      "hint": "Salīdziniet HTTP/HTTPS un VPN ieslēgts/izslēgts."
+      "title": "Pārslēdzieties uz HTTPS un palaidiet vēlreiz",
+      "body": "Atkārtojiet to pašu pieprasījumu un salīdziniet izmaiņas.",
+      "hint": "Pieteikšanās dati pazudīs, bet galamērķa metadati paliks redzami."
     },
     "step3": {
-      "title": "Pārbaudiet izpratni",
-      "body": "Izmantojiet viktorīnu vai špikeri, lai nostiprinātu galvenās atšķirības.",
-      "hint": "Meklējiet pogu «Parādīt laika līnijā»."
+      "title": "Paplašiniet līdz visām 4 kombinācijām",
+      "body": "Izmēģiniet VPN ieslēgts/izslēgts ar abiem protokoliem un tad pārbaudiet izpratni.",
+      "hint": "Pēc katra skrējiena izmantojiet Scenārijus un Mācību rīkus."
     }
   },
   "objectives": {

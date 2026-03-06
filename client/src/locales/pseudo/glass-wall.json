@@ -72,10 +72,10 @@
     }
   },
   "nextPrompt": {
-    "idle": "[Çhöösé à prötöçöl àñd çlïçk Séñd Réqüést tö bégïñ. !!!]",
-    "modeChanged": "[Mödé üpdàtéd — rüñ thé tïmélïñé àgàïñ tö séé thé çhàñgé. !!!]",
-    "stepMode": "[Üsé Ñéxt Stép ör ←/→ tö àdvàñçé. !!!]",
-    "complete": "[Trÿ àñöthér mödé ör çhéçk ÿöür üñdérstàñdïñg. !!!]"
+    "idle": "[Üsé thé çhéçklïst bélöw, théñ çlïçk Séñd Réqüést. !!!]",
+    "modeChanged": "[Mödé üpdàtéd. Rüñ thé tïmélïñé àgàïñ àñd çömpàré öbsérvér vïsïbïlïtÿ. !!!]",
+    "stepMode": "[Stép Mödé ïs öñ. Üsé Ñéxt Stép, ör türñ ït öff för à füll rüñ. !!!]",
+    "complete": "[Gööd rüñ. Mövé tö thé ñéxt çhéçklïst stép. !!!]"
   },
   "labels": {
     "legendTitle": "[Légéñd !!!]",
@@ -86,25 +86,25 @@
   },
   "flow": {
     "title": "[Süggéstéd flöw !!!]",
-    "subtitle": "[À shört séqüéñçé för à fïrst rüñ-thröügh. !!!]",
+    "subtitle": "[Fàst pàth tö ÿöür fïrst séçürïtÿ ïñsïght. !!!]",
     "badge": "[Stàrt héré !!!]",
     "stepLabel": "[Stép {step} !!!]",
     "current": "[Çürréñt !!!]",
     "complete": "[Döñé !!!]",
     "step1": {
-      "title": "[Pïçk à sçéñàrïö àñd àttàçkér mödél !!!]",
-      "body": "[Çhöösé whéré ÿöü àré àñd whö mïght bé wàtçhïñg. !!!]",
-      "hint": "[Üsé thé Sçéñàrïö büttöñ àñd Àttàçkér Mödél tögglé. !!!]"
+      "title": "[Rüñ HTTP öñçé (bàsélïñé) !!!]",
+      "body": "[Kéép VPÑ öff àñd séñd öñé réqüést. !!!]",
+      "hint": "[Ïñ Wïré Vïéw, çrédéñtïàls shöüld bé réàdàblé. !!!]"
     },
     "step2": {
-      "title": "[Rüñ thé tïmélïñé !!!]",
-      "body": "[Séñd à réqüést àñd wàtçh whàt çhàñgés. !!!]",
-      "hint": "[Trÿ HTTP vs HTTPS àñd VPÑ öñ/öff. !!!]"
+      "title": "[Swïtçh tö HTTPS àñd rüñ àgàïñ !!!]",
+      "body": "[Répéàt thé sàmé réqüést àñd çömpàré whàt çhàñgéd. !!!]",
+      "hint": "[Çrédéñtïàls dïsàppéàr, büt déstïñàtïöñ métàdàtà stàÿs vïsïblé. !!!]"
     },
     "step3": {
-      "title": "[Çhéçk ÿöür üñdérstàñdïñg !!!]",
-      "body": "[Üsé thé qüïz ör çhéàt shéét tö réïñförçé kéÿ dïfféréñçés. !!!]",
-      "hint": "[Löök för thé \"Shöw mé ïñ thé tïmélïñé\" büttöñ. !!!]"
+      "title": "[Éxpàñd tö àll 4 çömbïñàtïöñs !!!]",
+      "body": "[Trÿ VPÑ öñ/öff wïth böth prötöçöls, théñ vérïfÿ ÿöür üñdérstàñdïñg. !!!]",
+      "hint": "[Üsé Sçéñàrïös àñd Léàrñïñg Tööls àftér éàçh rüñ. !!!]"
     }
   },
   "objectives": {

@@ -24,7 +24,11 @@ import { Timeline } from "@/components/timeline";
 import { ControlPanel } from "@/components/control-panel";
 import { InfoBanner } from "@/components/info-banner";
 import { VpnTunnelOverlay } from "@/components/vpn-tunnel-overlay";
-import { ProgressTracker } from "@/components/progress-tracker";
+import {
+  ProgressTracker,
+  PROGRESS_STORAGE_KEY,
+  PROGRESS_UPDATED_EVENT,
+} from "@/components/progress-tracker";
 import { ScenarioSelector, SCENARIOS, type Scenario } from "@/components/scenario-selector";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { GuidedLearningOverlay, RestartGuideButton } from "@/components/guided-learning-overlay";
@@ -73,6 +77,31 @@ const DEFAULT_PAYLOAD: Omit<DemoPayload, "body"> = {
   },
 };
 
+type ExploredCombination = "http-off" | "http-on" | "https-off" | "https-on";
+const FLOW_COMBINATION_ORDER: ExploredCombination[] = [
+  "http-off",
+  "https-off",
+  "http-on",
+  "https-on",
+];
+
+function loadExploredCombinations(): Set<ExploredCombination> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw) as Partial<Record<`${ProtocolMode}Vpn${"Off" | "On"}`, boolean>>;
+    const combos = new Set<ExploredCombination>();
+    if (parsed.httpVpnOff) combos.add("http-off");
+    if (parsed.httpVpnOn) combos.add("http-on");
+    if (parsed.httpsVpnOff) combos.add("https-off");
+    if (parsed.httpsVpnOn) combos.add("https-on");
+    return combos;
+  } catch {
+    return new Set();
+  }
+}
+
 function sleep(ms: number, signal: AbortSignal) {
   if (signal.aborted) return Promise.resolve();
   return new Promise<void>((resolve) => {
@@ -94,7 +123,7 @@ export default function GlassWall() {
   const [vpnMode, setVpnMode] = useState<VpnMode>("off");
   const [attackerModel, setAttackerModel] = useState<AttackerModel>("passive");
   const [autoPlay, setAutoPlay] = useState(true);
-  const [stepMode, setStepMode] = useState(true);
+  const [stepMode, setStepMode] = useState(false);
   const [timelineStage, setTimelineStage] = useState<TimelineStage>("idle");
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
@@ -104,6 +133,9 @@ export default function GlassWall() {
   const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[0]);
   const [username, setUsername] = useState("your_username");
   const [password, setPassword] = useState("your_password");
+  const [exploredCombinations, setExploredCombinations] = useState<Set<ExploredCombination>>(
+    new Set(),
+  );
   const animationAbortRef = useRef<AbortController | null>(null);
   const isAnimatingRef = useRef(false);
   const protocolModeRef = useRef<ProtocolMode>(protocolMode);
@@ -129,6 +161,29 @@ export default function GlassWall() {
   useEffect(() => {
     stepModeRef.current = stepMode;
   }, [stepMode]);
+
+  useEffect(() => {
+    const syncProgress = () => {
+      setExploredCombinations(loadExploredCombinations());
+    };
+
+    syncProgress();
+    if (typeof window === "undefined") return;
+
+    window.addEventListener(PROGRESS_UPDATED_EVENT, syncProgress);
+    return () => window.removeEventListener(PROGRESS_UPDATED_EVENT, syncProgress);
+  }, []);
+
+  useEffect(() => {
+    if (timelineStage !== "complete") return;
+    const combo = `${protocolMode}-${vpnMode}` as ExploredCombination;
+    setExploredCombinations((prev) => {
+      if (prev.has(combo)) return prev;
+      const next = new Set(prev);
+      next.add(combo);
+      return next;
+    });
+  }, [protocolMode, timelineStage, vpnMode]);
 
   const clearAutoPlayTimers = useCallback(() => {
     if (autoPlayTimeoutRef.current) {
@@ -342,6 +397,13 @@ export default function GlassWall() {
     [cancelAnimation, getExpandedNodesForStage, vpnMode],
   );
 
+  const scrollToOnboardingTarget = useCallback((target: string) => {
+    if (typeof window === "undefined") return;
+    const element = document.querySelector(`[data-onboarding="${target}"]`);
+    if (!element) return;
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
+
   useEffect(() => {
     if (showModeChangeBanner) {
       const timer = setTimeout(() => setShowModeChangeBanner(false), 3000);
@@ -399,13 +461,100 @@ export default function GlassWall() {
   }, [protocolMode, timelineStage, t, vpnMode]);
 
   const vpnDoesNotBullets = t("vpnActive.doesNotBullets", { returnObjects: true }) as string[];
+  const hasCompletedHttpRun =
+    exploredCombinations.has("http-off") || exploredCombinations.has("http-on");
+  const hasCompletedHttpsRun =
+    exploredCombinations.has("https-off") || exploredCombinations.has("https-on");
+  const exploredCombinationsCount = exploredCombinations.size;
+
+  const primaryFlowActionLabel = useMemo(() => {
+    if (!hasCompletedHttpRun) return t("flow.step1.title");
+    if (!hasCompletedHttpsRun) return t("flow.step2.title");
+    if (exploredCombinationsCount < 4) return t("flow.step3.title");
+    return t("learningTools.button");
+  }, [exploredCombinationsCount, hasCompletedHttpRun, hasCompletedHttpsRun, t]);
+
+  const handlePrimaryFlowAction = useCallback(() => {
+    if (!hasCompletedHttpRun) {
+      if (protocolMode !== "http") {
+        handleModeChange("protocol", "http");
+      }
+      if (vpnMode !== "off") {
+        handleModeChange("vpn", "off");
+      }
+      if (stepMode) {
+        handleStepModeChange(false);
+      }
+      scrollToOnboardingTarget("action-area");
+      return;
+    }
+
+    if (!hasCompletedHttpsRun) {
+      if (protocolMode !== "https") {
+        handleModeChange("protocol", "https");
+      }
+      if (vpnMode !== "off") {
+        handleModeChange("vpn", "off");
+      }
+      if (stepMode) {
+        handleStepModeChange(false);
+      }
+      scrollToOnboardingTarget("action-area");
+      return;
+    }
+
+    if (exploredCombinationsCount < 4) {
+      const nextCombination = FLOW_COMBINATION_ORDER.find(
+        (combination) => !exploredCombinations.has(combination),
+      );
+      if (nextCombination) {
+        const [nextProtocol, nextVpn] = nextCombination.split("-") as [ProtocolMode, VpnMode];
+        if (protocolMode !== nextProtocol) {
+          handleModeChange("protocol", nextProtocol);
+        }
+        if (vpnMode !== nextVpn) {
+          handleModeChange("vpn", nextVpn);
+        }
+        if (stepMode) {
+          handleStepModeChange(false);
+        }
+      }
+      scrollToOnboardingTarget("action-area");
+      return;
+    }
+
+    scrollToOnboardingTarget("learning-tools");
+  }, [
+    exploredCombinations,
+    exploredCombinationsCount,
+    handleModeChange,
+    handleStepModeChange,
+    hasCompletedHttpRun,
+    hasCompletedHttpsRun,
+    protocolMode,
+    scrollToOnboardingTarget,
+    stepMode,
+    vpnMode,
+  ]);
+
   const nextPrompt = useMemo(() => {
     if (showModeChangeBanner) return t("nextPrompt.modeChanged");
+    if (!hasCompletedHttpRun) return t("flow.step1.hint");
+    if (!hasCompletedHttpsRun) return t("flow.step2.hint");
+    if (exploredCombinationsCount < 4) return t("flow.step3.hint");
     if (timelineStage === "idle") return t("nextPrompt.idle");
     if (timelineStage === "complete") return t("nextPrompt.complete");
     if (stepMode) return t("nextPrompt.stepMode");
     return null;
-  }, [showModeChangeBanner, stepMode, t, timelineStage]);
+  }, [
+    exploredCombinationsCount,
+    hasCompletedHttpRun,
+    hasCompletedHttpsRun,
+    showModeChangeBanner,
+    stepMode,
+    t,
+    timelineStage,
+  ]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -586,13 +735,18 @@ export default function GlassWall() {
           </div>
         )}
 
-        <SuggestedFlowCard
-          currentScenario={currentScenario}
-          attackerModel={attackerModel}
-          timelineStage={timelineStage}
-          defaultScenarioId={SCENARIOS[0].id}
-          className="mb-6"
-        />
+        <div className="mb-6 space-y-3">
+          <SuggestedFlowCard
+            hasCompletedHttpRun={hasCompletedHttpRun}
+            hasCompletedHttpsRun={hasCompletedHttpsRun}
+            exploredCombinations={exploredCombinationsCount}
+            primaryActionLabel={primaryFlowActionLabel}
+            onPrimaryAction={handlePrimaryFlowAction}
+          />
+          <div className="flex justify-end">
+            <RestartGuideButton />
+          </div>
+        </div>
 
         <div
           className="opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
@@ -841,9 +995,6 @@ export default function GlassWall() {
                 <p>{t("footer.noTelemetryTooltip")}</p>
               </TooltipContent>
             </Tooltip>
-          </div>
-          <div className="mt-4">
-            <RestartGuideButton />
           </div>
         </footer>
       </div>

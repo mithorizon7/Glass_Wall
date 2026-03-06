@@ -3,9 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { MapPin, PlayCircle, BookOpen, CheckCircle2 } from "lucide-react";
-import type { TimelineStage, AttackerModel } from "@/pages/glass-wall";
-import type { Scenario } from "@/components/scenario-selector";
 
 const SELF_CHECK_STORAGE_KEY = "glass-wall-self-check";
 
@@ -55,56 +54,61 @@ export function LearningObjectivesCard({ className = "" }: LearningObjectivesCar
 }
 
 interface SuggestedFlowCardProps {
-  currentScenario: Scenario;
-  attackerModel: AttackerModel;
-  timelineStage: TimelineStage;
-  defaultScenarioId: Scenario["id"];
+  hasCompletedHttpRun: boolean;
+  hasCompletedHttpsRun: boolean;
+  exploredCombinations: number;
+  primaryActionLabel: string;
+  onPrimaryAction: () => void;
   className?: string;
 }
 
 export function SuggestedFlowCard({
-  currentScenario,
-  attackerModel,
-  timelineStage,
-  defaultScenarioId,
+  hasCompletedHttpRun,
+  hasCompletedHttpsRun,
+  exploredCombinations,
+  primaryActionLabel,
+  onPrimaryAction,
   className = "",
 }: SuggestedFlowCardProps) {
   const { t } = useTranslation("glassWall");
+  const hasCompletedAllCombinations = exploredCombinations >= 4;
 
-  const hasChosenSetup = currentScenario.id !== defaultScenarioId || attackerModel !== "passive";
-  const hasRunTimeline = timelineStage !== "idle";
-  const isComplete = timelineStage === "complete";
+  const steps = useMemo(
+    () => [
+      {
+        id: 1,
+        title: t("flow.step1.title"),
+        body: t("flow.step1.body"),
+        hint: t("flow.step1.hint"),
+        icon: <MapPin className="w-4 h-4" />,
+        done: hasCompletedHttpRun,
+      },
+      {
+        id: 2,
+        title: t("flow.step2.title"),
+        body: t("flow.step2.body"),
+        hint: t("flow.step2.hint"),
+        icon: <PlayCircle className="w-4 h-4" />,
+        done: hasCompletedHttpsRun,
+      },
+      {
+        id: 3,
+        title: t("flow.step3.title"),
+        body: t("flow.step3.body"),
+        hint: t("flow.step3.hint"),
+        icon: <BookOpen className="w-4 h-4" />,
+        done: hasCompletedAllCombinations,
+      },
+    ],
+    [hasCompletedAllCombinations, hasCompletedHttpRun, hasCompletedHttpsRun, t],
+  );
 
   const activeStep = useMemo(() => {
-    if (!hasChosenSetup) return 1;
-    if (!hasRunTimeline) return 2;
-    if (!isComplete) return 2;
-    return 3;
-  }, [hasChosenSetup, hasRunTimeline, isComplete]);
+    const firstOpenStep = steps.find((step) => !step.done);
+    return firstOpenStep ? firstOpenStep.id : steps[steps.length - 1].id;
+  }, [steps]);
 
-  const steps = [
-    {
-      id: 1,
-      title: t("flow.step1.title"),
-      body: t("flow.step1.body"),
-      hint: t("flow.step1.hint"),
-      icon: <MapPin className="w-4 h-4" />,
-    },
-    {
-      id: 2,
-      title: t("flow.step2.title"),
-      body: t("flow.step2.body"),
-      hint: t("flow.step2.hint"),
-      icon: <PlayCircle className="w-4 h-4" />,
-    },
-    {
-      id: 3,
-      title: t("flow.step3.title"),
-      body: t("flow.step3.body"),
-      hint: t("flow.step3.hint"),
-      icon: <BookOpen className="w-4 h-4" />,
-    },
-  ];
+  const completedSteps = steps.filter((step) => step.done).length;
 
   return (
     <Card className={`p-5 ${className}`}>
@@ -113,14 +117,19 @@ export function SuggestedFlowCard({
           <h3 className="font-semibold text-foreground">{t("flow.title")}</h3>
           <p className="text-xs text-muted-foreground">{t("flow.subtitle")}</p>
         </div>
-        <Badge variant="secondary" className="text-[10px] uppercase tracking-wide">
-          {t("flow.badge")}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="text-[10px] uppercase tracking-wide">
+            {t("flow.badge")}
+          </Badge>
+          <Badge variant="outline" className="text-[10px]">
+            {completedSteps}/3
+          </Badge>
+        </div>
       </div>
       <div className="space-y-3">
         {steps.map((step) => {
-          const isActive = activeStep === step.id;
-          const isCompleteStep = step.id < activeStep;
+          const isActive = activeStep === step.id && !step.done;
+          const isCompleteStep = step.done;
 
           return (
             <div
@@ -168,6 +177,14 @@ export function SuggestedFlowCard({
           );
         })}
       </div>
+      <Button
+        type="button"
+        onClick={onPrimaryAction}
+        className="w-full mt-4"
+        data-testid="button-flow-primary-action"
+      >
+        {primaryActionLabel}
+      </Button>
     </Card>
   );
 }

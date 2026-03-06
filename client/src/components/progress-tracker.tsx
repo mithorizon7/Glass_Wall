@@ -17,7 +17,13 @@ import {
   ShieldOff,
 } from "lucide-react";
 
-const STORAGE_KEY = "glass-wall-progress";
+export const PROGRESS_STORAGE_KEY = "glass-wall-progress";
+export const PROGRESS_UPDATED_EVENT = "glass-wall-progress-updated";
+
+function emitProgressUpdated() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(PROGRESS_UPDATED_EVENT));
+}
 
 function safeStorageGet(key: string): string | null {
   if (typeof window === "undefined") return null;
@@ -87,7 +93,7 @@ export function ProgressTracker({
   const hasAutoOpenedRef = useRef(false);
 
   useEffect(() => {
-    const stored = safeStorageGet(STORAGE_KEY);
+    const stored = safeStorageGet(PROGRESS_STORAGE_KEY);
     if (stored) {
       try {
         setProgress(JSON.parse(stored));
@@ -118,7 +124,8 @@ export function ProgressTracker({
           `${currentProtocol}Vpn${currentVpn === "off" ? "Off" : "On"}` as keyof ProgressState;
         updated[comboKey] = true;
 
-        safeStorageSet(STORAGE_KEY, JSON.stringify(updated));
+        safeStorageSet(PROGRESS_STORAGE_KEY, JSON.stringify(updated));
+        emitProgressUpdated();
         return updated;
       });
     }
@@ -126,7 +133,8 @@ export function ProgressTracker({
 
   const handleReset = useCallback(() => {
     setProgress(DEFAULT_PROGRESS);
-    safeStorageRemove(STORAGE_KEY);
+    safeStorageRemove(PROGRESS_STORAGE_KEY);
+    emitProgressUpdated();
   }, []);
 
   const completedCount = [

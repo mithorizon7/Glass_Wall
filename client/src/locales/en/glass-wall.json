@@ -72,10 +72,10 @@
     }
   },
   "nextPrompt": {
-    "idle": "Choose a protocol and click Send Request to begin.",
-    "modeChanged": "Mode updated — run the timeline again to see the change.",
-    "stepMode": "Use Next Step or ←/→ to advance.",
-    "complete": "Try another mode or check your understanding."
+    "idle": "Use the checklist below, then click Send Request.",
+    "modeChanged": "Mode updated. Run the timeline again to compare observer visibility.",
+    "stepMode": "Step Mode is on. Use Next Step, or turn it off for a full run.",
+    "complete": "Good run. Move to the next checklist step."
   },
   "labels": {
     "legendTitle": "Legend",
@@ -86,25 +86,25 @@
   },
   "flow": {
     "title": "Suggested flow",
-    "subtitle": "A short sequence for a first run-through.",
+    "subtitle": "Fast path to your first security insight.",
     "badge": "Start here",
     "stepLabel": "Step {step}",
     "current": "Current",
     "complete": "Done",
     "step1": {
-      "title": "Pick a scenario and attacker model",
-      "body": "Choose where you are and who might be watching.",
-      "hint": "Use the Scenario button and Attacker Model toggle."
+      "title": "Run HTTP once (baseline)",
+      "body": "Keep VPN off and send one request.",
+      "hint": "In Wire View, credentials should be readable."
     },
     "step2": {
-      "title": "Run the timeline",
-      "body": "Send a request and watch what changes.",
-      "hint": "Try HTTP vs HTTPS and VPN on/off."
+      "title": "Switch to HTTPS and run again",
+      "body": "Repeat the same request and compare what changed.",
+      "hint": "Credentials disappear, but destination metadata stays visible."
     },
     "step3": {
-      "title": "Check your understanding",
-      "body": "Use the quiz or cheat sheet to reinforce key differences.",
-      "hint": "Look for the \"Show me in the timeline\" button."
+      "title": "Expand to all 4 combinations",
+      "body": "Try VPN on/off with both protocols, then verify your understanding.",
+      "hint": "Use Scenarios and Learning Tools after each run."
     }
   },
   "objectives": {

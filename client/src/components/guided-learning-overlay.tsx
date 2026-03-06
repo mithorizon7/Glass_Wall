@@ -8,13 +8,8 @@ import {
   X,
   Sparkles,
   Eye,
-  Radio,
   Lock,
-  Shield,
   Play,
-  MapPin,
-  BookOpen,
-  Trophy,
   Rocket,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -70,51 +65,21 @@ const STEPS: GuidedLearningStep[] = [
     position: "center",
   },
   {
-    id: "userView",
-    targetSelector: '[data-onboarding="user-view-card"]',
-    icon: <Eye className="w-6 h-6" />,
-    position: "auto",
-  },
-  {
-    id: "wireView",
-    targetSelector: '[data-onboarding="wire-view-card"]',
-    icon: <Radio className="w-6 h-6" />,
-    position: "auto",
-  },
-  {
-    id: "protocolToggle",
-    targetSelector: '[data-onboarding="protocol-toggle"]',
-    icon: <Lock className="w-6 h-6" />,
-    position: "auto",
-  },
-  {
-    id: "vpnToggle",
-    targetSelector: '[data-onboarding="vpn-toggle"]',
-    icon: <Shield className="w-6 h-6" />,
-    position: "auto",
-  },
-  {
     id: "actionArea",
     targetSelector: '[data-onboarding="action-area"]',
     icon: <Play className="w-6 h-6" />,
     position: "auto",
   },
   {
-    id: "scenarioSelector",
-    targetSelector: '[data-onboarding="scenario-selector"]',
-    icon: <MapPin className="w-6 h-6" />,
+    id: "wireView",
+    targetSelector: '[data-onboarding="wire-view-card"]',
+    icon: <Eye className="w-6 h-6" />,
     position: "auto",
   },
   {
-    id: "learningTools",
-    targetSelector: '[data-onboarding="learning-tools"]',
-    icon: <BookOpen className="w-6 h-6" />,
-    position: "auto",
-  },
-  {
-    id: "progressTracker",
-    targetSelector: '[data-onboarding="progress-tracker"]',
-    icon: <Trophy className="w-6 h-6" />,
+    id: "protocolToggle",
+    targetSelector: '[data-onboarding="protocol-toggle"]',
+    icon: <Lock className="w-6 h-6" />,
     position: "auto",
   },
   { id: "ready", targetSelector: null, icon: <Rocket className="w-6 h-6" />, position: "center" },
@@ -396,10 +361,27 @@ export function GuidedLearningOverlay() {
 
   useEffect(() => {
     const completed = getStorageValue(STORAGE_KEY);
-    if (!completed) {
-      const timer = setTimeout(() => setIsVisible(true), 500);
-      return () => clearTimeout(timer);
-    }
+    if (completed || typeof window === "undefined") return;
+
+    let hasInteracted = false;
+    const markInteracted = () => {
+      hasInteracted = true;
+    };
+
+    window.addEventListener("pointerdown", markInteracted, { passive: true, once: true });
+    window.addEventListener("keydown", markInteracted, { passive: true, once: true });
+
+    const timer = window.setTimeout(() => {
+      if (!hasInteracted) {
+        setIsVisible(true);
+      }
+    }, 2200);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("pointerdown", markInteracted);
+      window.removeEventListener("keydown", markInteracted);
+    };
   }, []);
 
   useEffect(() => {
