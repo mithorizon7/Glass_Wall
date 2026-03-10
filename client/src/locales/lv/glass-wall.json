@@ -34,7 +34,7 @@
   },
   "modeChanged": {
     "title": "Režīms mainīts",
-    "message": "Noklikšķiniet uz 'Sūtīt pieprasījumu', lai redzētu atšķirību tīkla trafikā."
+    "message": "Izmantojiet galveno palaišanas pogu, lai redzētu atšķirību tīkla trafikā."
   },
   "controls": {
     "protocol": "Protokols",
@@ -54,12 +54,27 @@
     "stepModeTooltip": "Virzieties pa laika līniju soli pa solim detalizētai mācīšanās pieredzei.",
     "stepModeHint": "Padoms: izmantojiet ←/→, lai pārietu soļos.",
     "httpLabel": "HTTP",
-    "httpsLabel": "HTTPS"
+    "httpsLabel": "HTTPS",
+    "startHereTitle": "Pirmajam salīdzinājumam izmantojiet tikai Protokolu un VPN.",
+    "startHereBody": "Atstājiet papildu opcijas aizvērtas, līdz vienreiz palaidāt HTTP un HTTPS.",
+    "startHereCompleteBody": "Pamata salīdzinājums jau ir izpildīts. Turpiniet ar Protokolu un VPN, un atveriet papildu opcijas, kad vēlaties vairāk dziļuma.",
+    "advancedTitle": "Vairāk izpētes iespēju",
+    "advancedBody": "Mainiet novērotāja modeli vai palēniniet laika līniju pēc tam, kad sapratāt pamatus.",
+    "advancedReadyBody": "Pamata salīdzinājums ir pabeigts. Izmantojiet šīs vadīklas, lai izpētītu nianses un robežgadījumus.",
+    "showAdvanced": "Rādīt papildu opcijas",
+    "hideAdvanced": "Paslēpt papildu opcijas"
   },
   "buttons": {
     "sendRequest": "Sūtīt pieprasījumu",
     "nextStep": "Nākamais solis",
-    "replayTimeline": "Atkārtot laika līniju"
+    "replayTimeline": "Atkārtot laika līniju",
+    "startStepMode": "Sākt soli-pa-solim režīmu",
+    "runLabels": {
+      "httpOff": "Palaist HTTP ar izslēgtu VPN",
+      "httpsOff": "Palaist HTTPS ar izslēgtu VPN",
+      "httpOn": "Palaist HTTP ar ieslēgtu VPN",
+      "httpsOn": "Palaist HTTPS ar ieslēgtu VPN"
+    }
   },
   "learningTools": {
     "button": "Mācību rīki",
@@ -72,7 +87,7 @@
     }
   },
   "nextPrompt": {
-    "idle": "Izmantojiet kontrolsarakstu zemāk un tad spiediet “Sūtīt pieprasījumu”.",
+    "idle": "Izmantojiet kontrolsarakstu, sagatavojiet nākamo salīdzinājumu un tad palaidiet pašreizējo skatu.",
     "modeChanged": "Režīms atjaunināts. Palaidiet laika līniju vēlreiz un salīdziniet redzamību.",
     "stepMode": "Soļu režīms ir ieslēgts. Lietojiet “Nākamais solis” vai izslēdziet to pilnam skrējienam.",
     "complete": "Labs skrējiens. Pārejiet uz nākamo kontrolsaraksta soli."
@@ -94,18 +109,22 @@
     "step1": {
       "title": "Palaidiet HTTP vienreiz (bāze)",
       "body": "Atstājiet VPN izslēgtu un nosūtiet vienu pieprasījumu.",
-      "hint": "“Tīkla skatā” pieteikšanās dati būs salasāmi."
+      "hint": "“Tīkla skatā” pieteikšanās dati būs salasāmi.",
+      "action": "Sagatavot pirmo palaidienu"
     },
     "step2": {
       "title": "Pārslēdzieties uz HTTPS un palaidiet vēlreiz",
       "body": "Atkārtojiet to pašu pieprasījumu un salīdziniet izmaiņas.",
-      "hint": "Pieteikšanās dati pazudīs, bet galamērķa metadati paliks redzami."
+      "hint": "Pieteikšanās dati pazudīs, bet galamērķa metadati paliks redzami.",
+      "action": "Pārslēgt uz HTTPS"
     },
     "step3": {
       "title": "Paplašiniet līdz visām 4 kombinācijām",
       "body": "Izmēģiniet VPN ieslēgts/izslēgts ar abiem protokoliem un tad pārbaudiet izpratni.",
-      "hint": "Pēc katra skrējiena izmantojiet Scenārijus un Mācību rīkus."
-    }
+      "hint": "Pēc katra skrējiena izmantojiet Scenārijus un Mācību rīkus.",
+      "action": "Sagatavot nākamo kombināciju"
+    },
+    "completedAction": "Atvērt mācību rīkus"
   },
   "objectives": {
     "title": "Līdz beigām jūs varēsiet…",
@@ -154,7 +173,7 @@
     "title": "Tīkla skats",
     "subtitle": "Ko tīkls var novērot",
     "readyToObserve": "Gatavs novērošanai",
-    "readyToObserveHint": "Noklikšķiniet “Nosūtīt pieprasījumu”, lai redzētu, ko tīkla novērotājs varētu uztvert, nosūtot pieteikšanās formu.",
+    "readyToObserveHint": "Palaidiet pašreizējo skatu, lai redzētu, ko tīkla novērotājs varētu uztvert, nosūtot pieteikšanās formu.",
     "encrypted": "Šifrēts",
     "plainText": "Vienkāršs teksts",
     "userLabel": "lietotājs:",
@@ -811,7 +830,7 @@
       "content": [
         "“Tīkla skats” rāda trafiku tā, kā to uztvertu tīkla novērotājs.",
         "Nedrošā Wi‑Fi tīklā novērotājs var būt tuvumā esoša ierīce vai hotspota operators.",
-        "Mainiet protokolu un uzbrucēja modeli, lai redzētu, kā mainās redzamība."
+        "Sāciet ar protokolu un VPN. Papildu opcijas atveriet vēlāk, kad gribat izpētīt nianses."
       ]
     },
     "protocolToggle": {
@@ -833,7 +852,7 @@
     "actionArea": {
       "title": "Skatieties, kā ceļo jūsu dati",
       "content": [
-        "Poga “Nosūtīt pieprasījumu” palaiž laika līniju un parāda katru apmaiņas posmu.",
+        "Galvenā palaišanas poga iedarbina laika līniju un parāda katru apmaiņas posmu.",
         "Salīdziniet “Tīkla skatu” pie HTTP un HTTPS, lai redzētu atšķirības datu atklāšanā."
       ]
     },
@@ -866,6 +885,31 @@
         "Sāciet ar HTTP un nosūtiet pieprasījumu. “Tīkla skats” parādīs pieteikšanās datus atklātā tekstā.",
         "Pārslēdzieties uz HTTPS un palaidiet vēlreiz; pieteikšanās dati pazudīs, bet metadati paliks."
       ]
+    }
+  },
+  "actionGuide": {
+    "badge": "Pašreizējais palaidiens",
+    "lookFor": "Kam pievērst uzmanību",
+    "stepMode": "Soļu režīms ir ieslēgts. Sāciet caurgājienu un tad izmantojiet “Nākamais solis”, lai virzītos pa posmiem.",
+    "httpOff": {
+      "title": "HTTP bez VPN",
+      "body": "Šis ir vismazāk aizsargātais variants demonstrācijā. Tas parāda, kā izskatās nešifrēts trafiks.",
+      "focus": "Pārbaudiet, vai lietotājvārds un parole “Tīkla skatā” joprojām ir salasāmi."
+    },
+    "httpsOff": {
+      "title": "HTTPS bez VPN",
+      "body": "Šis aizsargā pieteikšanās saturu ceļā uz vietni, bet neslēpj, kur jūs dodaties.",
+      "focus": "Pārbaudiet, ka pieteikšanās dati pazūd, bet galamērķis un savienojuma metadati paliek redzami."
+    },
+    "httpOn": {
+      "title": "HTTP ar VPN",
+      "body": "VPN paslēpj šo trafiku no lokālā tīkla, bet pašas vietnes trafiks tunelī joprojām ir HTTP.",
+      "focus": "Salīdziniet to ar parasto HTTP un pierakstiet, ko lokālais tīkls vairs neredz."
+    },
+    "httpsOn": {
+      "title": "HTTPS ar VPN",
+      "body": "Šeit apvienojas vietnes šifrēšana un VPN tunelis, tāpēc lokālais tīkls redz vismazāk detaļu.",
+      "focus": "Ievērojiet, kas lokāli kļūst neredzams, un atcerieties, ka uzticība pāriet uz VPN pakalpojuma sniedzēju."
     }
   }
 }

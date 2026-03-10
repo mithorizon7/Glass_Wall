@@ -34,7 +34,7 @@
   },
   "modeChanged": {
     "title": "[Mödé Çhàñgéd !!!]",
-    "message": "[Çlïçk 'Séñd Réqüést' tö séé thé dïfféréñçé ïñ ñétwörk tràffïç. !!!]"
+    "message": "[Üsé thé màïñ rüñ büttöñ tö séé thé dïfféréñçé ïñ ñétwörk tràffïç. !!!]"
   },
   "controls": {
     "protocol": "[Prötöçöl !!!]",
@@ -54,12 +54,27 @@
     "stepModeTooltip": "[Àdvàñçé thröügh thé tïmélïñé öñé stép àt à tïmé för détàïléd léàrñïñg. !!!]",
     "stepModeHint": "[Tïp: üsé ←/→ tö stép. !!!]",
     "httpLabel": "[HTTP !!!]",
-    "httpsLabel": "[HTTPS !!!]"
+    "httpsLabel": "[HTTPS !!!]",
+    "startHereTitle": "[För ÿöür fïrst çömpàrïsöñ, üsé öñlÿ Prötöçöl àñd VPÑ. !!!]",
+    "startHereBody": "[Léàvé thé àdvàñçéd öptïöñs çlöséd üñtïl ÿöü hàvé rüñ HTTP àñd HTTPS öñçé éàçh. !!!]",
+    "startHereCompleteBody": "[Ÿöü’vé döñé thé çöré çömpàrïsöñ. Kéép üsïñg Prötöçöl àñd VPÑ, àñd öppéñ àdvàñçéd öptïöñs whéñ ÿöü wàñt möré dépth. !!!]",
+    "advancedTitle": "[Möré wàÿs tö éxplöré !!!]",
+    "advancedBody": "[Çhàñgé thé öbsérvér mödél ör slöw thé tïmélïñé döwñ àftér ÿöü üñdérstàñd thé bàsïçs. !!!]",
+    "advancedReadyBody": "[Ÿöü’vé çömplétéd thé bàsïç çömpàrïsöñ. Üsé thésé çöñtröls tö éxplöré édgé çàsés. !!!]",
+    "showAdvanced": "[Shöw àdvàñçéd öptïöñs !!!]",
+    "hideAdvanced": "[Hïdé àdvàñçéd öptïöñs !!!]"
   },
   "buttons": {
     "sendRequest": "[Séñd Réqüést !!!]",
     "nextStep": "[Ñéxt Stép !!!]",
-    "replayTimeline": "[Réplàÿ Tïmélïñé !!!]"
+    "replayTimeline": "[Réplàÿ Tïmélïñé !!!]",
+    "startStepMode": "[Stàrt stép-bÿ-stép wàlkthröügh !!!]",
+    "runLabels": {
+      "httpOff": "[Rüñ HTTP wïth VPÑ öff !!!]",
+      "httpsOff": "[Rüñ HTTPS wïth VPÑ öff !!!]",
+      "httpOn": "[Rüñ HTTP wïth VPÑ öñ !!!]",
+      "httpsOn": "[Rüñ HTTPS wïth VPÑ öñ !!!]"
+    }
   },
   "learningTools": {
     "button": "[Léàrñïñg Tööls !!!]",
@@ -72,7 +87,7 @@
     }
   },
   "nextPrompt": {
-    "idle": "[Üsé thé çhéçklïst bélöw, théñ çlïçk Séñd Réqüést. !!!]",
+    "idle": "[Üsé thé çhéçklïst tö sét üp thé ñéxt çömpàrïsöñ, théñ rüñ thé çürréñt vïéw. !!!]",
     "modeChanged": "[Mödé üpdàtéd. Rüñ thé tïmélïñé àgàïñ àñd çömpàré öbsérvér vïsïbïlïtÿ. !!!]",
     "stepMode": "[Stép Mödé ïs öñ. Üsé Ñéxt Stép, ör türñ ït öff för à füll rüñ. !!!]",
     "complete": "[Gööd rüñ. Mövé tö thé ñéxt çhéçklïst stép. !!!]"
@@ -94,18 +109,22 @@
     "step1": {
       "title": "[Rüñ HTTP öñçé (bàsélïñé) !!!]",
       "body": "[Kéép VPÑ öff àñd séñd öñé réqüést. !!!]",
-      "hint": "[Ïñ Wïré Vïéw, çrédéñtïàls shöüld bé réàdàblé. !!!]"
+      "hint": "[Ïñ Wïré Vïéw, çrédéñtïàls shöüld bé réàdàblé. !!!]",
+      "action": "[Sét üp thé fïrst rüñ !!!]"
     },
     "step2": {
       "title": "[Swïtçh tö HTTPS àñd rüñ àgàïñ !!!]",
       "body": "[Répéàt thé sàmé réqüést àñd çömpàré whàt çhàñgéd. !!!]",
-      "hint": "[Çrédéñtïàls dïsàppéàr, büt déstïñàtïöñ métàdàtà stàÿs vïsïblé. !!!]"
+      "hint": "[Çrédéñtïàls dïsàppéàr, büt déstïñàtïöñ métàdàtà stàÿs vïsïblé. !!!]",
+      "action": "[Swïtçh mé tö HTTPS !!!]"
     },
     "step3": {
       "title": "[Éxpàñd tö àll 4 çömbïñàtïöñs !!!]",
       "body": "[Trÿ VPÑ öñ/öff wïth böth prötöçöls, théñ vérïfÿ ÿöür üñdérstàñdïñg. !!!]",
-      "hint": "[Üsé Sçéñàrïös àñd Léàrñïñg Tööls àftér éàçh rüñ. !!!]"
-    }
+      "hint": "[Üsé Sçéñàrïös àñd Léàrñïñg Tööls àftér éàçh rüñ. !!!]",
+      "action": "[Sét üp thé ñéxt çömbïñàtïöñ !!!]"
+    },
+    "completedAction": "[Öpéñ léàrñïñg tööls !!!]"
   },
   "objectives": {
     "title": "[Bÿ thé éñd, ÿöü çàñ… !!!]",
@@ -154,7 +173,7 @@
     "title": "[Wïré Vïéw !!!]",
     "subtitle": "[Whàt thé ñétwörk çàñ öbsérvé !!!]",
     "readyToObserve": "[Réàdÿ tö öbsérvé !!!]",
-    "readyToObserveHint": "[Çlïçk \"Séñd Réqüést\" tö séé whàt à ñétwörk öbsérvér çöüld çàptüré whéñ thé lögïñ förm ïs sübmïttéd. !!!]",
+    "readyToObserveHint": "[Rüñ thé çürréñt vïéw tö séé whàt à ñétwörk öbsérvér çöüld çàptüré whéñ thé lögïñ förm ïs sübmïttéd. !!!]",
     "encrypted": "[Éñçrÿptéd !!!]",
     "plainText": "[Plàïñ téxt !!!]",
     "userLabel": "[üsér: !!!]",
@@ -811,7 +830,7 @@
       "content": [
         "[Wïré Vïéw shöws thé tràffïç às à ñétwörk öbsérvér wöüld çàptüré ït. !!!]",
         "[Öñ üñtrüstéd Wï-Fï, thàt öbsérvér çöüld bé à ñéàrbÿ dévïçé ör thé hötspöt öpéràtör. !!!]",
-        "[Çhàñgé prötöçöl àñd àttàçkér mödél tö séé höw vïsïbïlïtÿ shïfts. !!!]"
+        "[Stàrt wïth prötöçöl àñd VPÑ. Öpéñ àdvàñçéd öptïöñs làtér whéñ ÿöü wàñt édgé çàsés. !!!]"
       ]
     },
     "protocolToggle": {
@@ -833,7 +852,7 @@
     "actionArea": {
       "title": "[Wàtçh Ÿöür Dàtà Tràvél !!!]",
       "content": [
-        "[Séñd Réqüést rüñs thé tïmélïñé àñd shöws éàçh stàgé öf thé éxçhàñgé. !!!]",
+        "[Thé màïñ rüñ büttöñ stàrts thé tïmélïñé àñd shöws éàçh stàgé öf thé éxçhàñgé. !!!]",
         "[Çömpàré thé Wïré Vïéw üñdér HTTP àñd HTTPS tö séé thé dïfféréñçé ïñ éxpösüré. !!!]"
       ]
     },
@@ -866,6 +885,31 @@
         "[Stàrt wïth HTTP àñd séñd à réqüést. Thé Wïré Vïéw wïll dïsplàÿ çrédéñtïàls ïñ çléàr téxt. !!!]",
         "[Swïtçh tö HTTPS àñd rüñ àgàïñ; thé çrédéñtïàls dïsàppéàr whïlé métàdàtà rémàïñs. !!!]"
       ]
+    }
+  },
+  "actionGuide": {
+    "badge": "[Çürréñt rüñ !!!]",
+    "lookFor": "[Whàt tö löök för !!!]",
+    "stepMode": "[Stép Mödé ïs öñ. Stàrt thé wàlkthröügh, théñ üsé Ñéxt Stép tö mövé öñé stàgé àt à tïmé. !!!]",
+    "httpOff": {
+      "title": "[HTTP wïthöüt à VPÑ !!!]",
+      "body": "[Thïs ïs thé léàst prötéçtéd pàth ïñ thé démö. Ït shöws whàt üñéñçrÿptéd tràffïç lööks lïké. !!!]",
+      "focus": "[Çhéçk whéthér thé üsérñàmé àñd pàsswörd stàÿ réàdàblé ïñ Wïré Vïéw. !!!]"
+    },
+    "httpsOff": {
+      "title": "[HTTPS wïthöüt à VPÑ !!!]",
+      "body": "[Thïs prötéçts thé lögïñ çöñtéñts öñ thé wàÿ tö thé sïté, büt ït döés ñöt hïdé whéré ÿöü àré göïñg. !!!]",
+      "focus": "[Çhéçk thàt thé çrédéñtïàls dïsàppéàr whïlé thé déstïñàtïöñ àñd çöññéçtïöñ métàdàtà rémàïñ vïsïblé. !!!]"
+    },
+    "httpOn": {
+      "title": "[HTTP wïth à VPÑ !!!]",
+      "body": "[Thé VPÑ hïdés thïs tràffïç fröm thé löçàl ñétwörk, büt thé sïté tràffïç ïñsïdé thé tüññél ïs stïll plàïñ HTTP. !!!]",
+      "focus": "[Çömpàré thïs wïth plàïñ HTTP àñd ñöté whàt thé löçàl ñétwörk lösés sïght öf. !!!]"
+    },
+    "httpsOn": {
+      "title": "[HTTPS wïth à VPÑ !!!]",
+      "body": "[Thïs çömbïñés sïté éñçrÿptïöñ wïth à VPÑ tüññél, sö thé löçàl ñétwörk séés thé léàst détàïl. !!!]",
+      "focus": "[Ñötïçé whàt béçömés hïddéñ löçàllÿ àñd rémémbér thàt trüst shïfts tö thé VPÑ prövïdér. !!!]"
     }
   }
 }

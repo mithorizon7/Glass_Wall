@@ -5,6 +5,18 @@ import { createServer } from "http";
 
 const app = express();
 const httpServer = createServer(app);
+const isProd = process.env.NODE_ENV === "production";
+
+app.disable("x-powered-by");
+
+app.use((_req, res, next) => {
+  // Baseline hardening headers that are safe for this SPA/API setup.
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  next();
+});
 
 declare module "http" {
   interface IncomingMessage {
@@ -14,13 +26,14 @@ declare module "http" {
 
 app.use(
   express.json({
+    limit: "100kb",
     verify: (req, _res, buf) => {
       req.rawBody = buf;
     },
   }),
 );
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false, limit: "100kb", parameterLimit: 200 }));
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
@@ -48,8 +61,14 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      // In production, avoid logging response bodies by default to reduce data-exposure risk.
+      if (!isProd && capturedJsonResponse) {
+        const serialized = JSON.stringify(capturedJsonResponse);
+        const maxLogLength = 300;
+        logLine +=
+          serialized.length > maxLogLength
+            ? ` :: ${serialized.slice(0, maxLogLength)}…[truncated]`
+            : ` :: ${serialized}`;
       }
 
       log(logLine);
@@ -62,12 +81,18 @@ app.use((req, res, next) => {
 (async () => {
   await registerRoutes(httpServer, app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+    if (res.headersSent) {
+      return;
+    }
+
     const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    const message =
+      status >= 500 && isProd ? "Internal Server Error" : err.message || "Internal Server Error";
+    const stack = err?.stack ? String(err.stack) : String(err);
+    log(`${req.method} ${req.path} failed with ${status}: ${stack}`, "error");
 
     res.status(status).json({ message });
-    throw err;
   });
 
   // importantly only setup vite in development and after

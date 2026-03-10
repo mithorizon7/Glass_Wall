@@ -34,7 +34,7 @@
   },
   "modeChanged": {
     "title": "Mode Changed",
-    "message": "Click 'Send Request' to see the difference in network traffic."
+    "message": "Use the main run button to see the difference in network traffic."
   },
   "controls": {
     "protocol": "Protocol",
@@ -54,12 +54,27 @@
     "stepModeTooltip": "Advance through the timeline one step at a time for detailed learning.",
     "stepModeHint": "Tip: use ←/→ to step.",
     "httpLabel": "HTTP",
-    "httpsLabel": "HTTPS"
+    "httpsLabel": "HTTPS",
+    "startHereTitle": "For your first comparison, only use Protocol and VPN.",
+    "startHereBody": "Leave the advanced options closed until you have run HTTP and HTTPS once each.",
+    "startHereCompleteBody": "You have finished the core comparison. Keep using Protocol and VPN, then open advanced options when you want more depth.",
+    "advancedTitle": "More ways to explore",
+    "advancedBody": "Change the observer model or slow the timeline down after you understand the basics.",
+    "advancedReadyBody": "You have completed the basic comparison. Use these controls to explore edge cases.",
+    "showAdvanced": "Show advanced options",
+    "hideAdvanced": "Hide advanced options"
   },
   "buttons": {
     "sendRequest": "Send Request",
     "nextStep": "Next Step",
-    "replayTimeline": "Replay Timeline"
+    "replayTimeline": "Replay Timeline",
+    "startStepMode": "Start step-by-step walkthrough",
+    "runLabels": {
+      "httpOff": "Run HTTP with VPN off",
+      "httpsOff": "Run HTTPS with VPN off",
+      "httpOn": "Run HTTP with VPN on",
+      "httpsOn": "Run HTTPS with VPN on"
+    }
   },
   "learningTools": {
     "button": "Learning Tools",
@@ -72,7 +87,7 @@
     }
   },
   "nextPrompt": {
-    "idle": "Use the checklist below, then click Send Request.",
+    "idle": "Use the checklist to set up the next comparison, then run the current view.",
     "modeChanged": "Mode updated. Run the timeline again to compare observer visibility.",
     "stepMode": "Step Mode is on. Use Next Step, or turn it off for a full run.",
     "complete": "Good run. Move to the next checklist step."
@@ -94,18 +109,22 @@
     "step1": {
       "title": "Run HTTP once (baseline)",
       "body": "Keep VPN off and send one request.",
-      "hint": "In Wire View, credentials should be readable."
+      "hint": "In Wire View, credentials should be readable.",
+      "action": "Set up the first run"
     },
     "step2": {
       "title": "Switch to HTTPS and run again",
       "body": "Repeat the same request and compare what changed.",
-      "hint": "Credentials disappear, but destination metadata stays visible."
+      "hint": "Credentials disappear, but destination metadata stays visible.",
+      "action": "Switch me to HTTPS"
     },
     "step3": {
       "title": "Expand to all 4 combinations",
       "body": "Try VPN on/off with both protocols, then verify your understanding.",
-      "hint": "Use Scenarios and Learning Tools after each run."
-    }
+      "hint": "Use Scenarios and Learning Tools after each run.",
+      "action": "Set up the next combination"
+    },
+    "completedAction": "Open learning tools"
   },
   "objectives": {
     "title": "By the end, you can…",
@@ -154,7 +173,7 @@
     "title": "Wire View",
     "subtitle": "What the network can observe",
     "readyToObserve": "Ready to observe",
-    "readyToObserveHint": "Click \"Send Request\" to see what a network observer could capture when the login form is submitted.",
+    "readyToObserveHint": "Run the current view to see what a network observer could capture when the login form is submitted.",
     "encrypted": "Encrypted",
     "plainText": "Plain text",
     "userLabel": "user:",
@@ -806,7 +825,7 @@
       "content": [
         "Wire View shows the traffic as a network observer would capture it.",
         "On untrusted Wi-Fi, that observer could be a nearby device or the hotspot operator.",
-        "Change protocol and attacker model to see how visibility shifts."
+        "Start with protocol and VPN. Open advanced options later when you want edge cases."
       ]
     },
     "protocolToggle": {
@@ -828,7 +847,7 @@
     "actionArea": {
       "title": "Watch Your Data Travel",
       "content": [
-        "Send Request runs the timeline and shows each stage of the exchange.",
+        "The main run button starts the timeline and shows each stage of the exchange.",
         "Compare the Wire View under HTTP and HTTPS to see the difference in exposure."
       ]
     },
@@ -861,6 +880,31 @@
         "Start with HTTP and send a request. The Wire View will display credentials in clear text.",
         "Switch to HTTPS and run again; the credentials disappear while metadata remains."
       ]
+    }
+  },
+  "actionGuide": {
+    "badge": "Current run",
+    "lookFor": "What to look for",
+    "stepMode": "Step Mode is on. Start the walkthrough, then use Next Step to move one stage at a time.",
+    "httpOff": {
+      "title": "HTTP without a VPN",
+      "body": "This is the least protected path in the demo. It shows what unencrypted traffic looks like.",
+      "focus": "Check whether the username and password stay readable in Wire View."
+    },
+    "httpsOff": {
+      "title": "HTTPS without a VPN",
+      "body": "This protects the login contents on the way to the site, but it does not hide where you are going.",
+      "focus": "Check that the credentials disappear while the destination and connection metadata remain visible."
+    },
+    "httpOn": {
+      "title": "HTTP with a VPN",
+      "body": "The VPN hides this traffic from the local network, but the site traffic inside the tunnel is still plain HTTP.",
+      "focus": "Compare this with plain HTTP and note what the local network loses sight of."
+    },
+    "httpsOn": {
+      "title": "HTTPS with a VPN",
+      "body": "This combines site encryption with a VPN tunnel, so the local network sees the least detail.",
+      "focus": "Notice what becomes hidden locally and remember that trust shifts to the VPN provider."
     }
   }
 }

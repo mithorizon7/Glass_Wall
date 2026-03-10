@@ -27,7 +27,9 @@ export default defineConfig({
     emptyOutDir: true,
     // More conservative target helps avoid runtime issues on older engines.
     target: "es2019",
-    sourcemap: true,
+    // Keep source maps off by default in production bundles to reduce source disclosure.
+    // Enable explicitly with VITE_SOURCEMAP=true when needed.
+    sourcemap: process.env.VITE_SOURCEMAP === "true",
   },
   server: {
     fs: {
