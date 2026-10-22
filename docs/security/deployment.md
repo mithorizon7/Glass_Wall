@@ -10,6 +10,8 @@ Replit deployment uses `script/replit-build.sh`, not the provider's potentially 
 
 Formatting covers the explicit application, tooling and documentation directories and root configuration files. Generated Replit/Bun caches are not release sources and must not be formatted or included in the gate.
 
+Replit's automatic hosting package installer is disabled with `packager.features.enabledForHosting = false`. It otherwise runs the provider's old Node/npm before the custom build and fails the engine guard. This documented setting removes only the redundant uncontrolled install; the deployment build still verifies Node, installs the lockfile without lifecycle scripts, audits all dependencies and runs every quality check. The runtime guard must not be weakened to make the provider's preliminary install succeed. See [Replit packager configuration](https://docs.replit.com/features/project-setup/configuration#packager-configuration).
+
 Runtime checksums come from the [official Node manifest](https://nodejs.org/dist/v22.23.4/SHASUMS256.txt). Updating `.nvmrc` also requires reviewing and updating the two deployment checksums. Unsupported platforms fail closed. Never disable certificate verification.
 
 ## Release Procedure
