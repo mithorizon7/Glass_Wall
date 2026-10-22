@@ -14,6 +14,8 @@ Replit's automatic hosting package installer is disabled with `packager.features
 
 Runtime checksums come from the [official Node manifest](https://nodejs.org/dist/v22.23.4/SHASUMS256.txt). Updating `.nvmrc` also requires reviewing and updating the two deployment checksums. Unsupported platforms fail closed. Never disable certificate verification.
 
+Runtime caches are checksum-addressed. Every installer run verifies a fresh archive and compares an existing cache byte-for-byte, including symlink identity, before reusing it. A new cache is renamed into place as a complete directory. Existing executables are never overwritten while a preview might be using them; a modified cache fails closed instead of being silently repaired. CI repeats installation while that Node runtime is running.
+
 ## Release Procedure
 
 1. Preserve Replit-only files and Git refs in a private recoverable backup. Never upload ignored files, credentials, databases or raw logs to the public repository.

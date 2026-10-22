@@ -26,3 +26,11 @@ jobs:
 
       - name: Verify Linux deployment runtime and complete release gate
         run: bash script/replit-build.sh
+
+      - name: Verify installer while its runtime is in use
+        run: |
+          source script/replit-runtime.sh
+          node -e 'setInterval(() => {}, 1000)' &
+          pid=$!
+          trap 'kill "$pid"' EXIT
+          bash script/install-replit-runtime.sh
