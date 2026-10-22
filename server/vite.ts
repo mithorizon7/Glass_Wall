@@ -1,22 +1,24 @@
 import { type Express } from "express";
-import { createServer as createViteServer, createLogger } from "vite";
+import { createServer as createViteServer, createLogger, type WatchOptions } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import fs from "fs";
 import path from "path";
 import { nanoid } from "nanoid";
+import { setImmediate } from "node:timers/promises";
 import { sendSpaFallbackNotFound, shouldServeSpaFallback } from "./spa-fallback";
 import { createDevAccessGuard } from "./dev-access";
 
 const viteLogger = createLogger();
 
-export async function setupVite(server: Server, app: Express) {
+export async function setupVite(server: Server, app: Express, watch?: WatchOptions) {
   const allowedHosts = process.env.REPLIT_DEV_DOMAIN ? [process.env.REPLIT_DEV_DOMAIN] : [];
   const serverOptions = {
     middlewareMode: true,
     hmr: { server, path: "/vite-hmr" },
     allowedHosts,
     cors: false as const,
+    ...(watch ? { watch } : {}),
   };
 
   const vite = await createViteServer({
@@ -31,6 +33,14 @@ export async function setupVite(server: Server, app: Express) {
     server: { ...viteConfig.server, ...serverOptions },
     appType: "custom",
   });
+
+  const close = vite.close.bind(vite);
+  vite.close = async () => {
+    // Chokidar registers native-watch closers in promise continuations. Let those
+    // microtasks drain before closing, rather than losing a just-allocated watch.
+    await setImmediate();
+    await close();
+  };
 
   app.use(createDevAccessGuard(allowedHosts));
   app.use(vite.middlewares);
