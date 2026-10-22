@@ -5,6 +5,7 @@ import viteConfig from "../vite.config";
 import fs from "fs";
 import path from "path";
 import { nanoid } from "nanoid";
+import { setImmediate } from "node:timers/promises";
 import { sendSpaFallbackNotFound, shouldServeSpaFallback } from "./spa-fallback";
 import { createDevAccessGuard } from "./dev-access";
 
@@ -31,6 +32,14 @@ export async function setupVite(server: Server, app: Express) {
     server: { ...viteConfig.server, ...serverOptions },
     appType: "custom",
   });
+
+  const close = vite.close.bind(vite);
+  vite.close = async () => {
+    // Chokidar registers native-watch closers in promise continuations. Let those
+    // microtasks drain before closing, rather than losing a just-allocated watch.
+    await setImmediate();
+    await close();
+  };
 
   app.use(createDevAccessGuard(allowedHosts));
   app.use(vite.middlewares);
