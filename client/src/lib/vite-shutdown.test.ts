@@ -15,7 +15,11 @@ it(
   { timeout: 10000 },
   async (t) => {
     const directory = await mkdtemp(join(tmpdir(), "glass-wall-watch-shutdown-"));
-    const vite = await setupVite(createServer(), express());
+    // Exercise Node native watches on macOS too, instead of its default FSEvents backend.
+    const vite = await setupVite(createServer(), express(), {
+      useFsEvents: false,
+      usePolling: false,
+    });
     const allocation = new EventEmitter();
     const allocated = once(allocation, "allocated", { signal: t.signal });
     const watch = fs.watch;
