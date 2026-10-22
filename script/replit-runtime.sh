@@ -16,5 +16,5 @@ case "$(uname -s):$(uname -m)" in
     ;;
   *) echo "Unsupported deployment platform" >&2; exit 1 ;;
 esac
-runtime="$PWD/.runtime/$archive"
+runtime="$PWD/.runtime/$archive-$checksum"
 export PATH="$runtime/bin:$PATH"
