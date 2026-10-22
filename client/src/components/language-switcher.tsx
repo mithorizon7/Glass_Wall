@@ -17,7 +17,8 @@ export function LanguageSwitcher() {
     { code: "ru", name: t("russian"), nativeName: t("languageNative.ru") },
   ];
 
-  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  const languageCode = (i18n.resolvedLanguage ?? i18n.language).split("-")[0];
+  const currentLanguage = languages.find((lang) => lang.code === languageCode) || languages[0];
 
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
@@ -37,7 +38,7 @@ export function LanguageSwitcher() {
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
             data-testid={`menu-item-language-${language.code}`}
-            className={i18n.language === language.code ? "bg-accent" : ""}
+            className={languageCode === language.code ? "bg-accent" : ""}
           >
             <span className="font-medium">{language.nativeName}</span>
             <span className="ml-2 text-muted-foreground text-xs">({language.name})</span>
