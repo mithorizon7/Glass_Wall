@@ -281,14 +281,14 @@ function ScenarioPractice({ scenarioId, attackerModel }: ScenarioPracticeProps) 
               >
                 <span className="flex items-center gap-3">
                   {selectedAnswer !== null && index === correctIndex && (
-                    <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
                   )}
                   {selectedAnswer !== null && index === selectedAnswer && !isCorrect && (
-                    <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                    <XCircle className="w-4 h-4 text-red-500 shrink-0" />
                   )}
                   {(selectedAnswer === null ||
                     (index !== correctIndex && index !== selectedAnswer)) && (
-                    <span className="w-4 h-4 flex-shrink-0" />
+                    <span className="w-4 h-4 shrink-0" />
                   )}
                   <span>{option}</span>
                 </span>
@@ -303,9 +303,9 @@ function ScenarioPractice({ scenarioId, attackerModel }: ScenarioPracticeProps) 
         >
           <div className="flex items-start gap-2">
             {isCorrect ? (
-              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
             ) : (
-              <XCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+              <XCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
             )}
             <div>
               <p
@@ -412,7 +412,7 @@ function ScenarioDetail({ scenario, attackerModel, practiceRef }: ScenarioDetail
           <ul className="space-y-1">
             {threats.map((threat, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <AlertTriangle className="w-3 h-3 text-amber-500 mt-1 flex-shrink-0" />
+                <AlertTriangle className="w-3 h-3 text-amber-500 mt-1 shrink-0" />
                 <span>{threat}</span>
               </li>
             ))}
@@ -427,7 +427,7 @@ function ScenarioDetail({ scenario, attackerModel, practiceRef }: ScenarioDetail
           <ul className="space-y-1">
             {recommendations.map((rec, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <CheckCircle className="w-3 h-3 text-green-500 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-3 h-3 text-green-500 mt-1 shrink-0" />
                 <span>{rec}</span>
               </li>
             ))}

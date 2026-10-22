@@ -344,14 +344,14 @@ export function ComparisonContent({
           </h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
-              <Unlock className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+              <Unlock className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
               <span>
                 <strong className="text-foreground">{t("comparison.httpLabel")}:</strong>{" "}
                 {t("comparison.httpExplained")}
               </span>
             </li>
             <li className="flex items-start gap-2">
-              <Lock className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <Lock className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
               <span>
                 <strong className="text-foreground">{t("comparison.httpsLabel")}:</strong>{" "}
                 {t("comparison.httpsExplained")}
