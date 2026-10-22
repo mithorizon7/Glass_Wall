@@ -278,11 +278,11 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
               httpPoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-2">
                   {i === 0 ? (
-                    <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                    <XCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                   ) : i === 1 ? (
-                    <Eye className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                    <Eye className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                   ) : (
-                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                   )}
                   <span>{point}</span>
                 </li>
@@ -303,11 +303,11 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
               httpsPoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-2">
                   {i < 2 ? (
-                    <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                   ) : i === 2 ? (
-                    <EyeOff className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <EyeOff className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                   ) : (
-                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                   )}
                   <span>{point}</span>
                 </li>
@@ -328,11 +328,11 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
               vpnPoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-2">
                   {i < 3 ? (
-                    <CheckCircle className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] mt-0.5 shrink-0" />
                   ) : i === 3 ? (
-                    <EyeOff className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] mt-0.5 flex-shrink-0" />
+                    <EyeOff className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] mt-0.5 shrink-0" />
                   ) : (
-                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                   )}
                   <span>{point}</span>
                 </li>
@@ -399,7 +399,7 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
             {Array.isArray(safetyTips) &&
               safetyTips.map((tip, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                   <span>{tip}</span>
                 </li>
               ))}
@@ -415,7 +415,7 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
             {Array.isArray(attackerModels) &&
               attackerModels.map((model, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                   <span>{model}</span>
                 </li>
               ))}

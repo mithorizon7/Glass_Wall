@@ -260,13 +260,13 @@ export function ProgressTracker({
                     data-testid={`progress-item-${combo.key}`}
                   >
                     {combo.done ? (
-                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
                     ) : (
-                      <Circle className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      <Circle className="w-4 h-4 text-muted-foreground shrink-0" />
                     )}
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      <ProtocolIcon className={`w-4 h-4 ${combo.protocolColor} flex-shrink-0`} />
-                      <VpnIcon className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] flex-shrink-0" />
+                      <ProtocolIcon className={`w-4 h-4 ${combo.protocolColor} shrink-0`} />
+                      <VpnIcon className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] shrink-0" />
                       <div className="min-w-0">
                         <p
                           className={`text-sm truncate ${combo.done ? "text-foreground" : "text-muted-foreground"}`}

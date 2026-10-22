@@ -256,14 +256,14 @@ export function QuizContent({
                     >
                       <span className="flex items-center gap-3">
                         {selectedAnswer !== null && index === currentQuestion.correctIndex && (
-                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
                         )}
                         {selectedAnswer !== null && index === selectedAnswer && !isCorrect && (
-                          <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                          <XCircle className="w-4 h-4 text-red-500 shrink-0" />
                         )}
                         {(selectedAnswer === null ||
                           (index !== currentQuestion.correctIndex && index !== selectedAnswer)) && (
-                          <span className="w-4 h-4 flex-shrink-0" />
+                          <span className="w-4 h-4 shrink-0" />
                         )}
                         <span>{option}</span>
                       </span>
@@ -279,9 +279,9 @@ export function QuizContent({
             >
               <div className="flex items-start gap-2">
                 {isCorrect ? (
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
                 ) : (
-                  <XCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                  <XCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 )}
                 <div>
                   <p

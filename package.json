@@ -4,9 +4,9 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development tsx server/index.ts",
-    "build": "NODE_ENV=production tsx script/build.ts",
-    "start": "NODE_ENV=production node dist/index.cjs",
+    "dev": "node script/check-runtime.mjs && NODE_ENV=development tsx server/index.ts",
+    "build": "node script/check-runtime.mjs && NODE_ENV=production tsx script/build.ts",
+    "start": "node script/check-runtime.mjs && NODE_ENV=production node dist/index.cjs",
     "prestart": "node script/check-runtime.mjs",
     "predev": "node script/check-runtime.mjs",
     "check:runtime": "node script/check-runtime.mjs",
