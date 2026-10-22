@@ -362,7 +362,7 @@
     "zeroRiskLearning": "Zero-Risk Learning",
     "zeroRiskTooltip": "Everything you see is fictional but realistic. No actual network data is captured or transmitted.",
     "noTelemetry": "No Telemetry",
-    "noTelemetryTooltip": "This application does not collect any data about your usage or send information to external servers."
+    "noTelemetryTooltip": "Lesson activity is not sent to analytics services. Fonts load from Google Fonts."
   },
   "cheatSheetModal": {
     "title": "HTTP vs HTTPS vs VPN - Quick Reference",

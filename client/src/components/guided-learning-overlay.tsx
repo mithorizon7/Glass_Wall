@@ -2,16 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Sparkles,
-  Eye,
-  Lock,
-  Play,
-  Rocket,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Sparkles, Eye, Lock, Play, Rocket } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const STORAGE_KEY = "glassWall_onboardingCompleted";

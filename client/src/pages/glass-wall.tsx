@@ -38,6 +38,12 @@ import {
   SelfCheckCard,
 } from "@/components/learning-guidance";
 import { LearningToolsHub } from "@/components/learning-tools-hub";
+import {
+  applyCompletedRunToExploredCombinations,
+  didJustComplete,
+  loadExploredCombinationsFromProgressState,
+  type ExploredCombination,
+} from "@/lib/progress-state";
 
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
@@ -77,7 +83,6 @@ const DEFAULT_PAYLOAD: Omit<DemoPayload, "body"> = {
   },
 };
 
-type ExploredCombination = "http-off" | "http-on" | "https-off" | "https-on";
 const FLOW_COMBINATION_ORDER: ExploredCombination[] = [
   "http-off",
   "https-off",
@@ -90,13 +95,7 @@ function loadExploredCombinations(): Set<ExploredCombination> {
   try {
     const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
     if (!raw) return new Set();
-    const parsed = JSON.parse(raw) as Partial<Record<`${ProtocolMode}Vpn${"Off" | "On"}`, boolean>>;
-    const combos = new Set<ExploredCombination>();
-    if (parsed.httpVpnOff) combos.add("http-off");
-    if (parsed.httpVpnOn) combos.add("http-on");
-    if (parsed.httpsVpnOff) combos.add("https-off");
-    if (parsed.httpsVpnOn) combos.add("https-on");
-    return combos;
+    return loadExploredCombinationsFromProgressState(JSON.parse(raw));
   } catch {
     return new Set();
   }
@@ -141,10 +140,10 @@ export default function GlassWall() {
   const isAnimatingRef = useRef(false);
   const protocolModeRef = useRef<ProtocolMode>(protocolMode);
   const stepModeRef = useRef(stepMode);
-  const autoPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoPlayPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const previousStageRef = useRef<TimelineStage>("idle");
+  const previousCompletionRef = useRef(false);
 
   const payload: DemoPayload = {
     ...DEFAULT_PAYLOAD,
@@ -171,34 +170,34 @@ export default function GlassWall() {
       if (event.key && event.key !== PROGRESS_STORAGE_KEY) return;
       syncProgress();
     };
+    const handleProgressUpdated = (event: Event) => {
+      if (!(event instanceof CustomEvent)) return syncProgress();
+      setExploredCombinations(loadExploredCombinationsFromProgressState(event.detail));
+    };
 
     syncProgress();
     if (typeof window === "undefined") return;
 
-    window.addEventListener(PROGRESS_UPDATED_EVENT, syncProgress);
+    window.addEventListener(PROGRESS_UPDATED_EVENT, handleProgressUpdated);
     window.addEventListener("storage", handleStorage);
     return () => {
-      window.removeEventListener(PROGRESS_UPDATED_EVENT, syncProgress);
+      window.removeEventListener(PROGRESS_UPDATED_EVENT, handleProgressUpdated);
       window.removeEventListener("storage", handleStorage);
     };
   }, []);
 
   useEffect(() => {
-    if (timelineStage !== "complete") return;
-    const combo = `${protocolMode}-${vpnMode}` as ExploredCombination;
-    setExploredCombinations((prev) => {
-      if (prev.has(combo)) return prev;
-      const next = new Set(prev);
-      next.add(combo);
-      return next;
-    });
+    const justCompleted = didJustComplete(
+      previousCompletionRef.current,
+      timelineStage === "complete",
+    );
+    setExploredCombinations((prev) =>
+      applyCompletedRunToExploredCombinations(prev, protocolMode, vpnMode, justCompleted),
+    );
+    previousCompletionRef.current = timelineStage === "complete";
   }, [protocolMode, timelineStage, vpnMode]);
 
   const clearAutoPlayTimers = useCallback(() => {
-    if (autoPlayTimeoutRef.current) {
-      clearTimeout(autoPlayTimeoutRef.current);
-      autoPlayTimeoutRef.current = null;
-    }
     if (autoPlayPlayTimeoutRef.current) {
       clearTimeout(autoPlayPlayTimeoutRef.current);
       autoPlayPlayTimeoutRef.current = null;
@@ -335,32 +334,42 @@ export default function GlassWall() {
 
   const handleModeChange = useCallback(
     (type: "protocol" | "vpn", value: string) => {
-      cancelAnimation();
+      const hasRunInProgress = timelineStage !== "idle";
 
       if (type === "protocol") {
         const newProtocol = value as ProtocolMode;
+        if (newProtocol === protocolMode) return;
+        cancelAnimation();
         protocolModeRef.current = newProtocol;
         setProtocolMode(newProtocol);
-
-        if (timelineStage === "handshake" && newProtocol === "http") {
-          setTimelineStage("connect");
-          setExpandedNodes(new Set(["metadata"]));
-        }
       } else {
-        setVpnMode(value as VpnMode);
+        const newVpn = value as VpnMode;
+        if (newVpn === vpnMode) return;
+        cancelAnimation();
+        setVpnMode(newVpn);
+      }
+
+      if (hasRunInProgress) {
+        setTimelineStage("idle");
+        setExpandedNodes(new Set());
       }
 
       setShowModeChangeBanner(true);
 
-      if (autoPlay && timelineStage !== "idle") {
+      if (autoPlay && hasRunInProgress) {
         clearAutoPlayTimers();
-        autoPlayTimeoutRef.current = setTimeout(() => {
-          resetTimeline();
-          autoPlayPlayTimeoutRef.current = setTimeout(playTimeline, 300);
-        }, 300);
+        autoPlayPlayTimeoutRef.current = setTimeout(playTimeline, 300);
       }
     },
-    [autoPlay, timelineStage, resetTimeline, playTimeline, cancelAnimation, clearAutoPlayTimers],
+    [
+      autoPlay,
+      cancelAnimation,
+      clearAutoPlayTimers,
+      playTimeline,
+      protocolMode,
+      timelineStage,
+      vpnMode,
+    ],
   );
 
   const handleAutoPlayChange = useCallback(
@@ -1013,7 +1022,7 @@ export default function GlassWall() {
                 <button
                   type="button"
                   aria-label={t("footer.zeroRiskTooltip")}
-                  className="cursor-help rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  className="cursor-help rounded-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
                 >
                   <Badge variant="secondary">
                     <Shield className="w-3 h-3 mr-1" />
@@ -1030,7 +1039,7 @@ export default function GlassWall() {
                 <button
                   type="button"
                   aria-label={t("footer.noTelemetryTooltip")}
-                  className="cursor-help rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  className="cursor-help rounded-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
                 >
                   <Badge variant="secondary">
                     <EyeOff className="w-3 h-3 mr-1" />

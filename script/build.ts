@@ -1,6 +1,8 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
 import { rm, readFile } from "fs/promises";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -46,6 +48,11 @@ async function buildAll() {
     ...Object.keys(pkg.devDependencies || {}),
   ];
   const externals = allDeps.filter((dep) => !allowlist.includes(dep));
+  const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+  const dirty = execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim() !== "";
+  const lockHash = createHash("sha256")
+    .update(await readFile("package-lock.json"))
+    .digest("hex");
 
   await esbuild({
     entryPoints: ["server/index.ts"],
@@ -55,6 +62,7 @@ async function buildAll() {
     outfile: "dist/index.cjs",
     define: {
       "process.env.NODE_ENV": '"production"',
+      __BUILD_INFO__: JSON.stringify({ revision, dirty, lockHash }),
     },
     minify: true,
     external: externals,

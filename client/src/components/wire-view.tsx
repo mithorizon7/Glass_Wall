@@ -350,19 +350,19 @@ export function WireView({
                         </span>{" "}
                         {payload.domain}
                       </div>
-                        <div className="border-t border-border/40 pt-2">
-                          <div className="text-[10px] opacity-50 mb-1">
-                            {t("wireView.tlsRecord")}:
-                          </div>
-                          <div className="opacity-50 text-[10px]">
-                            {generateTlsRecord(payload.body.username + payload.body.password)}
-                          </div>
+                      <div className="border-t border-border/40 pt-2">
+                        <div className="text-[10px] opacity-50 mb-1">
+                          {t("wireView.tlsRecord")}:
                         </div>
-                        <div className="border-t border-border/40 pt-2">
-                          <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
-                            <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
-                            <span className="opacity-60">{t("labels.encrypted")}</span>
-                          </div>
+                        <div className="opacity-50 text-[10px]">
+                          {generateTlsRecord(payload.body.username + payload.body.password)}
+                        </div>
+                      </div>
+                      <div className="border-t border-border/40 pt-2">
+                        <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
+                          <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
+                          <span className="opacity-60">{t("labels.encrypted")}</span>
+                        </div>
                         <div className="text-[10px] opacity-50 mb-1">
                           {t("wireView.encryptedPayload")}:
                         </div>

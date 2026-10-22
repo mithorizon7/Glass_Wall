@@ -1,11 +1,22 @@
-import express, { type Request, Response, NextFunction } from "express";
+import express from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { createErrorHandler } from "./error-handler";
+import { buildInfo } from "./build-info";
 
 const app = express();
 const httpServer = createServer(app);
 const isProd = process.env.NODE_ENV === "production";
+let closeDevelopmentServer: (() => Promise<void>) | undefined;
+
+async function cleanUpDevelopmentServer() {
+  try {
+    await closeDevelopmentServer?.();
+  } catch {
+    log("Development server cleanup failed", "error");
+  }
+}
 
 app.disable("x-powered-by");
 
@@ -15,6 +26,7 @@ app.use((_req, res, next) => {
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  if (buildInfo) res.setHeader("X-Glass-Wall-Release", buildInfo.revision);
   next();
 });
 
@@ -49,29 +61,18 @@ export function log(message: string, source = "express") {
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
 
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      // In production, avoid logging response bodies by default to reduce data-exposure risk.
-      if (!isProd && capturedJsonResponse) {
-        const serialized = JSON.stringify(capturedJsonResponse);
-        const maxLogLength = 300;
-        logLine +=
-          serialized.length > maxLogLength
-            ? ` :: ${serialized.slice(0, maxLogLength)}…[truncated]`
-            : ` :: ${serialized}`;
-      }
-
-      log(logLine);
+      log(
+        JSON.stringify({
+          method: req.method,
+          path: path.slice(0, 200),
+          status: res.statusCode,
+          duration,
+        }),
+      );
     }
   });
 
@@ -81,20 +82,6 @@ app.use((req, res, next) => {
 (async () => {
   await registerRoutes(httpServer, app);
 
-  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
-    if (res.headersSent) {
-      return;
-    }
-
-    const status = err.status || err.statusCode || 500;
-    const message =
-      status >= 500 && isProd ? "Internal Server Error" : err.message || "Internal Server Error";
-    const stack = err?.stack ? String(err.stack) : String(err);
-    log(`${req.method} ${req.path} failed with ${status}: ${stack}`, "error");
-
-    res.status(status).json({ message });
-  });
-
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
@@ -102,21 +89,46 @@ app.use((req, res, next) => {
     serveStatic(app);
   } else {
     const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
+    const vite = await setupVite(httpServer, app);
+    closeDevelopmentServer = () => vite.close();
   }
+  app.use(createErrorHandler(isProd, (message) => log(message, "error")));
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
   // Other ports are firewalled. Default to 5000 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
+  const port = Number(process.env.PORT || "5000");
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new Error("PORT must be an integer between 1 and 65535");
+  }
+  const host = process.env.HOST || (isProd || process.env.REPL_ID ? "0.0.0.0" : "127.0.0.1");
+  httpServer.on("error", (error: NodeJS.ErrnoException) => {
+    log(`HTTP server failed to listen (${error.code ?? "UNKNOWN"}); check HOST and PORT`, "error");
+    process.exitCode = 1;
+    void cleanUpDevelopmentServer();
+  });
   httpServer.listen(
     {
       port,
-      host: "0.0.0.0",
+      host,
     },
     () => {
+      log(
+        JSON.stringify({
+          event: "runtime-ready",
+          node: process.version,
+          openssl: process.versions.openssl,
+          platform: process.platform,
+          arch: process.arch,
+          build: buildInfo ?? null,
+        }),
+      );
       log(`serving on port ${port}`);
     },
   );
-})();
+})().catch(async () => {
+  log("Server startup failed; check runtime, build artifacts, and configuration", "error");
+  process.exitCode = 1;
+  await cleanUpDevelopmentServer();
+});

@@ -33,12 +33,24 @@ const resources = {
 
 const isDev = import.meta.env.DEV;
 
+function syncDocumentLanguage() {
+  if (typeof document === "undefined") return;
+  const language = i18n.resolvedLanguage ?? i18n.language;
+  document.documentElement.lang = language === "pseudo" ? "en" : language || "lv";
+  document.documentElement.dir = i18n.dir(language);
+}
+
+i18n.on("initialized", syncDocumentLanguage);
+i18n.on("languageChanged", syncDocumentLanguage);
+
 i18n
   .use(ICU)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
+    supportedLngs: Object.keys(resources),
+    load: "languageOnly",
     fallbackLng: ["lv", "en"],
     defaultNS: "common",
     ns: ["common", "glassWall"],
