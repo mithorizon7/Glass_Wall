@@ -84,7 +84,9 @@ export function LearningToolsHub({
           </TabsList>
 
           <TabsContent value="cheatSheet">
-            <CheatSheetContent showHeader />
+            <h3 className="text-xl font-semibold mb-2">{t("cheatSheet.modalTitle")}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{t("cheatSheet.modalDescription")}</p>
+            <CheatSheetContent />
           </TabsContent>
 
           <TabsContent value="comparison">
@@ -97,10 +99,11 @@ export function LearningToolsHub({
           </TabsContent>
 
           <TabsContent value="quiz">
+            <h3 className="text-lg font-semibold mb-2">{t("quiz.title")}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{t("quiz.description")}</p>
             <QuizContent
               onShowInTimeline={onShowInTimeline}
               onRequestClose={() => setOpen(false)}
-              showHeader
             />
           </TabsContent>
         </Tabs>

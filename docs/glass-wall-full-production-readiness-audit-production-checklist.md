@@ -5,7 +5,7 @@ Source of truth checklist for a large/intense task.
 ## Metadata
 
 - Created: 2026-03-06T15:41:32
-- Last Updated: 2026-03-06T15:47:14-0500
+- Last Updated: 2026-03-10T11:12:54-0400
 - Workspace: /Users/davedxn/Downloads/Glass_Wall
 - Checklist Doc: /Users/davedxn/Downloads/Glass_Wall/docs/glass-wall-full-production-readiness-audit-production-checklist.md
 
@@ -30,7 +30,7 @@ Source of truth checklist for a large/intense task.
 - [x] Q-001 [status:verified] Create checklist and baseline scope.
 - [x] Q-002 [status:verified] Complete discovery/audit of impacted systems.
 - [x] Q-003 [status:verified] Implement required changes.
-- [x] Q-004 [status:accepted_risk] Expand or update automated tests.
+- [x] Q-004 [status:verified] Expand or update automated tests.
 - [x] Q-005 [status:verified] Run full validation suite.
 - [x] Q-006 [status:verified] Final code-quality pass and sign-off review.
 
@@ -68,6 +68,26 @@ Source of truth checklist for a large/intense task.
   - Evidence: `npm audit --json` reports 13 dev vulnerabilities with `fixAvailable.isSemVerMajor=true`.
   - Owner: engineering
   - Linked Fix: P-007
+- [x] F-009 [status:verified] [P1] [confidence:0.97] Completed-run tracking could falsely mark new protocol/VPN combinations as explored when learners changed modes after a finished timeline without rerunning it.
+  - Evidence: `client/src/pages/glass-wall.tsx` and `client/src/components/progress-tracker.tsx` previously keyed persistence off `timelineStage === "complete"` / `timelineComplete` plus current mode props, so changing the mode while the prior run was still complete recorded the new combination.
+  - Owner: codex
+  - Linked Fix: P-008, P-009
+- [x] F-010 [status:verified] [P2] [confidence:0.93] Progress tracker UI itself could remain stale across tabs and after resets, even though parent guidance state had been synchronized.
+  - Evidence: `client/src/components/progress-tracker.tsx` only hydrated from localStorage on mount and kept `hasAutoOpenedRef` set after resets.
+  - Owner: codex
+  - Linked Fix: P-010
+- [x] F-011 [status:verified] [P2] [confidence:0.92] Development SPA fallback behavior was broader than production and could return HTML for API misses or non-navigation requests, masking 404s during local verification.
+  - Evidence: `server/vite.ts` previously served transformed `index.html` for all `*` routes without the method/path/accept guards present in `server/static.ts`.
+  - Owner: codex
+  - Linked Fix: P-011
+- [x] F-012 [status:verified] [P2] [confidence:0.95] `npm test` used Vitest watch mode, causing automated validation to hang once real tests existed.
+  - Evidence: `package.json` script `vitest --passWithNoTests` stayed open after the newly added tests passed.
+  - Owner: codex
+  - Linked Fix: P-012
+- [x] F-013 [status:verified] [P3] [confidence:0.88] The HTML shell loaded a large set of unused Google font families, increasing first-load weight for no product benefit.
+  - Evidence: `client/index.html` referenced more than twenty font families while `client/src/index.css` only uses the Geist, IBM Plex, DM Sans, Libre Baskerville, Merriweather, and JetBrains Mono families.
+  - Owner: codex
+  - Linked Fix: P-013
 
 ## Fix Log
 
@@ -92,23 +112,41 @@ Source of truth checklist for a large/intense task.
 - [x] P-007 [status:accepted_risk] Deferred semver-major dev-toolchain upgrades pending dedicated compatibility pass.
   - Addresses: F-008
   - Evidence: `npm audit --json` output; upgrade requires coordinated migration/testing.
+- [x] P-008 [status:verified] Added transition-based completion helpers and reused them in page-level explored-combination tracking so only real run completions persist progress.
+  - Addresses: F-009
+  - Evidence: `client/src/lib/progress-state.ts`, `client/src/pages/glass-wall.tsx`, `client/src/lib/progress-state.test.ts`.
+- [x] P-009 [status:verified] Reset the timeline immediately on protocol/VPN changes and only auto-replay from the reset state, preventing stale complete-state UI from carrying across modes.
+  - Addresses: F-009
+  - Evidence: `client/src/pages/glass-wall.tsx`.
+- [x] P-010 [status:verified] Added storage/custom-event synchronization to the progress tracker and reset its auto-open state when progress is cleared.
+  - Addresses: F-010
+  - Evidence: `client/src/components/progress-tracker.tsx`.
+- [x] P-011 [status:verified] Centralized SPA fallback rules and applied the same navigation-only behavior in dev and production, including explicit HEAD handling and 404 responses for non-navigation misses.
+  - Addresses: F-011
+  - Evidence: `server/spa-fallback.ts`, `server/static.ts`, `server/vite.ts`, `client/src/lib/spa-fallback.test.ts`.
+- [x] P-012 [status:verified] Switched `npm test` to non-watch mode for deterministic validation and added an explicit `test:watch` script for local iteration.
+  - Addresses: F-012
+  - Evidence: `package.json`.
+- [x] P-013 [status:verified] Reduced the Google Fonts request to the families actually used by the app.
+  - Addresses: F-013
+  - Evidence: `client/index.html`, `client/src/index.css`.
 
 ## Validation Log
 
 - [x] V-001 [status:verified] `npm run check`
-  - Evidence: 2026-03-06 15:45 EST + pass (`tsc` clean).
+  - Evidence: 2026-03-10 11:12 EDT + pass (`tsc` clean).
 - [x] V-002 [status:verified] `npm run lint`
-  - Evidence: 2026-03-06 15:45 EST + pass.
+  - Evidence: 2026-03-10 11:12 EDT + pass.
 - [x] V-003 [status:verified] `npm test`
-  - Evidence: 2026-03-06 15:45 EST + pass (no test files; exit 0).
+  - Evidence: 2026-03-10 11:12 EDT + pass (`vitest run --passWithNoTests`, 2 files / 7 tests).
 - [x] V-004 [status:verified] `npm run build`
-  - Evidence: 2026-03-06 15:45 EST + pass (client + server built successfully).
+  - Evidence: 2026-03-10 11:12 EDT + pass (client + server built successfully).
 - [x] V-005 [status:verified] `node scripts/i18n-check.js`
-  - Evidence: 2026-03-06 15:45 EST + pass.
+  - Evidence: 2026-03-10 11:12 EDT + pass.
 - [x] V-006 [status:verified] `npm audit --omit=dev --json`
-  - Evidence: 2026-03-06 15:45 EST + pass (`total: 0` vulnerabilities in production dependency graph).
+  - Evidence: 2026-03-10 11:12 EDT + pass (`total: 0` vulnerabilities in production dependency graph).
 - [x] V-007 [status:verified] `npm audit --json`
-  - Evidence: 2026-03-06 15:45 EST + fail (13 dev-only vulnerabilities reported); results reviewed and captured as accepted risk F-008/P-007.
+  - Evidence: 2026-03-10 11:12 EDT + fail (13 dev-only vulnerabilities reported); results reviewed and retained as accepted risk F-008/P-007.
 
 ## Residual Risks
 
@@ -117,7 +155,7 @@ Source of truth checklist for a large/intense task.
   - Owner: engineering
   - Follow-up trigger/date: Schedule dedicated dependency modernization sprint before next major release.
 - [x] R-002 [status:accepted_risk] No automated end-to-end regression suite currently exists.
-  - Rationale: Build/lint/type checks pass, but behavior regressions remain mostly manual.
+  - Rationale: Targeted unit tests now cover progress persistence and SPA fallback policy, but primary user flows still lack end-to-end browser coverage.
   - Owner: engineering
   - Follow-up trigger/date: Add smoke/e2e tests for primary learning flow and onboarding interactions in next QA hardening cycle.
 - [x] R-003 [status:accepted_risk] PostCSS parser warning still appears during build.
@@ -132,3 +170,5 @@ Source of truth checklist for a large/intense task.
 - 2026-03-06T15:45:39-0500: Implemented hardening fixes P-001..P-006; documented accepted-risk item P-007.
 - 2026-03-06T15:45:39-0500: Full validation pass completed (V-001..V-007); sign-off gates verified.
 - 2026-03-06T15:47:14-0500: Final verification rerun after checklist cleanup; sign-off remains clean.
+- 2026-03-10T11:12:54-0400: Second comprehensive robustness pass completed; findings F-009..F-013 resolved via P-008..P-013.
+- 2026-03-10T11:12:54-0400: Final validation rerun completed on the post-fix state (V-001..V-007 updated); sign-off remains clean.

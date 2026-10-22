@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
+  DEFAULT_PROGRESS,
+  applyCompletedRunToProgressState,
+  didJustComplete,
+  parseStoredProgressState,
+  normalizeProgressState,
+  type ProgressState,
+} from "@/lib/progress-state";
+import {
   CheckCircle,
   Circle,
   Trophy,
@@ -20,9 +28,9 @@ import {
 export const PROGRESS_STORAGE_KEY = "glass-wall-progress";
 export const PROGRESS_UPDATED_EVENT = "glass-wall-progress-updated";
 
-function emitProgressUpdated() {
+function emitProgressUpdated(progress: ProgressState) {
   if (typeof window === "undefined") return;
-  window.dispatchEvent(new Event(PROGRESS_UPDATED_EVENT));
+  window.dispatchEvent(new CustomEvent(PROGRESS_UPDATED_EVENT, { detail: progress }));
 }
 
 function safeStorageGet(key: string): string | null {
@@ -52,28 +60,6 @@ function safeStorageRemove(key: string) {
   }
 }
 
-interface ProgressState {
-  httpExplored: boolean;
-  httpsExplored: boolean;
-  vpnOffExplored: boolean;
-  vpnOnExplored: boolean;
-  httpVpnOff: boolean;
-  httpVpnOn: boolean;
-  httpsVpnOff: boolean;
-  httpsVpnOn: boolean;
-}
-
-const DEFAULT_PROGRESS: ProgressState = {
-  httpExplored: false,
-  httpsExplored: false,
-  vpnOffExplored: false,
-  vpnOnExplored: false,
-  httpVpnOff: false,
-  httpVpnOn: false,
-  httpsVpnOff: false,
-  httpsVpnOn: false,
-};
-
 interface ProgressTrackerProps {
   currentProtocol: "http" | "https";
   currentVpn: "off" | "on";
@@ -89,52 +75,66 @@ export function ProgressTracker({
 }: ProgressTrackerProps) {
   const { t } = useTranslation("glassWall");
   const [progress, setProgress] = useState<ProgressState>(DEFAULT_PROGRESS);
+  const progressRef = useRef<ProgressState>(DEFAULT_PROGRESS);
   const [isOpen, setIsOpen] = useState(false);
   const hasAutoOpenedRef = useRef(false);
+  const previousTimelineCompleteRef = useRef(false);
 
   useEffect(() => {
-    const stored = safeStorageGet(PROGRESS_STORAGE_KEY);
-    if (stored) {
-      try {
-        setProgress(JSON.parse(stored));
-      } catch {
-        setProgress(DEFAULT_PROGRESS);
-      }
-    }
+    const syncProgress = () => {
+      const next = parseStoredProgressState(safeStorageGet(PROGRESS_STORAGE_KEY));
+      progressRef.current = next;
+      setProgress(next);
+    };
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key && event.key !== PROGRESS_STORAGE_KEY) return;
+      syncProgress();
+    };
+    const handleProgressUpdated = (event: Event) => {
+      if (!(event instanceof CustomEvent)) return syncProgress();
+      const next = normalizeProgressState(event.detail);
+      progressRef.current = next;
+      setProgress(next);
+    };
+
+    syncProgress();
+    if (typeof window === "undefined") return;
+
+    window.addEventListener(PROGRESS_UPDATED_EVENT, handleProgressUpdated);
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener(PROGRESS_UPDATED_EVENT, handleProgressUpdated);
+      window.removeEventListener("storage", handleStorage);
+    };
   }, []);
 
   useEffect(() => {
-    if (timelineComplete) {
-      setProgress((prev) => {
-        const updated = { ...prev };
+    const justCompleted = didJustComplete(previousTimelineCompleteRef.current, timelineComplete);
 
-        if (currentProtocol === "http") {
-          updated.httpExplored = true;
-        } else {
-          updated.httpsExplored = true;
-        }
-
-        if (currentVpn === "off") {
-          updated.vpnOffExplored = true;
-        } else {
-          updated.vpnOnExplored = true;
-        }
-
-        const comboKey =
-          `${currentProtocol}Vpn${currentVpn === "off" ? "Off" : "On"}` as keyof ProgressState;
-        updated[comboKey] = true;
-
-        safeStorageSet(PROGRESS_STORAGE_KEY, JSON.stringify(updated));
-        emitProgressUpdated();
-        return updated;
-      });
+    const next = applyCompletedRunToProgressState(
+      progressRef.current,
+      currentProtocol,
+      currentVpn,
+      justCompleted,
+    );
+    if (next !== progressRef.current) {
+      progressRef.current = next;
+      setProgress(next);
+      safeStorageSet(PROGRESS_STORAGE_KEY, JSON.stringify(next));
+      emitProgressUpdated(next);
     }
+
+    previousTimelineCompleteRef.current = timelineComplete;
   }, [timelineComplete, currentProtocol, currentVpn]);
 
   const handleReset = useCallback(() => {
     setProgress(DEFAULT_PROGRESS);
+    progressRef.current = DEFAULT_PROGRESS;
+    setIsOpen(false);
+    hasAutoOpenedRef.current = false;
+    previousTimelineCompleteRef.current = false;
     safeStorageRemove(PROGRESS_STORAGE_KEY);
-    emitProgressUpdated();
+    emitProgressUpdated(DEFAULT_PROGRESS);
   }, []);
 
   const completedCount = [
@@ -148,7 +148,12 @@ export function ProgressTracker({
   const allComplete = completedCount === 4;
 
   useEffect(() => {
-    if (completedCount > 0 && !hasAutoOpenedRef.current) {
+    if (completedCount === 0) {
+      hasAutoOpenedRef.current = false;
+      return;
+    }
+
+    if (!hasAutoOpenedRef.current) {
       setIsOpen(true);
       hasAutoOpenedRef.current = true;
     }
@@ -261,9 +266,7 @@ export function ProgressTracker({
                     )}
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <ProtocolIcon className={`w-4 h-4 ${combo.protocolColor} flex-shrink-0`} />
-                      <VpnIcon
-                        className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] flex-shrink-0"
-                      />
+                      <VpnIcon className="w-4 h-4 text-[hsl(var(--vpn-tunnel))] flex-shrink-0" />
                       <div className="min-w-0">
                         <p
                           className={`text-sm truncate ${combo.done ? "text-foreground" : "text-muted-foreground"}`}

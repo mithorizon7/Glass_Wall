@@ -3,11 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   ChevronRight,
@@ -48,7 +44,7 @@ function InlineInfoTooltip({ label, content }: InlineInfoTooltipProps) {
         <button
           type="button"
           aria-label={label}
-          className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
         >
           <Info className="w-3 h-3" />
         </button>
@@ -192,7 +188,7 @@ export function ControlPanel({
           <CollapsibleTrigger asChild>
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-4 rounded-2xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              className="flex w-full items-center justify-between gap-4 rounded-2xl text-left focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
               data-onboarding="advanced-controls"
             >
               <div className="flex items-start gap-3">
@@ -256,9 +252,7 @@ export function ControlPanel({
                     }`}
                     data-testid="button-attacker-rogue"
                   >
-                    <span className="font-medium">
-                      {t("controls.attackerModels.rogueHotspot")}
-                    </span>
+                    <span className="font-medium">{t("controls.attackerModels.rogueHotspot")}</span>
                   </button>
                   <button
                     type="button"

@@ -362,7 +362,7 @@
     "zeroRiskLearning": "Mācīšanās bez riska",
     "zeroRiskTooltip": "Viss, ko redzat, ir izdomāts, bet reālistisks. Nekādi faktiski tīkla dati netiek uztverti vai pārraidīti.",
     "noTelemetry": "Nav telemetrijas",
-    "noTelemetryTooltip": "Šī lietojumprogramma nevāc nekādus datus par jūsu lietošanu un nesūta informāciju uz ārējiem serveriem."
+    "noTelemetryTooltip": "Mācību darbības netiek sūtītas analītikas pakalpojumiem. Fonti tiek ielādēti no Google Fonts."
   },
   "cheatSheetModal": {
     "title": "HTTP vs HTTPS vs VPN - Īsā uzziņa",
