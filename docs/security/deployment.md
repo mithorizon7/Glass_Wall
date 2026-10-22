@@ -4,6 +4,8 @@
 
 Development requires Node 22.23.4 or a newer maintained 22.x patch. Select `.nvmrc` in the terminal/IDE before installing. Do not disable engine checks to use an older runtime.
 
+The Replit Run workflow uses `script/replit-dev.sh`: the same checksummed runtime installer and a lifecycle-disabled clean install precede development startup. This avoids the stale provider Node wrapper without changing the runtime floor, host/origin restrictions or filesystem protections.
+
 Replit deployment uses `script/replit-build.sh`, not the provider's potentially stale Node wrapper. It downloads official Linux Node 22.23.4, verifies the pinned SHA-256 before extraction, installs packages without lifecycle scripts, audits the entire dependency graph and runs type checking, tests, localization lint, ESLint, formatting and the production build. It never contacts the application database. The `.runtime/` directory must remain in the deployment image, but is ignored by Git. Startup requires that runtime and runs the guard again; it does not download software or relax the security floor.
 
 Formatting covers the explicit application, tooling and documentation directories and root configuration files. Generated Replit/Bun caches are not release sources and must not be formatted or included in the gate.

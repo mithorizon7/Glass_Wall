@@ -24,29 +24,5 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Install
-        run: npm ci --ignore-scripts
-
-      - name: Verify runtime
-        run: npm run check:runtime
-
-      - name: Audit all dependencies
-        run: npm audit --audit-level=moderate
-
-      - name: Type check
-        run: npm run check
-
-      - name: Tests
-        run: npm test
-
-      - name: i18n lint
-        run: npm run lint:i18n
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Format check
-        run: npm run format:check
-
-      - name: Build
-        run: npm run build
+      - name: Verify Linux deployment runtime and complete release gate
+        run: bash script/replit-build.sh
