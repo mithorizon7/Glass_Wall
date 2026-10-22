@@ -16,8 +16,8 @@
     "test:watch": "node --import tsx --test --watch client/src/lib/*.test.ts",
     "lint:i18n": "tsx script/lint-i18n.ts",
     "lint": "eslint \"client/src/**/*.{ts,tsx}\" \"server/**/*.{ts,tsx}\" \"shared/**/*.{ts,tsx}\"",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,mdx}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md,mdx}\"",
+    "format": "prettier --write \"{client,server,shared,script,scripts,docs}/**/*.{ts,tsx,js,jsx,json,css,md,mdx}\" \"*.{ts,tsx,js,jsx,json,css,md,mdx}\"",
+    "format:check": "prettier --check \"{client,server,shared,script,scripts,docs}/**/*.{ts,tsx,js,jsx,json,css,md,mdx}\" \"*.{ts,tsx,js,jsx,json,css,md,mdx}\"",
     "prepare": "husky install"
   },
   "dependencies": {
