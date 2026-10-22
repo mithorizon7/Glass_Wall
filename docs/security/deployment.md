@@ -6,6 +6,8 @@ Development requires Node 22.23.4 or a newer maintained 22.x patch. Select `.nvm
 
 Replit deployment uses `script/replit-build.sh`, not the provider's potentially stale Node wrapper. It downloads official Linux Node 22.23.4, verifies the pinned SHA-256 before extraction, installs packages without lifecycle scripts, audits the entire dependency graph and runs type checking, tests, localization lint, ESLint, formatting and the production build. It never contacts the application database. The `.runtime/` directory must remain in the deployment image, but is ignored by Git. Startup requires that runtime and runs the guard again; it does not download software or relax the security floor.
 
+Formatting covers the explicit application, tooling and documentation directories and root configuration files. Generated Replit/Bun caches are not release sources and must not be formatted or included in the gate.
+
 Runtime checksums come from the [official Node manifest](https://nodejs.org/dist/v22.23.4/SHASUMS256.txt). Updating `.nvmrc` also requires reviewing and updating the two deployment checksums. Unsupported platforms fail closed. Never disable certificate verification.
 
 ## Release Procedure
