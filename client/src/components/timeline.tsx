@@ -355,7 +355,7 @@ export function Timeline({
                   <button
                     type="button"
                     aria-label={node.tooltipContent}
-                    className="flex flex-col items-center rounded-lg cursor-help focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                    className="flex flex-col items-center rounded-lg cursor-help focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
                     data-testid={`timeline-node-${node.id}`}
                   >
                     <div

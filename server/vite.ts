@@ -5,14 +5,18 @@ import viteConfig from "../vite.config";
 import fs from "fs";
 import path from "path";
 import { nanoid } from "nanoid";
+import { sendSpaFallbackNotFound, shouldServeSpaFallback } from "./spa-fallback";
+import { createDevAccessGuard } from "./dev-access";
 
 const viteLogger = createLogger();
 
 export async function setupVite(server: Server, app: Express) {
+  const allowedHosts = process.env.REPLIT_DEV_DOMAIN ? [process.env.REPLIT_DEV_DOMAIN] : [];
   const serverOptions = {
     middlewareMode: true,
     hmr: { server, path: "/vite-hmr" },
-    allowedHosts: true as const,
+    allowedHosts,
+    cors: false as const,
   };
 
   const vite = await createViteServer({
@@ -22,16 +26,28 @@ export async function setupVite(server: Server, app: Express) {
       ...viteLogger,
       error: (msg, options) => {
         viteLogger.error(msg, options);
-        process.exit(1);
       },
     },
-    server: serverOptions,
+    server: { ...viteConfig.server, ...serverOptions },
     appType: "custom",
   });
 
+  app.use(createDevAccessGuard(allowedHosts));
   app.use(vite.middlewares);
 
-  app.use("*", async (req, res, next) => {
+  app.use(async (req, res, next) => {
+    if (
+      !shouldServeSpaFallback({
+        method: req.method,
+        path: req.path,
+        acceptHeader: req.headers.accept,
+        acceptsHtml: req.accepts("html") !== false,
+      })
+    ) {
+      sendSpaFallbackNotFound(req.path, res);
+      return;
+    }
+
     const url = req.originalUrl;
 
     try {
@@ -41,10 +57,20 @@ export async function setupVite(server: Server, app: Express) {
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(`src="/src/main.tsx"`, `src="/src/main.tsx?v=${nanoid()}"`);
       const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      res.status(200).set({
+        "Cache-Control": "no-store, max-age=0",
+        "Content-Type": "text/html",
+      });
+      if (req.method === "HEAD") {
+        res.end();
+        return;
+      }
+      res.end(page);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);
     }
   });
+
+  return vite;
 }

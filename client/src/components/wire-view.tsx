@@ -17,6 +17,8 @@ interface WireViewProps {
   vpnMode: VpnMode;
   attackerModel: AttackerModel;
   payload: DemoPayload;
+  idleHint?: string;
+  idleFocus?: string;
 }
 
 function generateHexDump(seed: string, lines: number = 3): string[] {
@@ -119,7 +121,15 @@ function DataPacket({
   );
 }
 
-export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload }: WireViewProps) {
+export function WireView({
+  stage,
+  protocolMode,
+  vpnMode,
+  attackerModel,
+  payload,
+  idleHint,
+  idleFocus,
+}: WireViewProps) {
   const { t } = useTranslation("glassWall");
   const isSecure = protocolMode === "https";
   const isActive = stage !== "idle";
@@ -153,7 +163,17 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
         <h3 className="text-base font-medium text-foreground mb-1">
           {t("wireView.readyToObserve")}
         </h3>
-        <p className="text-sm text-muted-foreground max-w-xs">{t("wireView.readyToObserveHint")}</p>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          {idleHint ?? t("wireView.readyToObserveHint")}
+        </p>
+        {idleFocus && (
+          <div className="mt-3 max-w-sm rounded-2xl border border-border/60 bg-muted/40 p-3 text-left">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              {t("actionGuide.lookFor")}
+            </p>
+            <p className="mt-1 text-xs text-foreground">{idleFocus}</p>
+          </div>
+        )}
       </div>
     );
   }
@@ -330,19 +350,19 @@ export function WireView({ stage, protocolMode, vpnMode, attackerModel, payload 
                         </span>{" "}
                         {payload.domain}
                       </div>
-                        <div className="border-t border-border/40 pt-2">
-                          <div className="text-[10px] opacity-50 mb-1">
-                            {t("wireView.tlsRecord")}:
-                          </div>
-                          <div className="opacity-50 text-[10px]">
-                            {generateTlsRecord(payload.body.username + payload.body.password)}
-                          </div>
+                      <div className="border-t border-border/40 pt-2">
+                        <div className="text-[10px] opacity-50 mb-1">
+                          {t("wireView.tlsRecord")}:
                         </div>
-                        <div className="border-t border-border/40 pt-2">
-                          <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
-                            <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
-                            <span className="opacity-60">{t("labels.encrypted")}</span>
-                          </div>
+                        <div className="opacity-50 text-[10px]">
+                          {generateTlsRecord(payload.body.username + payload.body.password)}
+                        </div>
+                      </div>
+                      <div className="border-t border-border/40 pt-2">
+                        <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide mb-1">
+                          <Badge className={contentBadgeClass}>{t("labels.content")}</Badge>
+                          <span className="opacity-60">{t("labels.encrypted")}</span>
+                        </div>
                         <div className="text-[10px] opacity-50 mb-1">
                           {t("wireView.encryptedPayload")}:
                         </div>

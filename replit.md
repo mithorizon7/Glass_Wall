@@ -13,7 +13,7 @@ An interactive educational web application that makes encryption tangible. Part 
 
 **Status**: MVP Complete
 
-The application is a fully functional frontend simulation with no real network calls. All traffic visualization is simulated for educational purposes.
+The application is a frontend simulation. Lesson traffic is simulated locally; Google Fonts is the disclosed external font dependency. Deployment and security procedures are in `docs/security/deployment.md`.
 
 ## Project Architecture
 
@@ -35,7 +35,7 @@ client/src/
 │   ├── comparison-view.tsx   # Side-by-side HTTP vs HTTPS comparison
 │   ├── scenario-selector.tsx # Network scenario selection (4 scenarios)
 │   ├── quiz-mode.tsx         # Interactive security knowledge quiz
-│   └── guided-learning-overlay.tsx # 10-step educational onboarding tour
+│   └── guided-learning-overlay.tsx # 5-step educational onboarding tour
 └── App.tsx                   # Router setup
 ```
 
@@ -51,7 +51,7 @@ client/src/
 6. **Auto-Play**: Automatically replay when switching modes
 7. **Progressive Disclosure**: Expandable sections for technical details
 
-**Learning Tools** 8. **Cheat Sheet Modal**: Printable summary of HTTP/HTTPS/VPN differences with quick reference table 9. **Progress Tracker**: Tracks which mode combinations learners have explored (persisted to localStorage) 10. **Comparison View**: Side-by-side HTTP vs HTTPS wire views with animated comparison 11. **Scenario Selector**: 4 real-world scenarios (Home, Coffee Shop, Airport, Hotel) with risk levels 12. **Quiz Mode**: 8-question interactive quiz testing encryption knowledge with explanations 13. **Guided Learning Overlay**: 10-step educational onboarding tour with spotlight effects, explaining WHY encryption matters
+**Learning Tools** 8. **Cheat Sheet Modal**: Printable summary of HTTP/HTTPS/VPN differences with quick reference table 9. **Progress Tracker**: Tracks completed mode combinations (persisted to localStorage when available) 10. **Comparison View**: Side-by-side HTTP vs HTTPS wire views with animated comparison 11. **Scenario Selector**: 4 real-world scenarios (Home, Coffee Shop, Airport, Hotel) with risk levels 12. **Quiz Mode**: 8-question interactive quiz testing encryption knowledge with explanations 13. **Guided Learning Overlay**: 5-step educational onboarding tour with spotlight effects, explaining WHY encryption matters
 
 ### Design Tokens
 
@@ -152,15 +152,18 @@ Bad examples (avoid):
 - `Login button` - Text as ID (use stable keys)
 
 #### i18n Scripts
-| Command | Purpose |
-|---------|---------|
-| `node scripts/i18n-check.js` | **Run this before every commit** - combined check (extract + validate + render-sweep) |
-| `node scripts/i18n-extract.js` | Extract keys from source, find missing translations |
-| `node scripts/validate-i18n.js` | Validate key parity, ICU syntax, placeholders |
-| `node scripts/i18n-render-sweep.js` | Check for [MISSING:] markers and empty translations |
+
+| Command                             | Purpose                                                                               |
+| ----------------------------------- | ------------------------------------------------------------------------------------- |
+| `node scripts/i18n-check.js`        | **Run this before every commit** - combined check (extract + validate + render-sweep) |
+| `node scripts/i18n-extract.js`      | Extract keys from source, find missing translations                                   |
+| `node scripts/validate-i18n.js`     | Validate key parity, ICU syntax, placeholders                                         |
+| `node scripts/i18n-render-sweep.js` | Check for [MISSING:] markers and empty translations                                   |
 
 #### Translation Workflow (REQUIRED)
+
 When changing any user-facing text:
+
 1. Update English translation in `client/src/locales/en/*.json`
 2. Update Latvian translation in `client/src/locales/lv/*.json`
 3. Update Russian translation in `client/src/locales/ru/*.json`

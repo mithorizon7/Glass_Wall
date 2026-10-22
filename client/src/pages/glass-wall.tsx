@@ -24,7 +24,11 @@ import { Timeline } from "@/components/timeline";
 import { ControlPanel } from "@/components/control-panel";
 import { InfoBanner } from "@/components/info-banner";
 import { VpnTunnelOverlay } from "@/components/vpn-tunnel-overlay";
-import { ProgressTracker } from "@/components/progress-tracker";
+import {
+  ProgressTracker,
+  PROGRESS_STORAGE_KEY,
+  PROGRESS_UPDATED_EVENT,
+} from "@/components/progress-tracker";
 import { ScenarioSelector, SCENARIOS, type Scenario } from "@/components/scenario-selector";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { GuidedLearningOverlay, RestartGuideButton } from "@/components/guided-learning-overlay";
@@ -34,6 +38,12 @@ import {
   SelfCheckCard,
 } from "@/components/learning-guidance";
 import { LearningToolsHub } from "@/components/learning-tools-hub";
+import {
+  applyCompletedRunToExploredCombinations,
+  didJustComplete,
+  loadExploredCombinationsFromProgressState,
+  type ExploredCombination,
+} from "@/lib/progress-state";
 
 export type ProtocolMode = "http" | "https";
 export type VpnMode = "off" | "on";
@@ -73,6 +83,24 @@ const DEFAULT_PAYLOAD: Omit<DemoPayload, "body"> = {
   },
 };
 
+const FLOW_COMBINATION_ORDER: ExploredCombination[] = [
+  "http-off",
+  "https-off",
+  "http-on",
+  "https-on",
+];
+
+function loadExploredCombinations(): Set<ExploredCombination> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if (!raw) return new Set();
+    return loadExploredCombinationsFromProgressState(JSON.parse(raw));
+  } catch {
+    return new Set();
+  }
+}
+
 function sleep(ms: number, signal: AbortSignal) {
   if (signal.aborted) return Promise.resolve();
   return new Promise<void>((resolve) => {
@@ -90,11 +118,12 @@ function sleep(ms: number, signal: AbortSignal) {
 
 export default function GlassWall() {
   const { t } = useTranslation("glassWall");
+  const { t: tc } = useTranslation("common");
   const [protocolMode, setProtocolMode] = useState<ProtocolMode>("http");
   const [vpnMode, setVpnMode] = useState<VpnMode>("off");
   const [attackerModel, setAttackerModel] = useState<AttackerModel>("passive");
   const [autoPlay, setAutoPlay] = useState(true);
-  const [stepMode, setStepMode] = useState(true);
+  const [stepMode, setStepMode] = useState(false);
   const [timelineStage, setTimelineStage] = useState<TimelineStage>("idle");
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModeChangeBanner, setShowModeChangeBanner] = useState(false);
@@ -104,14 +133,17 @@ export default function GlassWall() {
   const [currentScenario, setCurrentScenario] = useState<Scenario>(SCENARIOS[0]);
   const [username, setUsername] = useState("your_username");
   const [password, setPassword] = useState("your_password");
+  const [exploredCombinations, setExploredCombinations] = useState<Set<ExploredCombination>>(
+    new Set(),
+  );
   const animationAbortRef = useRef<AbortController | null>(null);
   const isAnimatingRef = useRef(false);
   const protocolModeRef = useRef<ProtocolMode>(protocolMode);
   const stepModeRef = useRef(stepMode);
-  const autoPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoPlayPlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const previousStageRef = useRef<TimelineStage>("idle");
+  const previousCompletionRef = useRef(false);
 
   const payload: DemoPayload = {
     ...DEFAULT_PAYLOAD,
@@ -130,11 +162,42 @@ export default function GlassWall() {
     stepModeRef.current = stepMode;
   }, [stepMode]);
 
+  useEffect(() => {
+    const syncProgress = () => {
+      setExploredCombinations(loadExploredCombinations());
+    };
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key && event.key !== PROGRESS_STORAGE_KEY) return;
+      syncProgress();
+    };
+    const handleProgressUpdated = (event: Event) => {
+      if (!(event instanceof CustomEvent)) return syncProgress();
+      setExploredCombinations(loadExploredCombinationsFromProgressState(event.detail));
+    };
+
+    syncProgress();
+    if (typeof window === "undefined") return;
+
+    window.addEventListener(PROGRESS_UPDATED_EVENT, handleProgressUpdated);
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener(PROGRESS_UPDATED_EVENT, handleProgressUpdated);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
+
+  useEffect(() => {
+    const justCompleted = didJustComplete(
+      previousCompletionRef.current,
+      timelineStage === "complete",
+    );
+    setExploredCombinations((prev) =>
+      applyCompletedRunToExploredCombinations(prev, protocolMode, vpnMode, justCompleted),
+    );
+    previousCompletionRef.current = timelineStage === "complete";
+  }, [protocolMode, timelineStage, vpnMode]);
+
   const clearAutoPlayTimers = useCallback(() => {
-    if (autoPlayTimeoutRef.current) {
-      clearTimeout(autoPlayTimeoutRef.current);
-      autoPlayTimeoutRef.current = null;
-    }
     if (autoPlayPlayTimeoutRef.current) {
       clearTimeout(autoPlayPlayTimeoutRef.current);
       autoPlayPlayTimeoutRef.current = null;
@@ -271,32 +334,42 @@ export default function GlassWall() {
 
   const handleModeChange = useCallback(
     (type: "protocol" | "vpn", value: string) => {
-      cancelAnimation();
+      const hasRunInProgress = timelineStage !== "idle";
 
       if (type === "protocol") {
         const newProtocol = value as ProtocolMode;
+        if (newProtocol === protocolMode) return;
+        cancelAnimation();
         protocolModeRef.current = newProtocol;
         setProtocolMode(newProtocol);
-
-        if (timelineStage === "handshake" && newProtocol === "http") {
-          setTimelineStage("connect");
-          setExpandedNodes(new Set(["metadata"]));
-        }
       } else {
-        setVpnMode(value as VpnMode);
+        const newVpn = value as VpnMode;
+        if (newVpn === vpnMode) return;
+        cancelAnimation();
+        setVpnMode(newVpn);
+      }
+
+      if (hasRunInProgress) {
+        setTimelineStage("idle");
+        setExpandedNodes(new Set());
       }
 
       setShowModeChangeBanner(true);
 
-      if (autoPlay && timelineStage !== "idle") {
+      if (autoPlay && hasRunInProgress) {
         clearAutoPlayTimers();
-        autoPlayTimeoutRef.current = setTimeout(() => {
-          resetTimeline();
-          autoPlayPlayTimeoutRef.current = setTimeout(playTimeline, 300);
-        }, 300);
+        autoPlayPlayTimeoutRef.current = setTimeout(playTimeline, 300);
       }
     },
-    [autoPlay, timelineStage, resetTimeline, playTimeline, cancelAnimation, clearAutoPlayTimers],
+    [
+      autoPlay,
+      cancelAnimation,
+      clearAutoPlayTimers,
+      playTimeline,
+      protocolMode,
+      timelineStage,
+      vpnMode,
+    ],
   );
 
   const handleAutoPlayChange = useCallback(
@@ -341,6 +414,13 @@ export default function GlassWall() {
     },
     [cancelAnimation, getExpandedNodesForStage, vpnMode],
   );
+
+  const scrollToOnboardingTarget = useCallback((target: string) => {
+    if (typeof window === "undefined") return;
+    const element = document.querySelector(`[data-onboarding="${target}"]`);
+    if (!element) return;
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
 
   useEffect(() => {
     if (showModeChangeBanner) {
@@ -399,13 +479,121 @@ export default function GlassWall() {
   }, [protocolMode, timelineStage, t, vpnMode]);
 
   const vpnDoesNotBullets = t("vpnActive.doesNotBullets", { returnObjects: true }) as string[];
-  const nextPrompt = useMemo(() => {
-    if (showModeChangeBanner) return t("nextPrompt.modeChanged");
-    if (timelineStage === "idle") return t("nextPrompt.idle");
-    if (timelineStage === "complete") return t("nextPrompt.complete");
-    if (stepMode) return t("nextPrompt.stepMode");
-    return null;
-  }, [showModeChangeBanner, stepMode, t, timelineStage]);
+  const hasCompletedHttpRun =
+    exploredCombinations.has("http-off") || exploredCombinations.has("http-on");
+  const hasCompletedHttpsRun =
+    exploredCombinations.has("https-off") || exploredCombinations.has("https-on");
+  const hasCompletedFirstComparison = hasCompletedHttpRun && hasCompletedHttpsRun;
+  const exploredCombinationsCount = exploredCombinations.size;
+  const currentCombination = `${protocolMode}-${vpnMode}` as ExploredCombination;
+
+  const currentRunKey = useMemo(() => {
+    switch (currentCombination) {
+      case "http-off":
+        return "httpOff";
+      case "https-off":
+        return "httpsOff";
+      case "http-on":
+        return "httpOn";
+      case "https-on":
+        return "httpsOn";
+      default:
+        return "httpOff";
+    }
+  }, [currentCombination]);
+
+  const primaryFlowActionLabel = useMemo(() => {
+    if (!hasCompletedHttpRun) return t("flow.step1.action");
+    if (!hasCompletedHttpsRun) return t("flow.step2.action");
+    if (exploredCombinationsCount < 4) return t("flow.step3.action");
+    return t("flow.completedAction");
+  }, [exploredCombinationsCount, hasCompletedHttpRun, hasCompletedHttpsRun, t]);
+
+  const currentRunGuide = useMemo(
+    () => ({
+      title: t(`actionGuide.${currentRunKey}.title`),
+      body: t(`actionGuide.${currentRunKey}.body`),
+      focus: t(`actionGuide.${currentRunKey}.focus`),
+    }),
+    [currentRunKey, t],
+  );
+
+  const currentRunButtonLabel = useMemo(() => {
+    if (stepMode && (timelineStage === "idle" || timelineStage === "complete")) {
+      return t("buttons.startStepMode");
+    }
+    return t(`buttons.runLabels.${currentRunKey}`);
+  }, [currentRunKey, stepMode, t, timelineStage]);
+
+  const currentRunModeLabel = useMemo(() => {
+    const protocolLabel =
+      protocolMode === "http" ? t("controls.httpLabel") : t("controls.httpsLabel");
+    const vpnLabel = vpnMode === "on" ? tc("on") : tc("off");
+    return `${protocolLabel} • ${t("controls.vpn")} ${vpnLabel}`;
+  }, [protocolMode, t, tc, vpnMode]);
+
+  const handlePrimaryFlowAction = useCallback(() => {
+    if (!hasCompletedHttpRun) {
+      if (protocolMode !== "http") {
+        handleModeChange("protocol", "http");
+      }
+      if (vpnMode !== "off") {
+        handleModeChange("vpn", "off");
+      }
+      if (stepMode) {
+        handleStepModeChange(false);
+      }
+      scrollToOnboardingTarget("action-area");
+      return;
+    }
+
+    if (!hasCompletedHttpsRun) {
+      if (protocolMode !== "https") {
+        handleModeChange("protocol", "https");
+      }
+      if (vpnMode !== "off") {
+        handleModeChange("vpn", "off");
+      }
+      if (stepMode) {
+        handleStepModeChange(false);
+      }
+      scrollToOnboardingTarget("action-area");
+      return;
+    }
+
+    if (exploredCombinationsCount < 4) {
+      const nextCombination = FLOW_COMBINATION_ORDER.find(
+        (combination) => !exploredCombinations.has(combination),
+      );
+      if (nextCombination) {
+        const [nextProtocol, nextVpn] = nextCombination.split("-") as [ProtocolMode, VpnMode];
+        if (protocolMode !== nextProtocol) {
+          handleModeChange("protocol", nextProtocol);
+        }
+        if (vpnMode !== nextVpn) {
+          handleModeChange("vpn", nextVpn);
+        }
+        if (stepMode) {
+          handleStepModeChange(false);
+        }
+      }
+      scrollToOnboardingTarget("action-area");
+      return;
+    }
+
+    scrollToOnboardingTarget("learning-tools");
+  }, [
+    exploredCombinations,
+    exploredCombinationsCount,
+    handleModeChange,
+    handleStepModeChange,
+    hasCompletedHttpRun,
+    hasCompletedHttpsRun,
+    protocolMode,
+    scrollToOnboardingTarget,
+    stepMode,
+    vpnMode,
+  ]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -586,13 +774,18 @@ export default function GlassWall() {
           </div>
         )}
 
-        <SuggestedFlowCard
-          currentScenario={currentScenario}
-          attackerModel={attackerModel}
-          timelineStage={timelineStage}
-          defaultScenarioId={SCENARIOS[0].id}
-          className="mb-6"
-        />
+        <div className="mb-6 space-y-3">
+          <SuggestedFlowCard
+            hasCompletedHttpRun={hasCompletedHttpRun}
+            hasCompletedHttpsRun={hasCompletedHttpsRun}
+            exploredCombinations={exploredCombinationsCount}
+            primaryActionLabel={primaryFlowActionLabel}
+            onPrimaryAction={handlePrimaryFlowAction}
+          />
+          <div className="flex justify-end">
+            <RestartGuideButton />
+          </div>
+        </div>
 
         <div
           className="opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
@@ -609,6 +802,7 @@ export default function GlassWall() {
             onAttackerModelChange={handleAttackerModelChange}
             onAutoPlayChange={handleAutoPlayChange}
             onStepModeChange={handleStepModeChange}
+            showAdvancedByDefault={hasCompletedFirstComparison}
             className="mb-10"
           />
         </div>
@@ -617,6 +811,25 @@ export default function GlassWall() {
           className="opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
           style={{ animationDelay: "240ms" }}
         >
+          <div className="mx-auto mb-4 max-w-2xl rounded-2xl border border-border/60 bg-card/70 p-4 text-left shadow-[0_16px_35px_-28px_rgba(15,23,42,0.35)]">
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              <Badge variant="secondary" className="text-[10px] uppercase tracking-wide">
+                {t("actionGuide.badge")}
+              </Badge>
+              <Badge variant="outline" className="text-[10px]">
+                {currentRunModeLabel}
+              </Badge>
+            </div>
+            <p className="text-sm font-medium text-foreground">{currentRunGuide.title}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{currentRunGuide.body}</p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">{t("actionGuide.lookFor")}: </span>
+              {currentRunGuide.focus}
+            </p>
+            {stepMode && (
+              <p className="mt-2 text-xs text-muted-foreground">{t("actionGuide.stepMode")}</p>
+            )}
+          </div>
           <div
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 md:mb-14"
             data-onboarding="action-area"
@@ -640,7 +853,7 @@ export default function GlassWall() {
                 data-testid="button-send-request"
               >
                 <Play className="w-5 h-5 mr-2" />
-                {t("buttons.sendRequest")}
+                {currentRunButtonLabel}
               </Button>
             )}
             <Button
@@ -656,11 +869,6 @@ export default function GlassWall() {
             </Button>
           </div>
         </div>
-        {nextPrompt && (
-          <div className="mb-10 md:mb-12 text-center text-sm text-muted-foreground">
-            {nextPrompt}
-          </div>
-        )}
 
         <div
           className="grid grid-cols-1 lg:grid-cols-2 gap-10 opacity-100 motion-safe:opacity-0 motion-safe:animate-fade-in"
@@ -790,6 +998,8 @@ export default function GlassWall() {
               vpnMode={vpnMode}
               attackerModel={attackerModel}
               payload={payload}
+              idleHint={currentRunGuide.body}
+              idleFocus={currentRunGuide.focus}
             />
           </Card>
         </div>
@@ -812,7 +1022,7 @@ export default function GlassWall() {
                 <button
                   type="button"
                   aria-label={t("footer.zeroRiskTooltip")}
-                  className="cursor-help rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  className="cursor-help rounded-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
                 >
                   <Badge variant="secondary">
                     <Shield className="w-3 h-3 mr-1" />
@@ -829,7 +1039,7 @@ export default function GlassWall() {
                 <button
                   type="button"
                   aria-label={t("footer.noTelemetryTooltip")}
-                  className="cursor-help rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  className="cursor-help rounded-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40"
                 >
                   <Badge variant="secondary">
                     <EyeOff className="w-3 h-3 mr-1" />
@@ -841,9 +1051,6 @@ export default function GlassWall() {
                 <p>{t("footer.noTelemetryTooltip")}</p>
               </TooltipContent>
             </Tooltip>
-          </div>
-          <div className="mt-4">
-            <RestartGuideButton />
           </div>
         </footer>
       </div>
