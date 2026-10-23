@@ -14,6 +14,15 @@ it(
     const npmrc = await readFile(new URL(".npmrc", root), "utf8");
     assert.match(npmrc, /^engine-strict=true$/m);
     assert.match(npmrc, /^ignore-scripts=true$/m);
+    const replit = await readFile(new URL(".replit", root), "utf8");
+    const moduleDeclaration = replit.match(/^modules\s*=\s*(\[.*\])$/m);
+    assert.ok(moduleDeclaration, "declare the initial runtime explicitly");
+    const modules: string[] = JSON.parse(moduleDeclaration[1]);
+    assert.deepEqual(
+      modules.filter((module) => module.startsWith("nodejs-")),
+      ["nodejs-22"],
+      "do not let automatic module selection substitute a different Node major",
+    );
     const manifest = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
     const npm = process.env.npm_execpath;
     assert.ok(npm, "run the release tests through npm test");
