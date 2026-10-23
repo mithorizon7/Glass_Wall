@@ -69,6 +69,12 @@ export async function auditLockfile(lockfile: Lockfile, fetcher: typeof fetch = 
       if (!result || typeof result !== "object" || Array.isArray(result)) {
         throw new Error("OSV returned a malformed package result");
       }
+      if (
+        Object.keys(result).some((key) => key !== "vulns" && key !== "next_page_token") ||
+        ("next_page_token" in result && typeof result.next_page_token !== "string")
+      ) {
+        throw new Error("OSV returned unexpected package fields; release audit failed closed");
+      }
       if (result.next_page_token) {
         throw new Error("OSV returned paginated results; release audit failed closed");
       }

@@ -46,6 +46,8 @@ it("fails closed for unavailable, incomplete or malformed OSV results", async ()
     { results: [] },
     { results: [null, {}] },
     { results: [{ vulns: [{}] }, {}] },
+    { results: [{ error: "query failed" }, {}] },
+    { results: [{ next_page_token: 0 }, {}] },
     { results: [{ next_page_token: "more" }, {}] },
   ]) {
     await assert.rejects(
