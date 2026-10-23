@@ -4,7 +4,7 @@ source "$(dirname "$0")/replit-runtime.sh"
 bash script/install-replit-runtime.sh
 node script/check-runtime.mjs
 npm ci --ignore-scripts
-npm audit --audit-level=moderate
+npm run audit:dependencies
 npm run check
 npm test
 npm run lint:i18n

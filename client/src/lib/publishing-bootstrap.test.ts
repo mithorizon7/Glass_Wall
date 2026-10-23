@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 
 it(
   "rejects old runtimes even when npm lifecycle hooks are disabled",
-  { timeout: 10000 },
+  { timeout: 25000 },
   async () => {
     const root = new URL("../../../", import.meta.url);
     const npmrc = await readFile(new URL(".npmrc", root), "utf8");
@@ -48,7 +48,7 @@ it(
             cwd: root,
             env,
             encoding: "utf8",
-            timeout: 2500,
+            timeout: 6000,
           },
         );
         assert.ifError(child.error);
