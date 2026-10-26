@@ -13,7 +13,7 @@ An interactive educational web application that makes encryption tangible. Part 
 
 **Status**: MVP Complete
 
-October 26 acceptance fixes are merged with green CI, but deployment is awaiting explicit permission for the Replit Git fetch/fast-forward. The live release is still the October 23 version recorded in the deployment guide.
+October 26 acceptance fixes are merged, published and independently verified. The live built revision is e5134d11918fea2a9f7ac67436a5cf40830fbd55, containing accepted application 1162b62 plus documentation. Actual publishing passed the full 45-test gate and both dependency audits; public HTTP, three-engine learner/localization/mobile and print/PDF checks pass. See the deployment guide for the exact receipt and separate external-provider verification limits.
 
 The application is a frontend simulation. Lesson traffic is simulated locally; Google Fonts is the disclosed external font dependency. Routine ownership, checks and recovery are in [the operations handoff](docs/OPERATIONS.md); exact release receipts and security procedures are in [the deployment guide](docs/security/deployment.md). The five-step Quick guide is opt-in, not an automatic interruption. Printing opens a localized preview that remains available for printing or retry.
 

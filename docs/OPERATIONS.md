@@ -1,6 +1,6 @@
 # Glass Wall Operations
 
-**Release status, October 26:** the accepted application revision `1162b6283d433ad6cf61d9cc7d434c8fade34123` is merged with green CI but is not yet deployed. Replit's Git guard blocked importing it; explicit approval for the fetch/fast-forward is pending. The live site remains the verified October 23 release. Instructions describing Quick guide and the retained print preview apply to the accepted candidate until publication is verified.
+**Release status, October 26:** the accepted application changes are deployed and independently verified at [theglasswall.replit.app](https://theglasswall.replit.app). Built revision `e5134d11918fea2a9f7ac67436a5cf40830fbd55` contains accepted application `1162b62` plus documentation. Build `d32db749-ec1f-4cd4-9280-d99441da12b7` succeeded at 18:03:06 UTC with 45/45 tests and zero npm/OSV findings; actual production runtime and public security/learner/print checks pass. Quick guide and the retained print preview are live. External-provider and human-only verification limits remain below.
 
 ## Service and Owner
 
@@ -34,7 +34,7 @@ No new external uptime subscription, monitoring automation, billing commitment o
 ## Deploy and Recover
 
 1. Review changes through GitHub with green final-head CI. Preserve Replit-only history, including empty publishing checkpoints, in a review branch and normal merges. Never force-reset it.
-2. Integrate the exact approved revision into Replit with a clean tracked tree. Keep engine checks, lifecycle restrictions, runtime checksums and the supported Node 22 module. Run the full existing deployment build gate; do not run database migrations.
+2. Integrate the exact approved revision into Replit with a clean tracked tree. Keep engine checks, lifecycle restrictions, runtime checksums and the supported Node 22 module. Run the full existing deployment build gate in a Git-aware checkout; a source archive alone cannot supply the required revision/cleanliness provenance. If a clean install would disrupt an active development preview, pause only that preview and restore it after validation. Retain complete failed-gate logs privately rather than deleting diagnostics; share sanitized summaries only. Do not run database migrations.
 3. Publish only to the existing public Autoscale app, without changing resources, secrets, data or access. Retain actual publishing/build IDs and production runtime-ready revision/dirty/lock evidence.
 4. Match the public release header and run the smoke command and learner/print checks. Do not substitute a successful preview or local build for actual publication.
 5. If release validation fails, stop promotion or use a previously verified **patched** artifact/configuration. A vulnerable historical baseline is not a safe default rollback. Restore a private Git bundle into a new directory, verify its history and compare before integrating; never extract over a running workspace.
