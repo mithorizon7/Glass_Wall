@@ -1,5 +1,7 @@
 # Glass Wall Operations
 
+**Release status, October 26:** the accepted application revision `1162b6283d433ad6cf61d9cc7d434c8fade34123` is merged with green CI but is not yet deployed. Replit's Git guard blocked importing it; explicit approval for the fetch/fast-forward is pending. The live site remains the verified October 23 release. Instructions describing Quick guide and the retained print preview apply to the accepted candidate until publication is verified.
+
 ## Service and Owner
 
 - Live learner site: [theglasswall.replit.app](https://theglasswall.replit.app).
