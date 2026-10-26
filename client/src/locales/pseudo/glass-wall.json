@@ -748,6 +748,9 @@
     "modalTitle": "[Ñétwörk Séçürïtÿ Çhéàt Shéét !!!]",
     "modalDescription": "[Qüïçk référéñçé för höw HTTP, HTTPS, àñd VPÑ çhàñgé whàt öbsérvérs çàñ séé. !!!]",
     "printButton": "[Prïñt / Sàvé às PDF !!!]",
+    "printHint": "[Öpéñs à prïñtàblé prévïéw ïñ à ñéw tàb. !!!]",
+    "printInstructions": "[Yöür çhéàt shéét ïs réàdÿ. Çhöösé Prïñt / Sàvé às PDF bélöw, théñ séléçt à prïñtér ör Sàvé às PDF. !!!]",
+    "printError": "[Thé prïñtàblé prévïéw çöüld ñöt öpéñ. Àllöw pöpüps àñd trÿ àgàïñ. !!!]",
     "printTitle": "[HTTP vs HTTPS vs VPÑ — Qüïçk Référéñçé !!!]",
     "printFooter": "[Thé Glàss Wàll - Ñétwörk Séçürïtÿ Tràïñïñg !!!]",
     "httpTitle": "[HTTP (Üñéñçrÿptéd) !!!]",
@@ -809,6 +812,7 @@
     "back": "[Bàçk !!!]",
     "skip": "[Skïp !!!]",
     "startExploring": "[Stàrt Éxplörïñg !!!]",
+    "openGuide": "[Qüïçk güïdé !!!]",
     "restartGuide": "[Réstàrt Güïdé !!!]",
     "introduction": {
       "title": "[Wélçömé tö Thé Glàss Wàll !!!]",

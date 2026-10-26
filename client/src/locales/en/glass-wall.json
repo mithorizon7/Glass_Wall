@@ -748,6 +748,9 @@
     "modalTitle": "Network Security Cheat Sheet",
     "modalDescription": "Quick reference for how HTTP, HTTPS, and VPN change what observers can see.",
     "printButton": "Print / Save as PDF",
+    "printHint": "Opens a printable preview in a new tab.",
+    "printInstructions": "Your cheat sheet is ready. Choose Print / Save as PDF below, then select a printer or Save as PDF in your browser.",
+    "printError": "The printable preview could not open. Allow popups for this site, then try Print / Save as PDF again.",
     "printTitle": "HTTP vs HTTPS vs VPN — Quick Reference",
     "printFooter": "The Glass Wall - Network Security Training",
     "httpTitle": "HTTP (Unencrypted)",
@@ -804,6 +807,7 @@
     "back": "Back",
     "skip": "Skip",
     "startExploring": "Start Exploring",
+    "openGuide": "Quick guide",
     "restartGuide": "Restart Guide",
     "introduction": {
       "title": "Welcome to The Glass Wall",

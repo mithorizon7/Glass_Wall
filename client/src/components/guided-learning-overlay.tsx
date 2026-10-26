@@ -1,23 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import type { MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, X, Sparkles, Eye, Lock, Play, Rocket } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { guideKeyboardAction } from "@/lib/guide-keyboard";
 
 const STORAGE_KEY = "glassWall_onboardingCompleted";
 const SPOTLIGHT_PADDING = 12;
 const CARD_MARGIN = 16;
 const SCROLL_MARGIN = 100;
-
-function getStorageValue(key: string): string | null {
-  if (typeof window === "undefined") return null;
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
 
 function setStorageValue(key: string, value: string): void {
   if (typeof window === "undefined") return;
@@ -295,6 +288,7 @@ export function GuidedLearningOverlay() {
   const [cardDimensions, setCardDimensions] = useState({ width: 400, height: 300 });
   const cardRef = useRef<HTMLDivElement>(null);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
 
   const step = STEPS[currentStep];
   const isIntroOrReady = step.position === "center";
@@ -325,6 +319,7 @@ export function GuidedLearningOverlay() {
     return () => {
       document.body.style.overflow = originalOverflow;
       document.body.style.paddingRight = originalPaddingRight;
+      restoreFocusRef.current?.focus({ preventScroll: true });
     };
   }, [isVisible]);
 
@@ -351,45 +346,25 @@ export function GuidedLearningOverlay() {
       : null;
 
   useEffect(() => {
-    const completed = getStorageValue(STORAGE_KEY);
-    if (completed || typeof window === "undefined") return;
-
-    let hasInteracted = false;
-    const markInteracted = () => {
-      hasInteracted = true;
-    };
-
-    window.addEventListener("pointerdown", markInteracted, { passive: true, once: true });
-    window.addEventListener("keydown", markInteracted, { passive: true, once: true });
-
-    const timer = window.setTimeout(() => {
-      if (!hasInteracted) {
-        setIsVisible(true);
-      }
-    }, 2200);
-
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("pointerdown", markInteracted);
-      window.removeEventListener("keydown", markInteracted);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isVisible && nextButtonRef.current && isReady) {
+    if (
+      isVisible &&
+      nextButtonRef.current &&
+      (isIntroOrReady || isReady) &&
+      !cardRef.current?.contains(document.activeElement)
+    ) {
       nextButtonRef.current.focus();
     }
-  }, [isVisible, currentStep, isReady]);
+  }, [isVisible, currentStep, isReady, isIntroOrReady]);
 
   const handleNext = useCallback(() => {
     if (currentStep < STEPS.length - 1) {
-      setCurrentStep((prev) => prev + 1);
+      setCurrentStep((prev) => Math.min(prev + 1, STEPS.length - 1));
     }
   }, [currentStep]);
 
   const handleBack = useCallback(() => {
     if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
+      setCurrentStep((prev) => Math.max(prev - 1, 0));
     }
   }, [currentStep]);
 
@@ -402,7 +377,9 @@ export function GuidedLearningOverlay() {
     handleComplete();
   }, [handleComplete]);
 
-  const restartGuide = useCallback(() => {
+  const restartGuide = useCallback((trigger?: HTMLElement) => {
+    restoreFocusRef.current =
+      trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     setCurrentStep(0);
     setIsVisible(true);
   }, []);
@@ -419,19 +396,44 @@ export function GuidedLearningOverlay() {
     if (!isVisible) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Tab") {
+        const controls = cardRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex="0"]',
+        );
+        if (!controls?.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        const outsideCard = !cardRef.current?.contains(document.activeElement);
+        if (
+          outsideCard ||
+          (e.shiftKey ? document.activeElement === first : document.activeElement === last)
+        ) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+        }
+        return;
+      }
+      const interactive =
+        e.target instanceof Element &&
+        !!e.target.closest(
+          'button, a[href], input, textarea, select, [contenteditable="true"], [role="button"], [role="tab"]',
+        );
+      const action = guideKeyboardAction(e.key, interactive, e.repeat);
+      if (!action) return;
+      e.preventDefault();
+      if (action === "close") {
         setStorageValue(STORAGE_KEY, "true");
         setIsVisible(false);
-      } else if (e.key === "ArrowRight" || e.key === "Enter") {
+      } else if (action === "next") {
         if (currentStep < STEPS.length - 1) {
-          setCurrentStep((prev) => prev + 1);
+          setCurrentStep((prev) => Math.min(prev + 1, STEPS.length - 1));
         } else {
           setStorageValue(STORAGE_KEY, "true");
           setIsVisible(false);
         }
-      } else if (e.key === "ArrowLeft") {
+      } else if (action === "back") {
         if (currentStep > 0) {
-          setCurrentStep((prev) => prev - 1);
+          setCurrentStep((prev) => Math.max(prev - 1, 0));
         }
       }
     };
@@ -654,9 +656,9 @@ export function GuidedLearningOverlay() {
 export function RestartGuideButton() {
   const { t } = useTranslation("glassWall");
 
-  const handleRestart = () => {
+  const handleRestart = (event: MouseEvent<HTMLButtonElement>) => {
     if (typeof window !== "undefined" && (window as any).restartGuidedLearning) {
-      (window as any).restartGuidedLearning();
+      (window as any).restartGuidedLearning(event.currentTarget);
     }
   };
 
@@ -669,7 +671,7 @@ export function RestartGuideButton() {
       data-testid="button-restart-guide"
     >
       <Sparkles className="w-4 h-4 mr-2" />
-      {t("guidedLearning.restartGuide")}
+      {t("guidedLearning.openGuide")}
     </Button>
   );
 }

@@ -13,7 +13,7 @@ An interactive educational web application that makes encryption tangible. Part 
 
 **Status**: MVP Complete
 
-The application is a frontend simulation. Lesson traffic is simulated locally; Google Fonts is the disclosed external font dependency. Deployment and security procedures are in `docs/security/deployment.md`.
+The application is a frontend simulation. Lesson traffic is simulated locally; Google Fonts is the disclosed external font dependency. Routine ownership, checks and recovery are in [the operations handoff](docs/OPERATIONS.md); exact release receipts and security procedures are in [the deployment guide](docs/security/deployment.md). The five-step Quick guide is opt-in, not an automatic interruption. Printing opens a localized preview that remains available for printing or retry.
 
 ## Project Architecture
 
