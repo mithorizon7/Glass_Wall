@@ -1,5 +1,7 @@
 # Verified Replit Release
 
+For routine checks, ownership and recovery, use the [operations handoff](../OPERATIONS.md). The [October 26 closeout](2026-10-26-closeout.md) records acceptance corrections and the separate provider investigation; only its completed release receipt supersedes the last verified publication below.
+
 ## Last Verified Publication
 
 [The live site](https://theglasswall.replit.app) serves functional revision **`785212e6c13c8c7835010ea3d2aa887e7fb98df5`**. Actual publishing build `0e96e0a1-b19d-42c3-97c5-e8dc2a4cc5f1` succeeded on October 23, 2026 at 19:09:02 UTC after the complete 35-test gate, npm 0 and independent OSV 755 versions/0 matches. Its production startup reports Node 22.23.4/OpenSSL 3.5.9, Linux/x64, `dirty: false` and lock SHA-256 `1970b45346ac83204a59bb8119a5eda5d7cccd5f76a8d5f9243474d54e632ed6`. Independent public response headers corroborate that source identity; HTTP/security, guide/progress, learning-tools, localization and mobile checks pass. Detailed evidence and limitations are recorded in `2026-10-22-audit.md` and its checklist. Documentation-only closeout commits do not change this deployed bundle revision or require a new publication.

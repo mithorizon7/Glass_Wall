@@ -22,7 +22,8 @@ import {
   XCircle,
   AlertTriangle,
 } from "lucide-react";
-import { useCallback, useRef } from "react";
+import { useCallback, useId, useState } from "react";
+import { openCheatSheetPrintPreview } from "@/lib/cheat-sheet-print";
 import type { ReactNode } from "react";
 
 interface CheatSheetModalProps {
@@ -61,8 +62,9 @@ export function CheatSheetModal({ trigger }: CheatSheetModalProps) {
 }
 
 export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps) {
-  const { t } = useTranslation("glassWall");
-  const printRef = useRef<HTMLDivElement>(null);
+  const { t, i18n } = useTranslation("glassWall");
+  const [printError, setPrintError] = useState(false);
+  const printHintId = useId();
 
   const httpPoints = t("cheatSheet.httpPoints", { returnObjects: true }) as string[];
   const httpsPoints = t("cheatSheet.httpsPoints", { returnObjects: true }) as string[];
@@ -78,162 +80,36 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
     return statuses[columnIndex] ?? "good";
   }, []);
 
-  const handlePrint = useCallback(() => {
-    if (typeof window === "undefined") return;
-    const printWindow = window.open("", "", "width=800,height=600");
-    if (!printWindow) return;
-
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${t("cheatSheet.printTitle")}</title>
-          <style>
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              padding: 40px;
-              line-height: 1.6;
-              color: #1a1a1a;
-            }
-            h1 { 
-              text-align: center;
-              color: #0f172a;
-              border-bottom: 2px solid #3b82f6;
-              padding-bottom: 16px;
-            }
-            h2 { 
-              color: #1e40af;
-              margin-top: 24px;
-            }
-            .section {
-              margin-bottom: 24px;
-              padding: 16px;
-              border: 1px solid #e2e8f0;
-              border-radius: 8px;
-            }
-            .http { border-left: 4px solid #ef4444; }
-            .https { border-left: 4px solid #22c55e; }
-            .vpn { border-left: 4px solid #8b5cf6; }
-            .comparison-table {
-              width: 100%;
-              border-collapse: collapse;
-              margin-top: 16px;
-            }
-            .comparison-table th, .comparison-table td {
-              border: 1px solid #e2e8f0;
-              padding: 12px;
-              text-align: left;
-            }
-            .comparison-table th {
-              background: #f1f5f9;
-            }
-            .good { color: #16a34a; }
-            .bad { color: #dc2626; }
-            .tips {
-              background: #fef3c7;
-              padding: 16px;
-              border-radius: 8px;
-              margin-top: 24px;
-            }
-            .tips h3 { margin-top: 0; color: #92400e; }
-            .tips ul { margin-bottom: 0; }
-            @media print {
-              body { padding: 20px; }
-              .section { break-inside: avoid; }
-            }
-          </style>
-        </head>
-        <body>
-          <h1>${t("cheatSheet.printTitle")}</h1>
-          <p style="text-align: center; margin-top: 8px; color: #64748b; font-size: 12px;">
-            ${t("labels.legendTitle")}: ${t("labels.metadata")} / ${t("labels.content")}
-          </p>
-          
-          <div class="section http">
-            <h2>${t("cheatSheet.httpTitle")}</h2>
-            <ul>
-              ${Array.isArray(httpPoints) ? httpPoints.map((point) => `<li>${point}</li>`).join("") : ""}
-            </ul>
-          </div>
-
-          <div class="section https">
-            <h2>${t("cheatSheet.httpsTitle")}</h2>
-            <ul>
-              ${Array.isArray(httpsPoints) ? httpsPoints.map((point) => `<li>${point}</li>`).join("") : ""}
-            </ul>
-          </div>
-
-          <div class="section vpn">
-            <h2>${t("cheatSheet.vpnTitle")}</h2>
-            <ul>
-              ${Array.isArray(vpnPoints) ? vpnPoints.map((point) => `<li>${point}</li>`).join("") : ""}
-            </ul>
-          </div>
-
-          <div class="section">
-            <h2>${t("cheatSheet.attackerModelsTitle")}</h2>
-            <ul>
-              ${Array.isArray(attackerModels) ? attackerModels.map((point) => `<li>${point}</li>`).join("") : ""}
-            </ul>
-          </div>
-
-          <h2>${t("cheatSheet.comparisonTableTitle")}</h2>
-          <table class="comparison-table">
-            <tr>
-              ${Array.isArray(tableHeaders) ? tableHeaders.map((h) => `<th>${h}</th>`).join("") : ""}
-            </tr>
-            ${
-              tableRows && typeof tableRows === "object"
-                ? Object.entries(tableRows)
-                    .map(
-                      ([key, row]) => `
-              <tr>
-                ${
-                  Array.isArray(row)
-                    ? row
-                        .map((cell, i) => {
-                          const status = i > 0 ? getCellStatus(key, i - 1) : "";
-                          return `<td class="${status}">${cell}</td>`;
-                        })
-                        .join("")
-                    : ""
-                }
-              </tr>
-            `,
-                    )
-                    .join("")
-                : ""
-            }
-          </table>
-
-          <div class="tips">
-            <h3>${t("cheatSheet.safetyTipsTitle")}</h3>
-            <ul>
-              ${Array.isArray(safetyTips) ? safetyTips.map((tip) => `<li>${tip}</li>`).join("") : ""}
-            </ul>
-          </div>
-
-          <p style="text-align: center; margin-top: 32px; color: #64748b; font-size: 14px;">
-            ${t("cheatSheet.printFooter")}
-          </p>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
-  }, [
-    t,
-    httpPoints,
-    httpsPoints,
-    vpnPoints,
-    tableHeaders,
-    tableRows,
-    safetyTips,
-    attackerModels,
-    getCellStatus,
-  ]);
+  const handlePrint = () => {
+    const opened = openCheatSheetPrintPreview(
+      {
+        language:
+          i18n.resolvedLanguage === "pseudo"
+            ? "en"
+            : i18n.resolvedLanguage || i18n.language || "en",
+        title: t("cheatSheet.printTitle"),
+        instructions: t("cheatSheet.printInstructions"),
+        printButton: t("cheatSheet.printButton"),
+        legend: `${t("labels.legendTitle")} : ${t("labels.metadata")} / ${t("labels.content")}`,
+        sections: [
+          { title: t("cheatSheet.httpTitle"), points: httpPoints },
+          { title: t("cheatSheet.httpsTitle"), points: httpsPoints },
+          { title: t("cheatSheet.vpnTitle"), points: vpnPoints },
+          { title: t("cheatSheet.attackerModelsTitle"), points: attackerModels },
+        ],
+        tableTitle: t("cheatSheet.comparisonTableTitle"),
+        headers: tableHeaders,
+        rows: Object.entries(tableRows).map(([key, row]) => ({
+          label: row[0],
+          cells: row.slice(1).map((text, index) => ({ text, status: getCellStatus(key, index) })),
+        })),
+        tips: { title: t("cheatSheet.safetyTipsTitle"), points: safetyTips },
+        footer: t("cheatSheet.printFooter"),
+      },
+      () => window.open("", "_blank", "width=900,height=700"),
+    );
+    setPrintError(!opened);
+  };
 
   return (
     <>
@@ -248,11 +124,25 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
       )}
 
       <div className="flex gap-2 mb-4">
-        <Button onClick={handlePrint} variant="outline" data-testid="button-print-cheat-sheet">
+        <Button
+          onClick={handlePrint}
+          aria-describedby={printHintId}
+          variant="outline"
+          data-testid="button-print-cheat-sheet"
+        >
           <Printer className="w-4 h-4 mr-2" />
           {t("cheatSheet.printButton")}
         </Button>
       </div>
+
+      <p id={printHintId} className="text-sm text-muted-foreground mb-4">
+        {t("cheatSheet.printHint")}
+      </p>
+      {printError && (
+        <p role="alert" className="text-sm text-destructive mb-4">
+          {t("cheatSheet.printError")}
+        </p>
+      )}
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
         <span>{t("labels.legendTitle")}</span>
@@ -264,7 +154,7 @@ export function CheatSheetContent({ showHeader = false }: CheatSheetContentProps
         </Badge>
       </div>
 
-      <div ref={printRef} className="space-y-6">
+      <div className="space-y-6">
         <Card className="p-4 pl-6 bg-gradient-to-r from-red-500/10 to-transparent">
           <div className="flex items-center gap-2 mb-3">
             <Unlock className="w-5 h-5 text-red-500" />

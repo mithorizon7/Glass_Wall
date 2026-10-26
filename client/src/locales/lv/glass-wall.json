@@ -753,6 +753,9 @@
     "modalTitle": "Tīkla drošības īsā pamācība",
     "modalDescription": "Īsa atsauce par to, kā HTTP, HTTPS un VPN maina novērojamību.",
     "printButton": "Drukāt / Saglabāt kā PDF",
+    "printHint": "Atver drukājamu priekšskatījumu jaunā cilnē.",
+    "printInstructions": "Špikeris ir gatavs. Zemāk izvēlieties Drukāt / Saglabāt kā PDF, pēc tam pārlūkā izvēlieties printeri vai saglabāšanu PDF formātā.",
+    "printError": "Neizdevās atvērt drukas priekšskatījumu. Atļaujiet šai vietnei uznirstošos logus un vēlreiz izvēlieties Drukāt / Saglabāt kā PDF.",
     "printTitle": "HTTP vs HTTPS vs VPN — Īsā uzziņa",
     "printFooter": "Stikla siena — Tīkla drošības apmācība",
     "httpTitle": "HTTP (Nešifrēts)",
@@ -809,6 +812,7 @@
     "back": "Atpakaļ",
     "skip": "Izlaist",
     "startExploring": "Sākt izpēti",
+    "openGuide": "Īsā pamācība",
     "restartGuide": "Sākt no jauna",
     "introduction": {
       "title": "Laipni lūgti Stikla sienā",
